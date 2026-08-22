@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام نقاط البيع والمخزون</title>
+    <link rel="stylesheet" href="public/css/main.css?v=1771371241">
+
+</head>
+<body>
+<div class="toast-container" id="toastContainer"></div>
+<div class="app-wrapper">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <h2>💰 POS System</h2>
+            <span>نظام نقاط البيع والمخزون</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="?page=dashboard" class="nav-item ">
+                <span class="icon">📊</span> لوحة التحكم
+            </a>
+            <a href="?page=pos" class="nav-item ">
+                <span class="icon">🛒</span> نقطة البيع
+            </a>
+            <a href="?page=products" class="nav-item active">
+                <span class="icon">📦</span> المنتجات
+            </a>
+            <a href="?page=suppliers" class="nav-item ">
+                <span class="icon">🏭</span> الموردين
+            </a>
+            <a href="?page=purchases" class="nav-item ">
+                <span class="icon">🧾</span> المشتريات
+            </a>
+            <a href="?page=inventory" class="nav-item ">
+                <span class="icon">📋</span> المخزون
+            </a>
+            <a href="?page=sales" class="nav-item ">
+                <span class="icon">💵</span> المبيعات
+            </a>
+            <a href="?page=reports" class="nav-item ">
+            <a href="?page=reports" class="nav-item ">
+                <span class="icon">📈</span> التقارير
+            </a>
+            <a href="?page=employees" class="nav-item ">
+                <span class="icon">👥</span> الموظفين
+            </a>
+            <a href="?page=safe" class="nav-item ">
+                <span class="icon">💰</span> الخزنة
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            نظام نقاط البيع v1.0 &copy; 2026        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+<!-- Products List View -->
+<div class="page-header">
+    <div>
+        <h1>📦 إدارة المنتجات</h1>
+        <p class="subtitle">إجمالي المنتجات: 10</p>
+    </div>
+    <a href="?page=products&action=create" class="btn btn-primary">➕ إضافة منتج</a>
+</div>
+
+<!-- Filters -->
+<div class="card" style="padding:14px 20px;">
+    <form class="d-flex align-center gap-2" method="GET">
+        <input type="hidden" name="page" value="products">
+        <div class="search-box" style="flex:1;">
+            <input type="text" name="search" class="form-control" placeholder="🔍 بحث بالاسم أو الباركود..." value="">
+        </div>
+        <select name="category" class="form-control" style="width:180px;">
+            <option value="">كل الأقسام</option>
+                        <option value="بهارات" >بهارات</option>
+                        <option value="بيض" >بيض</option>
+                    </select>
+        <select name="type" class="form-control" style="width:150px;">
+            <option value="">كل الأنواع</option>
+            <option value="unit" >وحدة</option>
+            <option value="pack" >عبوة</option>
+            <option value="weight" >وزن</option>
+        </select>
+        <button type="submit" class="btn btn-outline">بحث</button>
+        <a href="?page=products" class="btn btn-ghost">إعادة تعيين</a>
+    </form>
+</div>
+
+<!-- Products Table -->
+<div class="card">
+        <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>الاسم</th>
+                    <th>الباركود</th>
+                    <th>PLU</th>
+                    <th>النوع</th>
+                    <th>سعر الشراء</th>
+                    <th>سعر البيع</th>
+                    <th>المخزون</th>
+                    <th>القسم</th>
+                    <th>إجراءات</th>
+                </tr>
+            </thead>
+            <tbody>
+                                <tr>
+                    <td class="text-muted">4</td>
+                    <td class="fw-bold">اوكسي غسيل 25</td>
+                    <td class="text-muted fs-sm">—</td>
+                    <td class="text-muted fs-sm">0115</td>
+                    <td>
+                                                <span class="badge badge-warning">وزن</span>
+                    </td>
+                    <td>11.67</td>
+                    <td class="fw-bold text-accent">14.00</td>
+                    <td>
+                                                    <span class="badge badge-success">40.0</span>
+                                            </td>
+                    <td class="text-muted fs-sm">—</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="?page=products&action=edit&id=4" class="btn btn-sm btn-outline">✏️</a>
+                            <button class="btn btn-sm btn-ghost text-danger" onclick="deleteItem('?page=products&action=delete&id=4', 'حذف اوكسي غسيل 25؟')">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+                                <tr>
+                    <td class="text-muted">6</td>
+                    <td class="fw-bold">بامبرز</td>
+                    <td class="text-muted fs-sm">—</td>
+                    <td class="text-muted fs-sm">—</td>
+                    <td>
+                                                <span class="badge badge-info">وحدة</span>
+                    </td>
+                    <td>5.33</td>
+                    <td class="fw-bold text-accent">6.00</td>
+                    <td>
+                                                    <span class="badge badge-success">60.0</span>
+                                            </td>
+                    <td class="text-muted fs-sm">—</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="?page=products&action=edit&id=6" class="btn btn-sm btn-outline">✏️</a>
+                            <button class="btn btn-sm btn-ghost text-danger" onclick="deleteItem('?page=products&action=delete&id=6', 'حذف بامبرز؟')">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+                                <tr>
+                    <td class="text-muted">5</td>
+                    <td class="fw-bold">سكر</td>
+                    <td class="text-muted fs-sm">6939119034443</td>
+                    <td class="text-muted fs-sm">—</td>
+                    <td>
+                                                <span class="badge badge-info">وحدة</span>
+                    </td>
+                    <td>31.00</td>
+                    <td class="fw-bold text-accent">34.00</td>
+                    <td>
+                                                    <span class="badge badge-danger">-65.0</span>
+                                            </td>
+                    <td class="text-muted fs-sm">—</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="?page=products&action=edit&id=5" class="btn btn-sm btn-outline">✏️</a>
+                            <button class="btn btn-sm btn-ghost text-danger" onclick="deleteItem('?page=products&action=delete&id=5', 'حذف سكر؟')">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+                                <tr>
+                    <td class="text-muted">10</td>
+                    <td class="fw-bold">شاي العروسة ربع كيلو</td>
+                    <td class="text-muted fs-sm">6222002300030</td>
+                    <td class="text-muted fs-sm">—</td>
+                    <td>
+                                                <span class="badge badge-info">وحدة</span>
+                    </td>
+                    <td>24.00</td>
+                    <td class="fw-bold text-accent">27.00</td>
+                    <td>
+                                                    <span class="badge badge-success">269.0</span>
+                                            </td>
+                    <td class="text-muted fs-sm">—</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="?page=products&action=edit&id=10" class="btn btn-sm btn-outline">✏️</a>
+                            <button class="btn btn-sm btn-ghost text-danger" onclick="deleteItem('?page=products&action=delete&id=10', 'حذف شاي العروسة ربع كيلو؟')">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+                                <tr>
+                    <td class="text-muted">3</td>
+                    <td class="fw-bold">فلفل أسود</td>
+                    <td class="text-muted fs-sm">—</td>
+                    <td class="text-muted fs-sm">999</td>
+                    <td>
+                                                <span class="badge badge-info">وحدة</span>
+                    </td>
+                    <td>100.00</td>
+                    <td class="fw-bold text-accent">150.00</td>
+                    <td>
+                                                    <span class="badge badge-success">2984.267</span>
+                                            </td>
+                    <td class="text-muted fs-sm">بهارات</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="?page=products&action=edit&id=3" class="btn btn-sm btn-outline">✏️</a>
+                            <button class="btn btn-sm btn-ghost text-danger" onclick="deleteItem('?page=products&action=delete&id=3', 'حذف فلفل أسود؟')">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+                                <tr>
+                    <td class="text-muted">2</td>
+                    <td class="fw-bold">كمون مطحون</td>
+                    <td class="text-muted fs-sm">—</td>
+                    <td class="text-muted fs-sm">002</td>
+                    <td>
+                                                <span class="badge badge-warning">وزن</span>
+                    </td>
+                    <td>80.00</td>
+                    <td class="fw-bold text-accent">120.00</td>
+                    <td>
+                                                    <span class="badge badge-success">4986.666</span>
+                                            </td>
+                    <td class="text-muted fs-sm">بهارات</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="?page=products&action=edit&id=2" class="btn btn-sm btn-outline">✏️</a>
+                            <button class="btn btn-sm btn-ghost text-danger" onclick="deleteItem('?page=products&action=delete&id=2', 'حذف كمون مطحون؟')">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+                                <tr>
+                    <td class="text-muted">9</td>
+                    <td class="fw-bold">لبان</td>
+                    <td class="text-muted fs-sm">7622202348150</td>
+                    <td class="text-muted fs-sm">—</td>
+                    <td>
+                                                <span class="badge badge-info">وحدة</span>
+                    </td>
+                    <td>32.00</td>
+                    <td class="fw-bold text-accent">35.00</td>
+                    <td>
+                                                    <span class="badge badge-success">750.0</span>
+                                            </td>
+                    <td class="text-muted fs-sm">—</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="?page=products&action=edit&id=9" class="btn btn-sm btn-outline">✏️</a>
+                            <button class="btn btn-sm btn-ghost text-danger" onclick="deleteItem('?page=products&action=delete&id=9', 'حذف لبان؟')">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+                                <tr>
+                    <td class="text-muted">7</td>
+                    <td class="fw-bold">مكرونة الملكة 400 جرام</td>
+                    <td class="text-muted fs-sm">—</td>
+                    <td class="text-muted fs-sm">123</td>
+                    <td>
+                                                <span class="badge badge-info">وحدة</span>
+                    </td>
+                    <td>13.25</td>
+                    <td class="fw-bold text-accent">15.00</td>
+                    <td>
+                                                    <span class="badge badge-success">122.0</span>
+                                            </td>
+                    <td class="text-muted fs-sm">—</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="?page=products&action=edit&id=7" class="btn btn-sm btn-outline">✏️</a>
+                            <button class="btn btn-sm btn-ghost text-danger" onclick="deleteItem('?page=products&action=delete&id=7', 'حذف مكرونة الملكة 400 جرام؟')">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+                                <tr>
+                    <td class="text-muted">8</td>
+                    <td class="fw-bold">ملبس</td>
+                    <td class="text-muted fs-sm">6223004354342</td>
+                    <td class="text-muted fs-sm">—</td>
+                    <td>
+                                                <span class="badge badge-info">وحدة</span>
+                    </td>
+                    <td>8.57</td>
+                    <td class="fw-bold text-accent">10.00</td>
+                    <td>
+                                                    <span class="badge badge-danger">-577.0</span>
+                                            </td>
+                    <td class="text-muted fs-sm">—</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="?page=products&action=edit&id=8" class="btn btn-sm btn-outline">✏️</a>
+                            <button class="btn btn-sm btn-ghost text-danger" onclick="deleteItem('?page=products&action=delete&id=8', 'حذف ملبس؟')">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+                                <tr>
+                    <td class="text-muted">1</td>
+                    <td class="fw-bold">منتج تجريبي - بيض</td>
+                    <td class="text-muted fs-sm">—</td>
+                    <td class="text-muted fs-sm">001</td>
+                    <td>
+                                                <span class="badge badge-info">وحدة</span>
+                    </td>
+                    <td>50.00</td>
+                    <td class="fw-bold text-accent">60.00</td>
+                    <td>
+                                                    <span class="badge badge-success">99.0</span>
+                                            </td>
+                    <td class="text-muted fs-sm">بيض</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="?page=products&action=edit&id=1" class="btn btn-sm btn-outline">✏️</a>
+                            <button class="btn btn-sm btn-ghost text-danger" onclick="deleteItem('?page=products&action=delete&id=1', 'حذف منتج تجريبي - بيض؟')">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+                            </tbody>
+        </table>
+    </div>
+    </div>
+    </main>
+</div>
+<!-- App JS -->
+<script src="public/js/app_core.js?v=1771371241"></script>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+2026-02-16 14:53:44
+ID: 20
+Items: Array
+(
+    [0] => Array
+        (
+            [id] => 34
+            [sale_id] => 20
+            [product_id] => 5
+            [product_name] => سكر
+            [quantity] => 18
+            [price] => 330.0
+            [sale_mode] => pack
+            [subtotal] => 5940
+            [unit_type] => شوال
+        )
+
+)
+

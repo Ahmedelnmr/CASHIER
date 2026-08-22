@@ -1,0 +1,633 @@
+/* ==========================================
+   SIMPLE & CLEAN POS STYLES
+   ========================================== */
+
+/* Fullscreen Layout */
+.pos-fullscreen {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: #f5f5f5;
+    overflow: hidden;
+}
+
+/* Top Bar */
+.pos-topbar {
+    background: white;
+    border-bottom: 1px solid #ddd;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.pos-topbar h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Input Section */
+.pos-input-section {
+    background: white;
+    padding: 15px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.pos-input-wrapper {
+    display: flex;
+    gap: 12px;
+    max-width: 1200px;
+    margin: 0 auto 12px;
+}
+
+.pos-input-group {
+    position: relative;
+    flex: 1;
+}
+
+.pos-input-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    z-index: 1;
+}
+
+.pos-barcode-input {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    font-size: 14px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background: white;
+}
+
+.pos-barcode-input:focus {
+    outline: none;
+    border-color: #6c63ff;
+}
+
+/* Shortcuts Hint */
+.pos-shortcuts-hint {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.pos-shortcuts-hint span {
+    padding: 5px 10px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    font-size: 11px;
+    color: #666;
+}
+
+/* Main Cart */
+.pos-main-cart {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.pos-cart-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Cart Table */
+.pos-cart-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.pos-cart-table thead {
+    background: #6c63ff;
+}
+
+.pos-cart-table thead th {
+    padding: 12px;
+    text-align: right;
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+}
+
+.pos-cart-table tbody tr {
+    border-bottom: 1px solid #eee;
+}
+
+.pos-cart-table tbody tr:hover {
+    background: #f9f9f9;
+}
+
+.pos-cart-table tbody tr.selected {
+    background: #f0f0ff;
+    border-right: 3px solid #6c63ff;
+}
+
+.pos-cart-table tbody td {
+    padding: 12px;
+    font-size: 14px;
+    color: #333;
+}
+
+.pos-cart-table .text-muted {
+    color: #999;
+}
+
+.pos-cart-table .fw-bold {
+    font-weight: 600;
+}
+
+/* Product Name */
+.product-name-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.product-name-cell .name {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Unit Select */
+.unit-type-select {
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+    width: 100%;
+    background: white;
+}
+
+.unit-type-select:focus {
+    outline: none;
+    border-color: #6c63ff;
+}
+
+/* Quantity Control */
+.qty-control {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.qty-btn {
+    width: 28px;
+    height: 28px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #6c63ff;
+}
+
+.qty-btn:hover {
+    background: #6c63ff;
+    color: white;
+}
+
+.qty-value {
+    width: 60px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 13px;
+}
+
+/* Remove Button */
+.remove-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: #ff4444;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    background: #cc0000;
+}
+
+/* Bottom Bar */
+.pos-bottombar {
+    background: white;
+    border-top: 1px solid #ddd;
+    padding: 15px 20px;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.pos-bottombar-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pos-totals {
+    display: flex;
+    gap: 30px;
+}
+
+.total-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.total-row-label {
+    font-size: 11px;
+    color: #999;
+    margin-bottom: 4px;
+}
+
+.total-row-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+}
+
+.total-final .total-row-value {
+    font-size: 24px;
+    color: #6c63ff;
+}
+
+/* Checkout Button */
+#checkoutBtn {
+    padding: 14px 40px;
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#checkoutBtn:hover:not(:disabled) {
+    background: #059669;
+}
+
+#checkoutBtn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* Empty State */
+.empty-cart-state {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.empty-cart-state .icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.3;
+}
+
+.empty-cart-state p {
+    color: #999;
+    font-size: 14px;
+}
+
+/* Badge */
+.badge {
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.badge-info {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+/* Search Results */
+.pos-search-results {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.pos-search-results.active {
+    display: block;
+}
+
+.pos-search-item {
+    padding: 10px 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+}
+
+.pos-search-item:hover {
+    background: #f5f5f5;
+}
+
+.pos-search-item .name {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.pos-search-item .meta {
+    font-size: 11px;
+    color: #999;
+}
+
+.pos-search-item .price {
+    font-weight: 700;
+    color: #6c63ff;
+}
+
+/* Buttons */
+.btn {
+    padding: 8px 14px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.btn-ghost {
+    background: transparent;
+    color: #666;
+}
+
+.btn-ghost:hover {
+    background: #f0f0f0;
+}
+
+.btn-outline {
+    background: white;
+    border-color: #ddd;
+    color: #333;
+}
+
+.btn-outline:hover {
+    border-color: #6c63ff;
+    color: #6c63ff;
+}
+
+.btn-danger {
+    background: #ff4444;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #cc0000;
+}
+
+/* ==========================================
+   MODALS & OVERLAYS
+   ========================================== */
+
+.toast-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    min-width: 400px;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow: auto;
+}
+
+.modal-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+}
+
+.modal-close:hover {
+    color: #333;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    padding: 16px 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    font-size: 13px;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #6c63ff;
+}
+
+.btn-primary {
+    background: #6c63ff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: #5a52e0;
+}
+
+.mt-1 {
+    margin-top: 8px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* ==========================================
+   PRINT STYLES — Thermal Receipt (80mm)
+   ========================================== */
+@media print {
+
+    /* إخفاء كل شيء ما عدا الإيصال */
+    body * {
+        visibility: hidden !important;
+    }
+
+    /* إظهار محتوى الإيصال فقط */
+    #receiptContent,
+    #receiptContent *,
+    #printableReceipt,
+    #printableReceipt * {
+        visibility: visible !important;
+    }
+
+    /* موضع الإيصال */
+    #receiptContent,
+    #printableReceipt {
+        position: absolute !important;
+        top: 0 !important;
+        right: 0 !important;
+        left: 0 !important;
+        width: 80mm !important;
+        margin: 0 !important;
+        padding: 2mm !important;
+        background: white !important;
+    }
+
+    /* إعدادات الصفحة */
+    @page {
+        size: 80mm auto;
+        margin: 0mm;
+    }
+
+    html,
+    body {
+        width: 80mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* إخفاء عناصر الصفحة */
+    .pos-fullscreen,
+    .pos-topbar,
+    .pos-input-section,
+    .pos-main-cart,
+    .pos-bottombar,
+    .toast-container,
+    .modal-overlay,
+    .modal-header,
+    .modal-footer,
+    .modal-close,
+    .page-header,
+    .btn-group,
+    nav,
+    header,
+    footer,
+    aside {
+        display: none !important;
+    }
+
+    /* خط الإيصال */
+    #receiptContent,
+    #printableReceipt {
+        font-family: 'Courier New', monospace !important;
+        font-size: 12px !important;
+        line-height: 1.4 !important;
+        color: #000 !important;
+    }
+
+    #receiptContent table,
+    #printableReceipt table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        font-size: 11px !important;
+    }
+
+    #receiptContent th,
+    #receiptContent td,
+    #printableReceipt th,
+    #printableReceipt td {
+        padding: 2px 4px !important;
+        border: none !important;
+    }
+
+    /* إزالة الألوان */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+}

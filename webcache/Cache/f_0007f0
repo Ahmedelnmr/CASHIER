@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام نقاط البيع والمخزون</title>
+    <link rel="stylesheet" href="public/css/main.css?v=1771367893">
+
+</head>
+<body>
+<div class="toast-container" id="toastContainer"></div>
+<div class="app-wrapper">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <h2>💰 POS System</h2>
+            <span>نظام نقاط البيع والمخزون</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="?page=dashboard" class="nav-item ">
+                <span class="icon">📊</span> لوحة التحكم
+            </a>
+            <a href="?page=pos" class="nav-item ">
+                <span class="icon">🛒</span> نقطة البيع
+            </a>
+            <a href="?page=products" class="nav-item ">
+                <span class="icon">📦</span> المنتجات
+            </a>
+            <a href="?page=suppliers" class="nav-item ">
+                <span class="icon">🏭</span> الموردين
+            </a>
+            <a href="?page=purchases" class="nav-item ">
+                <span class="icon">🧾</span> المشتريات
+            </a>
+            <a href="?page=inventory" class="nav-item ">
+                <span class="icon">📋</span> المخزون
+            </a>
+            <a href="?page=sales" class="nav-item active">
+                <span class="icon">💵</span> المبيعات
+            </a>
+            <a href="?page=reports" class="nav-item ">
+            <a href="?page=reports" class="nav-item ">
+                <span class="icon">📈</span> التقارير
+            </a>
+            <a href="?page=employees" class="nav-item ">
+                <span class="icon">👥</span> الموظفين
+            </a>
+            <a href="?page=safe" class="nav-item ">
+                <span class="icon">💰</span> الخزنة
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            نظام نقاط البيع v1.0 &copy; 2026        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+<style>
+/* Hide Browser Default Spinners */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+</style>
+<div class="page-header">
+    <div>
+        <h1>📝 تعديل فاتورة #8</h1>
+        <p class="subtitle">2026-02-18 00:09:22</p>
+    </div>
+    <div>
+        <a href="?page=sales" class="btn btn-outline">إلغاء وعودة</a>
+    </div>
+</div>
+
+<div class="card" style="padding:20px;">
+
+    
+    <!-- Product Search -->
+    <div class="form-group mb-3">
+        <label>إضافة منتج</label>
+        <div style="display:flex; gap:10px;">
+            <input type="text" id="productSearch" list="productList" class="form-control" placeholder="ابحث عن منتج..." style="flex:1;">
+            <button type="button" class="btn btn-primary" onclick="addProductRow()">➕ إضافة</button>
+        </div>
+        <datalist id="productList">
+                        <option value="Test Product" 
+                    data-id="12" 
+                    data-price-unit="100.0"
+                    data-price-pack=""
+                    data-pack-qty=""
+                    data-type="unit">
+            </option>
+                        <option value="Test Product" 
+                    data-id="13" 
+                    data-price-unit="100.0"
+                    data-price-pack=""
+                    data-pack-qty=""
+                    data-type="unit">
+            </option>
+                        <option value="Test Product" 
+                    data-id="14" 
+                    data-price-unit="100.0"
+                    data-price-pack=""
+                    data-pack-qty=""
+                    data-type="unit">
+            </option>
+                        <option value="Test Product" 
+                    data-id="15" 
+                    data-price-unit="100.0"
+                    data-price-pack=""
+                    data-pack-qty=""
+                    data-type="unit">
+            </option>
+                        <option value="Test Product" 
+                    data-id="16" 
+                    data-price-unit="100.0"
+                    data-price-pack=""
+                    data-pack-qty=""
+                    data-type="unit">
+            </option>
+                        <option value="اوكسي غسيل 25" 
+                    data-id="4" 
+                    data-price-unit="14.0"
+                    data-price-pack="160.0"
+                    data-pack-qty="12"
+                    data-type="weight">
+            </option>
+                        <option value="بامبرز" 
+                    data-id="6" 
+                    data-price-unit="6.0"
+                    data-price-pack="350.0"
+                    data-pack-qty="60"
+                    data-type="unit">
+            </option>
+                        <option value="سكر" 
+                    data-id="5" 
+                    data-price-unit="34.0"
+                    data-price-pack="330.0"
+                    data-pack-qty="10"
+                    data-type="unit">
+            </option>
+                        <option value="شاي العروسة ربع كيلو" 
+                    data-id="10" 
+                    data-price-unit="27.0"
+                    data-price-pack="1250.0"
+                    data-pack-qty="50"
+                    data-type="unit">
+            </option>
+                        <option value="شطة" 
+                    data-id="11" 
+                    data-price-unit="25.0"
+                    data-price-pack="1300.0"
+                    data-pack-qty="50"
+                    data-type="unit">
+            </option>
+                        <option value="فلفل أسود" 
+                    data-id="3" 
+                    data-price-unit="150.0"
+                    data-price-pack=""
+                    data-pack-qty=""
+                    data-type="weight">
+            </option>
+                        <option value="كمون مطحون" 
+                    data-id="2" 
+                    data-price-unit="120.0"
+                    data-price-pack=""
+                    data-pack-qty=""
+                    data-type="weight">
+            </option>
+                        <option value="لبان" 
+                    data-id="9" 
+                    data-price-unit="35.0"
+                    data-price-pack="1800.0"
+                    data-pack-qty="50"
+                    data-type="unit">
+            </option>
+                        <option value="مكرونة الملكة 400 جرام" 
+                    data-id="7" 
+                    data-price-unit="15.0"
+                    data-price-pack="280.0"
+                    data-pack-qty="20"
+                    data-type="unit">
+            </option>
+                        <option value="ملبس" 
+                    data-id="8" 
+                    data-price-unit="10.0"
+                    data-price-pack="620.0"
+                    data-pack-qty="70"
+                    data-type="unit">
+            </option>
+                        <option value="منتج تجريبي - بيض" 
+                    data-id="1" 
+                    data-price-unit="60.0"
+                    data-price-pack=""
+                    data-pack-qty=""
+                    data-type="unit">
+            </option>
+                    </datalist>
+    </div>
+
+    <!-- Explicit form action to route correctly -->
+    <form action="index.php?page=sales&action=update" method="POST" id="editForm" onsubmit="return false;">
+        <input type="hidden" name="sale_id" value="53">
+        <input type="hidden" name="items_json" id="itemsJson">
+
+        <div class="table-wrapper">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>المنتج</th>
+                        <th width="120">النوع</th>
+                        <th width="120">الكمية</th>
+                        <th width="120">السعر</th>
+                        <th width="120">الإجمالي</th>
+                        <th width="50"></th>
+                    </tr>
+                </thead>
+                <tbody id="itemsTableBody">
+                    <!-- Items will be injected here via JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:20px; margin-top:20px; text-align:right;">
+            <div>
+                <label>المجموع الفرعي:</label>
+                <div class="fs-xl fw-bold" id="subtotalDisplay">0.00</div>
+            </div>
+            <div>
+                <label>الخصم:</label>
+                <input type="number" name="discount" id="discountInput" class="form-control" style="width:100px;" value="0.0" onchange="updateTotals()">
+            </div>
+            <div>
+                <label>الإجمالي النهائي:</label>
+                <div class="fs-xl fw-bold text-accent" id="totalDisplay">0.00</div>
+                <input type="hidden" name="total" id="totalInput">
+            </div>
+        </div>
+
+        <div class="form-group mt-3">
+            <label>سبب التعديل</label>
+            <input type="text" name="reason" class="form-control" placeholder="مثال: خطأ في الكمية، استبدال منتج..." required>
+        </div>
+
+        <div class="mt-4 text-center">
+            <!-- Use type=button and onclick to prevent default submission issues -->
+            <button type="button" class="btn btn-lg btn-success" onclick="prepareSubmit()">💾 حفظ التعديلات</button>
+        </div>
+    </form>
+</div>
+
+<script>
+// Initial Items from PHP
+var items = [{"id":"70","sale_id":"53","product_id":"16","product_name":"Test Product","quantity":"-5.0","price":"100.0","sale_mode":"unit","subtotal":"-500.0","unit_type":"\u0642\u0637\u0639\u0629"}];
+var productsMap = {};
+
+// Build Products Map for easier access
+productsMap["Test Product"] = {
+    id: "12",
+    price_unit: 100.0,
+    price_pack: 0,
+    pack_qty: 1,
+    type: "unit"
+};
+productsMap["Test Product"] = {
+    id: "13",
+    price_unit: 100.0,
+    price_pack: 0,
+    pack_qty: 1,
+    type: "unit"
+};
+productsMap["Test Product"] = {
+    id: "14",
+    price_unit: 100.0,
+    price_pack: 0,
+    pack_qty: 1,
+    type: "unit"
+};
+productsMap["Test Product"] = {
+    id: "15",
+    price_unit: 100.0,
+    price_pack: 0,
+    pack_qty: 1,
+    type: "unit"
+};
+productsMap["Test Product"] = {
+    id: "16",
+    price_unit: 100.0,
+    price_pack: 0,
+    pack_qty: 1,
+    type: "unit"
+};
+productsMap["اوكسي غسيل 25"] = {
+    id: "4",
+    price_unit: 14.0,
+    price_pack: 160.0,
+    pack_qty: 12,
+    type: "weight"
+};
+productsMap["بامبرز"] = {
+    id: "6",
+    price_unit: 6.0,
+    price_pack: 350.0,
+    pack_qty: 60,
+    type: "unit"
+};
+productsMap["سكر"] = {
+    id: "5",
+    price_unit: 34.0,
+    price_pack: 330.0,
+    pack_qty: 10,
+    type: "unit"
+};
+productsMap["شاي العروسة ربع كيلو"] = {
+    id: "10",
+    price_unit: 27.0,
+    price_pack: 1250.0,
+    pack_qty: 50,
+    type: "unit"
+};
+productsMap["شطة"] = {
+    id: "11",
+    price_unit: 25.0,
+    price_pack: 1300.0,
+    pack_qty: 50,
+    type: "unit"
+};
+productsMap["فلفل أسود"] = {
+    id: "3",
+    price_unit: 150.0,
+    price_pack: 0,
+    pack_qty: 1,
+    type: "weight"
+};
+productsMap["كمون مطحون"] = {
+    id: "2",
+    price_unit: 120.0,
+    price_pack: 0,
+    pack_qty: 1,
+    type: "weight"
+};
+productsMap["لبان"] = {
+    id: "9",
+    price_unit: 35.0,
+    price_pack: 1800.0,
+    pack_qty: 50,
+    type: "unit"
+};
+productsMap["مكرونة الملكة 400 جرام"] = {
+    id: "7",
+    price_unit: 15.0,
+    price_pack: 280.0,
+    pack_qty: 20,
+    type: "unit"
+};
+productsMap["ملبس"] = {
+    id: "8",
+    price_unit: 10.0,
+    price_pack: 620.0,
+    pack_qty: 70,
+    type: "unit"
+};
+productsMap["منتج تجريبي - بيض"] = {
+    id: "1",
+    price_unit: 60.0,
+    price_pack: 0,
+    pack_qty: 1,
+    type: "unit"
+};
+
+function renderItems() {
+    var tbody = document.getElementById('itemsTableBody');
+    tbody.innerHTML = '';
+    var subtotal = 0;
+
+    items.forEach(function(item, index) {
+        var rowTotal = item.quantity * item.price; // Use stored price
+        item.subtotal = rowTotal; // IMPORTANT: Update subtotal in object
+        subtotal += rowTotal;
+
+        var tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${item.product_name}</td>
+            <td>
+                <select class="form-control form-control-sm" onchange="updateItemUnit(${index}, this.value)">
+                    <option value="قطعة" ${item.unit_type === 'قطعة' ? 'selected' : ''}>قطعة</option>
+                    <option value="pack" ${item.unit_type !== 'قطعة' ? 'selected' : ''}>عبوة/طرد</option>
+                </select>
+            </td>
+            <td>
+                <input type="number" class="form-control form-control-sm no-spinner" value="${item.quantity}" min="0.1" step="0.1" onchange="updateItemQty(${index}, this.value)">
+            </td>
+            <td>
+                <input type="number" class="form-control form-control-sm no-spinner" value="${item.price}" min="0" step="0.01" onchange="updateItemPrice(${index}, this.value)">
+            </td>
+            <td class="fw-bold">${rowTotal.toFixed(2)}</td>
+            <td>
+                <button type="button" class="btn btn-sm btn-danger" onclick="removeItem(${index})">×</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+
+    document.getElementById('subtotalDisplay').textContent = subtotal.toFixed(2);
+    updateTotals();
+}
+
+function updateTotals() {
+    var subtotal = 0;
+    items.forEach(function(i) { subtotal += (i.quantity * i.price); });
+    
+    var discount = parseFloat(document.getElementById('discountInput').value) || 0;
+    var total = subtotal - discount;
+
+    document.getElementById('totalDisplay').textContent = total.toFixed(2);
+    document.getElementById('totalInput').value = total;
+}
+
+function updateItemQty(index, val) {
+    items[index].quantity = parseFloat(val) || 0;
+    // Recalculate subtotal immediately
+    items[index].subtotal = items[index].quantity * items[index].price;
+    renderItems();
+}
+
+function updateItemPrice(index, val) {
+    items[index].price = parseFloat(val) || 0;
+    // Recalculate subtotal immediately
+    items[index].subtotal = items[index].quantity * items[index].price;
+    renderItems();
+}
+
+function updateItemUnit(index, unit) {
+    items[index].unit_type = unit;
+    // Auto-update price based on unit if product exists in map
+    var p = productsMap[items[index].product_name];
+    if (p) {
+        if (unit === 'قطعة') {
+            items[index].price = p.price_unit;
+            items[index].sale_mode = 'unit';
+        } else {
+            items[index].price = p.price_pack;
+            items[index].sale_mode = 'pack';
+        }
+    }
+    // Recalculate subtotal immediately
+    items[index].subtotal = items[index].quantity * items[index].price;
+    renderItems();
+}
+
+function removeItem(index) {
+    if(confirm('حذف الصنف؟')) {
+        items.splice(index, 1);
+        renderItems();
+    }
+}
+
+function addProductRow() {
+    var input = document.getElementById('productSearch');
+    var val = input.value;
+    var p = productsMap[val];
+
+    if (p) {
+        items.push({
+            product_id: p.id,
+            product_name: val,
+            quantity: 1,
+            unit_type: 'قطعة',
+            price: p.price_unit,
+            sale_mode: 'unit',
+            subtotal: p.price_unit
+        });
+        input.value = '';
+        renderItems();
+    } else {
+        alert('المنتج غير موجود');
+    }
+}
+
+function prepareSubmit() {
+    if (items.length === 0) {
+        alert('لا يمكن حفظ فاتورة فارغة');
+        return;
+    }
+    document.getElementById('itemsJson').value = JSON.stringify(items);
+    document.getElementById('editForm').submit();
+}
+
+// Initial Render
+renderItems();
+</script>
+    </main>
+</div>
+<!-- App JS -->
+<script src="public/js/app_core.js?v=1771367893"></script>
+
+</body>
+</html>

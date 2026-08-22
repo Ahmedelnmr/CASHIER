@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام نقاط البيع والمخزون</title>
+    <link rel="stylesheet" href="public/css/main.css?v=1771296803">
+
+</head>
+<body>
+<div class="toast-container" id="toastContainer"></div>
+<div class="app-wrapper">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <h2>💰 POS System</h2>
+            <span>نظام نقاط البيع والمخزون</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="?page=dashboard" class="nav-item ">
+                <span class="icon">📊</span> لوحة التحكم
+            </a>
+            <a href="?page=pos" class="nav-item ">
+                <span class="icon">🛒</span> نقطة البيع
+            </a>
+            <a href="?page=products" class="nav-item ">
+                <span class="icon">📦</span> المنتجات
+            </a>
+            <a href="?page=suppliers" class="nav-item ">
+                <span class="icon">🏭</span> الموردين
+            </a>
+            <a href="?page=purchases" class="nav-item ">
+                <span class="icon">🧾</span> المشتريات
+            </a>
+            <a href="?page=inventory" class="nav-item ">
+                <span class="icon">📋</span> المخزون
+            </a>
+            <a href="?page=sales" class="nav-item ">
+                <span class="icon">💵</span> المبيعات
+            </a>
+            <a href="?page=reports" class="nav-item ">
+            <a href="?page=reports" class="nav-item ">
+                <span class="icon">📈</span> التقارير
+            </a>
+            <a href="?page=employees" class="nav-item ">
+                <span class="icon">👥</span> الموظفين
+            </a>
+            <a href="?page=safe" class="nav-item active">
+                <span class="icon">💰</span> الخزنة
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            نظام نقاط البيع v1.0 &copy; 2026        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+<div class="page-header">
+    <h1>💰 الخزنة (المالية)</h1>
+    <div style="display:flex; gap:10px;">
+        <button class="btn btn-outline" onclick="openReport()">📅 تقرير حركة</button>
+        <button class="btn btn-primary" onclick="openTransactionModal()">+ إضافة عملية</button>
+    </div>
+</div>
+
+<!-- Balance Card -->
+<div class="row">
+    <div class="col-md-4">
+        <div class="card bg-dark text-white text-center p-4">
+            <h3>الرصيد الحالي</h3>
+            <h1 class="display-4 text-success">28,174.04</h1>
+            <small>جنية مصري</small>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<!-- Transactions Table -->
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3>حركة الخزينة لشهر February 2026</h3>
+        <div>
+            <form method="GET" class="d-flex gap-2">
+                <input type="hidden" name="page" value="safe">
+                <input type="month" name="month" class="form-control" value="2026-02" onchange="this.form.submit()">
+                <select name="type" class="form-control" onchange="this.form.submit()">
+                    <option value="">الكل</option>
+                    <option value="expense" >مصروفات</option>
+                    <option value="withdrawal" >سحب شخصي</option>
+                    <option value="advance" >سلف موظفين</option>
+                    <option value="deposit" >إيداع</option>
+                    <option value="sale" >مبيعات</option>
+                    <option value="purchase" >مشتريات</option>
+                </select>
+            </form>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>التاريخ</th>
+                <th>النوع</th>
+                <th>المبلغ</th>
+                <th>الوصف / الملاحظات</th>
+                <th>الموظف</th>
+                <th>إجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+                        <tr>
+                <td>32</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    8,680.00                </td>
+                <td>مبيعات - فاتورة #44</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(32)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>31</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    1,330.00                </td>
+                <td>مبيعات - فاتورة #43</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(31)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>30</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    60.00                </td>
+                <td>مبيعات - فاتورة #42</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(30)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>29</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    165.00                </td>
+                <td>مبيعات - فاتورة #41</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(29)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>28</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    45.00                </td>
+                <td>مبيعات - فاتورة #40</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(28)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>27</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    45.00                </td>
+                <td>مبيعات - فاتورة #39</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(27)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>26</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    30.00                </td>
+                <td>مبيعات - فاتورة #38</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(26)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>25</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    30.00                </td>
+                <td>مبيعات - فاتورة #37</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(25)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>24</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    15.00                </td>
+                <td>مبيعات - فاتورة #36</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(24)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>23</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    30.00                </td>
+                <td>مبيعات - فاتورة #35</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(23)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>22</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    60.00                </td>
+                <td>مبيعات - فاتورة #34</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(22)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>21</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    1,580.04                </td>
+                <td>مبيعات - فاتورة #33</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(21)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>20</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    34.00                </td>
+                <td>مبيعات - فاتورة #32</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(20)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>19</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-warning">مصروف</span>                </td>
+                <td style="font-weight:bold; color:red">
+                    2,000.00                </td>
+                <td></td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(19)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>18</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    14.00                </td>
+                <td>مبيعات - فاتورة #31</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(18)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>17</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    14.00                </td>
+                <td>مبيعات - فاتورة #30</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(17)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>16</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    34.00                </td>
+                <td>مبيعات - فاتورة #29</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(16)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>15</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    280.00                </td>
+                <td>مبيعات - فاتورة #28</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(15)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>14</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success">راتب</span>                </td>
+                <td style="font-weight:bold; color:red">
+                    3,200.00                </td>
+                <td></td>
+                <td>مازن</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(14)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>13</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-info">سلفة</span>                </td>
+                <td style="font-weight:bold; color:red">
+                    1,200.00                </td>
+                <td></td>
+                <td>مازن</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(13)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>12</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    34.00                </td>
+                <td>مبيعات - فاتورة #27</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(12)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>11</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    56.00                </td>
+                <td>مبيعات - فاتورة #26</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(11)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>10</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success">راتب</span>                </td>
+                <td style="font-weight:bold; color:red">
+                    -2,000.00                </td>
+                <td>راتب شهر 2/2026</td>
+                <td>عادل</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(10)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>9</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-info">سلفة</span>                </td>
+                <td style="font-weight:bold; color:red">
+                    2,000.00                </td>
+                <td></td>
+                <td>عادل</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(9)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>8</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success">راتب</span>                </td>
+                <td style="font-weight:bold; color:red">
+                    0.00                </td>
+                <td>راتب شهر 2/2026</td>
+                <td>عادل</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(8)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>6</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-info">سلفة</span>                </td>
+                <td style="font-weight:bold; color:red">
+                    3,500.00                </td>
+                <td></td>
+                <td>عادل</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(6)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>5</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success">راتب</span>                </td>
+                <td style="font-weight:bold; color:red">
+                    3,500.00                </td>
+                <td>راتب شهر 2/2026</td>
+                <td>عادل</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(5)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>3</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-warning" style="background:#d35400">مشتريات</span>                </td>
+                <td style="font-weight:bold; color:red">
+                    1,060.00                </td>
+                <td>مشتريات - فاتورة #</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(3)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>2</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-success" style="background:#27ae60">مبيعات</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    98.00                </td>
+                <td>مبيعات - فاتورة #25</td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(2)">🗑️</button>
+                </td>
+            </tr>
+                        <tr>
+                <td>1</td>
+                <td>17/02/2026</td>
+                <td>
+                    <span class="badge badge-primary">إيداع</span>                </td>
+                <td style="font-weight:bold; color:green">
+                    30,000.00                </td>
+                <td></td>
+                <td>-</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTransaction(1)">🗑️</button>
+                </td>
+            </tr>
+                    </tbody>
+    </table>
+</div>
+
+<!-- Transaction Modal -->
+<div class="modal-overlay" id="transactionModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>إضافة عملية مالية</h3>
+            <button class="modal-close" onclick="closeModal('transactionModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="transactionForm">
+                <div class="form-group">
+                    <label>نوع العملية *</label>
+                    <select class="form-control" id="transType" onchange="toggleEmployeeSelect()" required>
+                        <option value="expense">🛒 مصروفات تشغيل (كهرباء، صيانة...)</option>
+                        <option value="withdrawal">👤 سحب شخصي (للمالك)</option>
+                        <option value="advance">💸 سلفة موظف</option>
+                        <option value="salary">💰 سداد راتب شهري</option>
+                        <option value="deposit">💰 إيداع في الخزنة</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="employeeSelectGroup" style="display:none;">
+                    <label>الموظف *</label>
+                    <select class="form-control" id="transEmployee">
+                        <option value="">اختر الموظف</option>
+                                                <option value="3">مازن</option>
+                                            </select>
+                </div>
+
+                <div class="form-group">
+                    <label>المبلغ *</label>
+                    <input type="number" class="form-control" id="transAmount" step="0.01" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>التاريخ</label>
+                    <input type="date" class="form-control" id="transDate" value="2026-02-17">
+                </div>
+
+                <div class="form-group">
+                    <label>الوصف / ملاحظات</label>
+                    <textarea class="form-control" id="transDesc" rows="2"></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeModal('transactionModal')">إلغاء</button>
+            <button class="btn btn-primary" onclick="saveTransaction()">حفظ العملية</button>
+        </div>
+    </div>
+</div>
+
+<script>
+function openTransactionModal() {
+    document.getElementById('transactionForm').reset();
+    toggleEmployeeSelect();
+    openModal('transactionModal');
+}
+
+function toggleEmployeeSelect() {
+    const type = document.getElementById('transType').value;
+    const empGroup = document.getElementById('employeeSelectGroup');
+    if (type === 'advance' || type === 'salary') {
+        empGroup.style.display = 'block';
+    } else {
+        empGroup.style.display = 'none';
+        document.getElementById('transEmployee').value = '';
+    }
+}
+
+function saveTransaction() {
+    const type = document.getElementById('transType').value;
+    const amount = document.getElementById('transAmount').value;
+    const date = document.getElementById('transDate').value;
+    const desc = document.getElementById('transDesc').value;
+    const empId = document.getElementById('transEmployee').value;
+    
+    if (!amount || amount <= 0) {
+        showToast('أدخل مبلغ صحيح', 'error');
+        return;
+    }
+    
+    if ((type === 'advance' || type === 'salary') && !empId) {
+        showToast('يجب اختيار الموظف', 'error');
+        return;
+    }
+    
+    apiRequest('?page=safe&action=store', {
+        method: 'POST',
+        body: { type: type, amount: amount, date: date, description: desc, employee_id: empId }
+    }).then(res => {
+        if(res.success) {
+            showToast(res.message);
+            closeModal('transactionModal');
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            showToast(res.message, 'error');
+        }
+    });
+}
+
+function deleteTransaction(id) {
+    if(confirm('هل أنت متأكد من حذف هذه العملية؟ سيتم تعديل الرصيد.')) {
+        apiRequest('?page=safe&action=delete&id=' + id)
+            .then(res => {
+                if(res.success) showToast(res.message); 
+                else showToast(res.message, 'error');
+                setTimeout(() => location.reload(), 1000);
+            });
+    }
+}
+</script>
+
+    </main>
+</div>
+<!-- App JS -->
+<script src="public/js/app_core.js?v=1771296803"></script>
+
+</body>
+</html>

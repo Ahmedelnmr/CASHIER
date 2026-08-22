@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام نقاط البيع والمخزون</title>
+    <link rel="stylesheet" href="public/css/main.css?v=1771364188">
+
+</head>
+<body>
+<div class="toast-container" id="toastContainer"></div>
+<div class="app-wrapper">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <h2>💰 POS System</h2>
+            <span>نظام نقاط البيع والمخزون</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="?page=dashboard" class="nav-item ">
+                <span class="icon">📊</span> لوحة التحكم
+            </a>
+            <a href="?page=pos" class="nav-item ">
+                <span class="icon">🛒</span> نقطة البيع
+            </a>
+            <a href="?page=products" class="nav-item active">
+                <span class="icon">📦</span> المنتجات
+            </a>
+            <a href="?page=suppliers" class="nav-item ">
+                <span class="icon">🏭</span> الموردين
+            </a>
+            <a href="?page=purchases" class="nav-item ">
+                <span class="icon">🧾</span> المشتريات
+            </a>
+            <a href="?page=inventory" class="nav-item ">
+                <span class="icon">📋</span> المخزون
+            </a>
+            <a href="?page=sales" class="nav-item ">
+                <span class="icon">💵</span> المبيعات
+            </a>
+            <a href="?page=reports" class="nav-item ">
+            <a href="?page=reports" class="nav-item ">
+                <span class="icon">📈</span> التقارير
+            </a>
+            <a href="?page=employees" class="nav-item ">
+                <span class="icon">👥</span> الموظفين
+            </a>
+            <a href="?page=safe" class="nav-item ">
+                <span class="icon">💰</span> الخزنة
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            نظام نقاط البيع v1.0 &copy; 2026        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+<!-- Product Form (Create/Edit) -->
+<div class="page-header">
+    <div>
+        <h1>✏️ تعديل المنتج</h1>
+    </div>
+    <a href="?page=products" class="btn btn-outline">← العودة للقائمة</a>
+</div>
+
+<div class="card">
+    <form method="POST" action="?page=products&action=save" id="productForm">
+                    <input type="hidden" name="id" value="10">
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label>اسم المنتج *</label>
+                <input type="text" name="name" class="form-control" required maxlength="60" value="شاي العروسة ربع كيلو" placeholder="أدخل اسم المنتج (60 حرف كحد أقصى)">
+            </div>
+            <div class="form-row">
+                <div class="form-group" style="flex:1; margin-left:10px;">
+                    <label>الباركود 1 (الأساسي)</label>
+                    <input type="text" name="barcode" id="barcode" class="form-control" value="6222002300030" placeholder="سبوت الباركود هنا" onblur="checkDuplicate('barcode', this.value)">
+                    <div id="barcode_warning" style="display:none; color:#e74c3c; font-size:12px; margin-top:4px; padding:4px 8px; background:#ffeaea; border-radius:4px;"></div>
+                </div>
+                <div class="form-group" style="flex:1; margin-left:10px;">
+                    <label>الباركود 2</label>
+                    <input type="text" name="barcode2" id="barcode2" class="form-control" value="6222002300030" placeholder="اختياري" onblur="checkDuplicate('barcode2', this.value)">
+                    <div id="barcode2_warning" style="display:none; color:#e74c3c; font-size:12px; margin-top:4px; padding:4px 8px; background:#ffeaea; border-radius:4px;"></div>
+                </div>
+                <div class="form-group" style="flex:1;">
+                    <label>الباركود 3</label>
+                    <input type="text" name="barcode3" id="barcode3" class="form-control" value="" placeholder="اختياري" onblur="checkDuplicate('barcode3', this.value)">
+                    <div id="barcode3_warning" style="display:none; color:#e74c3c; font-size:12px; margin-top:4px; padding:4px 8px; background:#ffeaea; border-radius:4px;"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>كود PLU</label>
+                <input type="text" name="plu_code" id="plu_code" class="form-control" value="" placeholder="كود سريع" onblur="checkDuplicate('plu_code', this.value)">
+                <div id="plu_code_warning" style="display:none; color:#e74c3c; font-size:12px; margin-top:4px; padding:4px 8px; background:#ffeaea; border-radius:4px;"></div>
+            </div>
+        </div>
+
+        <!-- Hidden Type Field (Default to 'unit') -->
+        <input type="hidden" name="type" value="unit">
+        <!-- Removed Category Field -->
+
+        <fieldset style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+            <legend style="font-size: 16px; font-weight: bold; padding: 0 10px;">📦 بيانات التسعير والتعبئة</legend>
+            
+            <!-- Weight Mode Toggle -->
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label class="custom-control custom-checkbox">
+                    <input type="checkbox" id="is_weight" class="custom-control-input" onchange="toggleWeightMode()">
+                    <span class="custom-control-label" style="font-weight:bold; color:#2c3e50;">⚖️ هذا المنتج يباع بالوزن (شوال / كيلو)</span>
+                </label>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label id="lbl_pack_type">نوع التعبئة</label>
+                    <select name="pack_type" id="pack_type" class="form-control">
+                        <option value="">-- بدون تعبئة --</option>
+                                                <option value="كرتونة" selected>كرتونة</option>
+                                                <option value="لفة" >لفة</option>
+                                                <option value="عبوة" >عبوة</option>
+                                                <option value="حزمة" >حزمة</option>
+                                                <option value="صندوق" >صندوق</option>
+                                                <option value="علبة" >علبة</option>
+                                                <option value="دستة" >دستة</option>
+                                                <option value="باكيت" >باكيت</option>
+                                                <option value="شنطة" >شنطة</option>
+                                                <option value="كيس" >كيس</option>
+                                                <option value="شوال" >شوال</option>
+                                                <option value="جت" >جت</option>
+                                            </select>
+                </div>
+                <div class="form-group">
+                    <label id="lbl_pack_qty">عدد القطع في الوحدة</label>
+                    <input type="number" name="pack_unit_quantity" id="pack_unit_quantity" class="form-control" min="0.001" step="0.001" value="50" placeholder="مثال: 50">
+                    <small class="text-muted" id="help_pack_qty">كم قطعة في كل وحدة</small>
+                </div>
+            </div>
+
+            <hr style="margin: 15px 0; border-top: 1px dashed #eee;">
+
+            <!-- Purchase Prices Row -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label id="lbl_pack_buy">سعر شراء الوحدة الكاملة (الجملة)</label>
+                    <input type="number" name="pack_purchase_price" id="pack_purchase_price" class="form-control" step="0.01" min="0" value="1200.0" placeholder="مثال: 1200">
+                    <small class="text-muted">أدخل السعر هنا ليحسب سعر الوحدة الفرعية</small>
+                </div>
+                <div class="form-group">
+                    <label id="lbl_unit_buy">سعر شراء القطعة الواحدة *</label>
+                    <input type="number" name="purchase_price" id="purchase_price" class="form-control" step="0.001" min="0" required value="24.0" readonly style="background-color: #f0f0f0;">
+                    <small class="text-muted">محسوب تلقائياً</small>
+                </div>
+            </div>
+
+            <!-- Sale Prices Row -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label id="lbl_pack_sell">سعر بيع الوحدة الكاملة (الجملة)</label>
+                    <input type="number" name="pack_sale_price" id="pack_sale_price" class="form-control" step="0.01" min="0" value="1250.0" placeholder="مثال: 1500">
+                    <small class="text-muted">سعر بيع الشوال/الكرتونة كاملة</small>
+                </div>
+                <div class="form-group">
+                    <label id="lbl_unit_sell">سعر بيع القطعة الواحدة *</label>
+                    <input type="number" name="sale_price_unit" class="form-control" step="0.001" min="0" required value="27.0">
+                    <small class="text-muted">سعر بيع المستهلك</small>
+                </div>
+            </div>
+        </fieldset>
+
+
+        <div class="form-row">
+                        <div class="form-group">
+                <label>حد المخزون الأدنى</label>
+                <input type="number" name="min_stock" class="form-control" step="0.01" min="0" value="12.0">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>ملاحظات</label>
+            <textarea name="notes" class="form-control" rows="2"></textarea>
+        </div>
+
+        <div class="btn-group mt-2">
+            <button type="submit" class="btn btn-primary btn-lg">💾 تحديث المنتج</button>
+            <a href="?page=products" class="btn btn-outline btn-lg">إلغاء</a>
+        </div>
+    </form>
+</div>
+
+
+<script>
+// Global Scanner Listener
+let scanBuffer = '';
+let lastKeyTime = 0;
+const SCAN_TIMING_THRESHOLD = 100; // ms
+
+document.addEventListener('keydown', function(e) {
+    // Scanner timing check
+    const currentTime = Date.now();
+    if (currentTime - lastKeyTime > SCAN_TIMING_THRESHOLD) {
+        scanBuffer = '';
+    }
+    lastKeyTime = currentTime;
+
+    if (e.ctrlKey || e.altKey || e.metaKey) return;
+
+    if (e.key === 'Enter') {
+        if (scanBuffer.length > 0) {
+            // Scanner detected (fast typing + Enter)
+            e.preventDefault(); // Stop form submission
+            console.log('Scanner detected:', scanBuffer);
+            
+            var targetInput = null;
+            var activeId = document.activeElement ? document.activeElement.id : '';
+
+            // 1. Determine Target Field
+            if (['barcode', 'barcode2', 'barcode3'].indexOf(activeId) !== -1) {
+                // Already focused on a barcode field -> logic handles just the Jump
+                targetInput = document.activeElement;
+            } else {
+                // Not focused -> Find first empty barcode field
+                if (!document.getElementById('barcode').value) targetInput = document.getElementById('barcode');
+                else if (!document.getElementById('barcode2').value) targetInput = document.getElementById('barcode2');
+                else if (!document.getElementById('barcode3').value) targetInput = document.getElementById('barcode3');
+                else targetInput = document.getElementById('barcode'); // Fallback to first
+                
+                // If we weren't focused, fill the value explicitly
+                targetInput.value = scanBuffer;
+            }
+
+            // 2. Trigger Validation & Visual Feedback
+            if (targetInput) {
+                // Determine if we need to manually trigger check (if not focused, no blur event)
+                var wasFocused = (document.activeElement === targetInput);
+                
+                // Flash effect
+                targetInput.style.backgroundColor = '#dcfce7';
+                setTimeout(function() { targetInput.style.backgroundColor = ''; }, 500);
+
+                // 3. Jump to Next Field
+                if (targetInput.id === 'barcode') {
+                    document.getElementById('barcode2').focus();
+                } else if (targetInput.id === 'barcode2') {
+                    document.getElementById('barcode3').focus();
+                } else if (targetInput.id === 'barcode3') {
+                    document.getElementById('plu_code').focus();
+                }
+                
+                // If we weren't focused, blur won't fire on the old element (because it wasn't active), so check manually
+                if (!wasFocused) {
+                    checkDuplicate(targetInput.id, targetInput.value);
+                }
+            }
+
+            scanBuffer = '';
+        } else {
+            // Normal Enter key (not scanner)
+            // If in barcode field, just prevent submit and move next
+            if (['barcode', 'barcode2', 'barcode3'].indexOf(document.activeElement.id) !== -1) {
+                e.preventDefault();
+                var current = document.activeElement;
+                if (current.id === 'barcode') document.getElementById('barcode2').focus();
+                else if (current.id === 'barcode2') document.getElementById('barcode3').focus();
+                else if (current.id === 'barcode3') document.getElementById('plu_code').focus();
+            }
+        }
+    } else if (e.key.length === 1) {
+        scanBuffer += e.key;
+    }
+});
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    // Autofocus Barcode on Load
+    var barcodeField = document.getElementById('barcode');
+    if (barcodeField && !barcodeField.value) {
+        barcodeField.focus();
+    } else {
+        // If barcode filled (Edit mode), focus Name
+        var nameField = document.querySelector('input[name="name"]');
+        if (nameField) nameField.focus();
+    }
+
+    // Check if editing a weight product
+    var type = document.querySelector('input[name="type"]').value;
+    if (type === 'weight') {
+        document.getElementById('is_weight').checked = true;
+    }
+    toggleWeightMode();
+    
+    // Attach calculation listeners
+    document.getElementById('pack_purchase_price').addEventListener('input', calculateUnitPrice);
+    document.getElementById('pack_unit_quantity').addEventListener('input', calculateUnitPrice);
+});
+
+function toggleWeightMode() {
+    var isWeight = document.getElementById('is_weight').checked;
+    var typeInput = document.querySelector('input[name="type"]');
+    
+    // Update Hidden Type
+    typeInput.value = isWeight ? 'weight' : 'unit';
+
+    // Labels
+    if (isWeight) {
+        // Weight Mode (Sack -> Kg)
+        document.getElementById('lbl_pack_type').textContent = 'نوع العبوة (شوال/كيس)';
+        document.getElementById('lbl_pack_qty').textContent = 'وزن العبوة (كجم)';
+        document.getElementById('help_pack_qty').textContent = 'مثال: 50.5 (وزن الشوال)';
+        
+        document.getElementById('lbl_pack_buy').textContent = 'سعر شراء العبوة كاملة';
+        document.getElementById('lbl_unit_buy').textContent = 'سعر شراء الكيلو *';
+        
+        document.getElementById('lbl_pack_sell').textContent = 'سعر بيع العبوة كاملة';
+        document.getElementById('lbl_unit_sell').textContent = 'سعر بيع الكيلو *';
+        
+        // Steps
+        document.getElementById('pack_unit_quantity').setAttribute('step', '0.001');
+        document.getElementById('pack_unit_quantity').setAttribute('min', '0.001');
+    } else {
+        // Unit Mode (Pack -> Piece)
+        document.getElementById('lbl_pack_type').textContent = 'نوع التعبئة';
+        document.getElementById('lbl_pack_qty').textContent = 'عدد القطع في الوحدة';
+        document.getElementById('help_pack_qty').textContent = 'كم قطعة في كل وحدة (كرتونة/لفة)';
+        
+        document.getElementById('lbl_pack_buy').textContent = 'سعر شراء الوحدة الكاملة (الجملة)';
+        document.getElementById('lbl_unit_buy').textContent = 'سعر شراء القطعة الواحدة *';
+        
+        document.getElementById('lbl_pack_sell').textContent = 'سعر بيع الوحدة الكاملة (الجملة)';
+        document.getElementById('lbl_unit_sell').textContent = 'سعر بيع القطعة الواحدة *';
+        
+        // Steps
+        document.getElementById('pack_unit_quantity').setAttribute('step', '1');
+        document.getElementById('pack_unit_quantity').setAttribute('min', '1');
+    }
+}
+
+function calculateUnitPrice() {
+    var packPrice = parseFloat(document.getElementById('pack_purchase_price').value) || 0;
+    var packQty = parseFloat(document.getElementById('pack_unit_quantity').value) || 1;
+    if (packPrice > 0 && packQty > 0) {
+        var unitPrice = packPrice / packQty;
+        document.getElementById('purchase_price').value = unitPrice.toFixed(3);
+    }
+}
+
+// ==========================================
+// CLIENT-SIDE DUPLICATE VALIDATION
+// ==========================================
+var duplicateFlags = { barcode: false, plu_code: false };
+
+function checkDuplicate(field, value) {
+    var warningDiv = document.getElementById(field + '_warning');
+    var input = document.getElementById(field);
+    
+    // Clear if empty
+    if (!value || !value.trim()) {
+        warningDiv.style.display = 'none';
+        input.style.borderColor = '';
+        duplicateFlags[field] = false;
+        return;
+    }
+    
+    // Get exclude_id (for edit mode)
+    var idInput = document.querySelector('input[name="id"]');
+    var excludeId = idInput ? idInput.value : '';
+    
+    var url = '?page=products&action=checkDuplicate&field=' + field + 
+              '&value=' + encodeURIComponent(value.trim()) + 
+              '&exclude_id=' + excludeId;
+    
+    fetch(url)
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            if (data.exists) {
+                // Show warning
+                warningDiv.innerHTML = '⚠️ ' + data.message;
+                warningDiv.style.display = 'block';
+                input.style.borderColor = '#e74c3c';
+                input.style.boxShadow = '0 0 0 2px rgba(231,76,60,0.2)';
+                duplicateFlags[field] = true;
+            } else {
+                // Clear warning
+                warningDiv.style.display = 'none';
+                input.style.borderColor = '#27ae60';
+                input.style.boxShadow = '0 0 0 2px rgba(39,174,96,0.2)';
+                duplicateFlags[field] = false;
+                // Reset border after 1.5s
+                setTimeout(function() {
+                    input.style.borderColor = '';
+                    input.style.boxShadow = '';
+                }, 1500);
+            }
+        })
+        .catch(function(err) {
+            console.error('Duplicate check error:', err);
+        });
+}
+
+// Block form submission if duplicates exist
+document.getElementById('productForm').addEventListener('submit', function(e) {
+    if (duplicateFlags.barcode || duplicateFlags.plu_code) {
+        e.preventDefault();
+        var msg = '⚠️ لا يمكن حفظ المنتج:\n';
+        if (duplicateFlags.barcode) msg += '- الباركود مكرر\n';
+        if (duplicateFlags.plu_code) msg += '- كود PLU مكرر\n';
+        msg += '\nالرجاء تغيير القيم المكررة أولاً.';
+        alert(msg);
+        return false;
+    }
+});
+</script>
+    </main>
+</div>
+<!-- App JS -->
+<script src="public/js/app_core.js?v=1771364188"></script>
+
+</body>
+</html>

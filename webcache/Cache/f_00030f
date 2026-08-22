@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام نقاط البيع والمخزون</title>
+    <link rel="stylesheet" href="public/css/main.css?v=1771187430">
+    <script src="public/js/app_core.js?v=1771187430"></script>
+</head>
+<body>
+<div class="toast-container" id="toastContainer"></div>
+<div class="app-wrapper">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <h2>💰 POS System</h2>
+            <span>نظام نقاط البيع والمخزون</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="?page=dashboard" class="nav-item ">
+                <span class="icon">📊</span> لوحة التحكم
+            </a>
+            <a href="?page=pos" class="nav-item ">
+                <span class="icon">🛒</span> نقطة البيع
+            </a>
+            <a href="?page=products" class="nav-item ">
+                <span class="icon">📦</span> المنتجات
+            </a>
+            <a href="?page=suppliers" class="nav-item ">
+                <span class="icon">🏭</span> الموردين
+            </a>
+            <a href="?page=purchases" class="nav-item active">
+                <span class="icon">🧾</span> المشتريات
+            </a>
+            <a href="?page=inventory" class="nav-item ">
+                <span class="icon">📋</span> المخزون
+            </a>
+            <a href="?page=sales" class="nav-item ">
+                <span class="icon">💵</span> المبيعات
+            </a>
+            <a href="?page=reports" class="nav-item ">
+                <span class="icon">📈</span> التقارير
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            نظام نقاط البيع v1.0 &copy; 2026        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+<style>
+    .pos-layout { display: flex; gap: 20px; height: calc(100vh - 100px); }
+    /* Hide Number Spinners */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+    input[type=number] { -moz-appearance: textfield; }
+    .pos-scanner-section { flex: 0 0 320px; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+    .pos-main-section { flex: 1; display: flex; flex-direction: column; gap: 15px; }
+    
+    #reader { width: 100%; border-radius: 8px; overflow: hidden; background: #000; min-height: 240px; }
+    .scanner-status { text-align: center; margin-top: 10px; font-weight: bold; padding: 5px; border-radius: 4px; }
+    
+    .items-table-container { background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex: 1; overflow: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th { background: #f8f9fa; padding: 12px; text-align: right; position: sticky; top: 0; z-index: 10; border-bottom: 2px solid #eee; }
+    td { padding: 8px 12px; border-bottom: 1px solid #eee; vertical-align: middle; }
+    
+    .qty-input, .price-input { width: 80px; padding: 5px; text-align: center; border: 1px solid #ddd; border-radius: 4px; }
+    .unit-select { padding: 5px; border: 1px solid #ddd; border-radius: 4px; }
+    
+    .summary-card { background: #2c3e50; color: white; padding: 20px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .total-amount { font-size: 24px; font-weight: bold; color: #f1c40f; }
+
+    /* Search Results Styling - FORCE VISIBILITY */
+    .search-results {
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+        background: #fff !important;
+        border: 1px solid #ddd !important;
+        border-radius: 0 0 8px 8px !important;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2) !important;
+        z-index: 9999 !important;
+        max-height: 300px;
+        overflow-y: auto;
+        display: none;
+    }
+    .search-results.active { display: block !important; }
+    .search-item {
+        padding: 12px 10px !important;
+        border-bottom: 1px solid #eee !important;
+        cursor: pointer;
+        background: #fff;
+        color: #333;
+        font-size: 14px;
+        transition: background 0.2s;
+    }
+    .search-item:hover { background: #f0f4f8 !important; }
+    .search-item strong { display: block; color: #000; }
+    .search-item small { color: #666; font-size: 11px; }
+</style>
+
+<div class="page-header">
+    <div>
+        <h1>📦 فاتورة شراء جديدة</h1>
+    </div>
+    <a href="?page=purchases" class="btn btn-outline">← العودة</a>
+</div>
+
+<div class="pos-layout">
+    <!-- Left: Scanner & Input -->
+    <div class="pos-scanner-section">
+        <!-- Supplier -->
+        <div class="form-group">
+            <label>المورد *</label>
+            <select id="supplierId" class="form-control" onchange="checkLastInvoice()">
+                <option value="">اختر المورد</option>
+                                <option value="2">شركة البركة</option>
+                                <option value="1">مورد افتراضي</option>
+                            </select>
+        </div>
+
+        <div class="form-group">
+            <label>رقم الفاتورة <small class="text-muted">(تلقائي)</small></label>
+            <input type="text" id="invoiceNumber" class="form-control" placeholder="سيتم إنشاؤه تلقائياً" readonly style="background-color: #f8f9fa; cursor: not-allowed;">
+        </div>
+
+        <div class="form-group">
+            <label>التاريخ</label>
+            <input type="date" id="invoiceDate" class="form-control" value="2026-02-15">
+        </div>
+        
+        <hr>
+
+        <!-- Scanner -->
+        <div id="embeddedScanner" style="position: relative;">
+            <div id="reader"></div>
+            <div id="scannerStatus" class="scanner-status" style="background:rgba(0,0,0,0.05); color:#666;">جاري تحميل الكاميرا...</div>
+        </div>
+
+        <hr>
+        
+    <!-- Manual Search -->
+        <div class="form-group" style="position:relative;">
+            <label>بحث يدوي (باركد/اسم)</label>
+            <input type="text" id="manualSearch" class="form-control" placeholder="اكتب للبحث..." autocomplete="off" oninput="handleSearchInput(this.value)" onblur="hideSearchResults()">
+            <div id="searchDebug" style="color:#666; font-size:12px; margin-top:5px; min-height:18px;"></div>
+            <div id="searchResults" class="search-results"></div>
+        </div>
+    </div>
+
+    <!-- Right: Items Table -->
+    <div class="pos-main-section">
+        <div class="items-table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">#</th>
+                        <th style="width: 25%;">المنتج</th>
+                        <th style="width: 15%;">الوحدة</th>
+                        <th style="width: 10%;">الكمية</th>
+                        <th style="width: 5%;">هدية</th>
+                        <th style="width: 15%;">سعر الشراء</th>
+                        <th style="width: 15%;">سعر البيع (تحديث)</th>
+                        <th style="width: 10%;">المجموع</th>
+                        <th style="width: 5%;"></th>
+                    </tr>
+                </thead>
+                <tbody id="invoiceItems">
+                    <!-- Items will go here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Summary -->
+        <!-- Summary Card (Clean & Standard) -->
+        <div class="summary-card" style="background:#fff; border:1px solid #ddd; box-shadow:0 4px 6px rgba(0,0,0,0.05); color:#333; display: flex; flex-direction: column;">
+            
+            <!-- Subtotal -->
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #eee; padding-bottom: 10px; margin-bottom: 10px;">
+                <div style="color:#666;">المجموع الفرعي</div>
+                <div style="font-size: 18px; font-weight:bold;" id="subtotalAmount">0.00</div>
+            </div>
+            
+            <!-- Discount Section (Standard Input Group) -->
+            <div style="background:#f8f9fa; padding:10px; border-radius:6px; margin-bottom: 10px;">
+                <label style="display:block; font-size:12px; margin-bottom:5px; color:#666;">الخصم</label>
+                <div style="display: flex;">
+                    <select id="discountType" class="form-control" style="width: 110px; height:38px; border-radius: 0 4px 4px 0; border-left:0; font-size:13px;" onchange="updateTotals()">
+                        <option value="fixed">مبلغ (ج.م)</option>
+                        <option value="percent">نسبة (%)</option>
+                    </select>
+                    <input type="number" id="invoiceDiscount" class="form-control" style="flex:1; height:38px; border-radius: 4px 0 0 4px; text-align:center; font-weight:bold;" value="0" min="0" step="0.01" onchange="updateTotals()">
+                </div>
+                <!-- Actual Value Display -->
+                <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 12px;">
+                    <span id="discountLabel" style="color:#666;">القيمة المخصومة:</span>
+                    <span id="actualDiscount" style="font-weight:bold; color:#e74c3c;">0.00</span>
+                </div>
+            </div>
+            
+            <!-- Final Total -->
+            <div style="display: flex; justify-content: space-between; align-items: center; padding-top:10px; border-top:2px solid #333; margin-top: auto;">
+                <div style="font-size: 18px; font-weight: bold;">الإجمالي النهائي</div>
+                <div class="total-amount" id="totalAmount" style="color:#27ae60; font-size:28px;">0.00</div>
+            </div>
+            
+            <button class="btn btn-primary btn-lg" onclick="saveInvoice()" style="margin-top: 20px; width:100%; background:#2c3e50; border:none; height:50px; font-size:18px;">
+                💾 حفظ الفاتورة
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Global Error Handler
+window.onerror = function(msg, url, line) {
+    alert("JS ERROR: " + msg + "\nLine: " + line);
+    return false;
+};
+</script>
+
+<script>
+// UTILITIES (ES5 Compatible)
+function debounce(func, wait) {
+    var timeout;
+    return function() {
+        var context = this;
+        var args = arguments;
+        var later = function() {
+            timeout = null;
+            func.apply(context, args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// API Request (ES5 - No Async/Await)
+function apiRequest(url, options) {
+    options = options || {};
+    var defaultOptions = {
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    };
+
+    if (options.body && typeof options.body === 'object') {
+        options.body = JSON.stringify(options.body);
+    }
+
+    var fetchOptions = Object.assign({}, defaultOptions, options);
+    
+    return fetch(url, fetchOptions)
+        .then(function(response) { 
+            return response.json(); 
+        })
+        .catch(function(error) {
+            console.error('API Error:', error);
+            return { success: false, message: 'خطأ في الاتصال: ' + error };
+        });
+}
+
+// MAIN LOGIC
+var invoiceItems = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+    // startScanner(); // Scanner Disabled for Compatibility Check
+    renderItems();
+});
+
+// Manual Search Logic
+var searchTimeout;
+var selectedSearchIndex = -1;
+
+function handleSearchInput(value, event) {
+    var resultsBox = document.getElementById('searchResults');
+    
+    // Keyboard Navigation
+    if(event) {
+        if(event.key === 'ArrowDown') {
+            event.preventDefault();
+            navigateSearch(1);
+            return;
+        }
+        if(event.key === 'ArrowUp') {
+            event.preventDefault();
+            navigateSearch(-1);
+            return;
+        }
+        if(event.key === 'Enter') {
+            event.preventDefault();
+            if(selectedSearchIndex >= 0) {
+                var items = resultsBox.querySelectorAll('.search-item');
+                if(items[selectedSearchIndex]) items[selectedSearchIndex].click();
+            } else if(value.trim().length > 0) {
+                // If no selection but exact match possible or barcode, try find
+                handleManualSearch(value); 
+            }
+            return;
+        }
+    }
+
+    // Visual Feedback
+    var debugEl = document.getElementById('searchDebug');
+    if(debugEl) {
+        if(value && value.trim().length > 0) {
+            debugEl.innerText = "⏳ جاري البحث عن: " + value + "...";
+            debugEl.style.color = "blue";
+        } else {
+            debugEl.innerText = "";
+        }
+    }
+
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(function() {
+        if(value && value.trim().length > 0) {
+            handleManualSearch(value);
+        } else {
+            document.getElementById('searchResults').classList.remove('active');
+            if(debugEl) debugEl.innerText = "";
+        }
+    }, 300);
+}
+
+function navigateSearch(direction) {
+    var resultsBox = document.getElementById('searchResults');
+    var items = resultsBox.querySelectorAll('.search-item');
+    if(items.length === 0) return;
+    
+    // Remove previous hover
+    if(selectedSearchIndex >= 0 && items[selectedSearchIndex]) {
+        items[selectedSearchIndex].style.background = '#fff';
+    }
+    
+    selectedSearchIndex += direction;
+    
+    // Loop
+    if(selectedSearchIndex >= items.length) selectedSearchIndex = 0;
+    if(selectedSearchIndex < 0) selectedSearchIndex = items.length - 1;
+    
+    // Highlight
+    var current = items[selectedSearchIndex];
+    if(current) {
+        current.style.background = '#e3f2fd';
+        current.scrollIntoView({block: 'nearest'});
+    }
+}
+
+// Hide results on blur
+function hideSearchResults() {
+    setTimeout(function() {
+        var results = document.getElementById('searchResults');
+        if(results) results.classList.remove('active');
+        selectedSearchIndex = -1;
+    }, 400);
+}
+
+// ==========================================
+// 2. PRODUCT LOGIC
+// ==========================================
+function findAndAddProduct(query) {
+    if (!query) return;
+    
+    apiRequest('?page=pos&action=findProduct&q=' + encodeURIComponent(query))
+        .then(function(res) {
+            if (res.success && res.data) {
+                addItem(res.data);
+            } else {
+                alert('المنتج غير موجود: ' + query);
+            }
+        })
+        .catch(function(e) {
+            alert("Find Error: " + e.message);
+        });
+}
+
+// Manual Search Logic (POS Style)
+function handleManualSearch(q) {
+    var resultsBox = document.getElementById('searchResults');
+    var debugEl = document.getElementById('searchDebug');
+    if(debugEl) debugEl.innerText = ""; // Clear debug
+    
+    q = q.trim();
+    
+    if (q.length < 2) {
+        resultsBox.innerHTML = '';
+        resultsBox.classList.remove('active');
+        return;
+    }
+    
+    // Show Loading
+    resultsBox.innerHTML = '<div style="padding:10px; text-align:center; color:#666;">⏳ جاري البحث...</div>';
+    resultsBox.classList.add('active');
+    
+    // Use Date.now() for cache busting
+    apiRequest('?page=pos&action=search&q=' + encodeURIComponent(q) + '&_=' + Date.now())
+        .then(function(res) {
+            if (res.success && res.data) {
+                if(res.data.length > 0) {
+                    var html = res.data.map(function(p) {
+                         var json = JSON.stringify(p).replace(/'/g, "&#39;");
+                         
+                         // Determine price display
+                         var priceDisplay = parseFloat(p.sale_price_unit).toFixed(2);
+                         
+                         return '<div class="search-item" onclick=\'selectSearchProduct(' + json + ')\'>' +
+                                '<div>' + 
+                                    '<strong>' + p.name + '</strong>' +
+                                    '<small>' + (p.barcode || '---') + (p.plu_code ? ' | PLU: ' + p.plu_code : '') + '</small>' +
+                                '</div>' +
+                                '<div style="font-weight:bold; color:#2c3e50;">' + priceDisplay + '</div>' +
+                                '</div>';
+                    }).join('');
+                    
+                    resultsBox.innerHTML = html;
+                    resultsBox.classList.add('active');
+                } else {
+                    resultsBox.innerHTML = '<div style="padding:10px; text-align:center; color:#666;">لا توجد نتائج</div>';
+                    resultsBox.classList.add('active');
+                }
+            }
+        })
+        .catch(function(err) {
+            console.error(err);
+        });
+}
+
+function selectSearchProduct(product) {
+    addItem(product);
+    document.getElementById('manualSearch').value = '';
+    document.getElementById('searchResults').innerHTML = '';
+    document.getElementById('searchResults').classList.remove('active');
+    document.getElementById('manualSearch').focus();
+}
+
+// Discount Logic
+function updateTotals() {
+    var total = 0;
+    invoiceItems.forEach(function(item) {
+        total += item.quantity * item.purchase_price;
+    });
+    
+    var discountInput = parseFloat(document.getElementById('invoiceDiscount').value) || 0;
+    var discountType = document.getElementById('discountType').value;
+    
+    var discountValue = 0;
+    var discountLabelText = 'القيمة المخصومة:';
+    
+    if(discountType === 'percent') {
+        discountValue = (total * discountInput) / 100;
+        discountLabelText = 'خصم (' + discountInput + '%):';
+    } else {
+        discountValue = discountInput;
+        discountLabelText = 'خصم (مبلغ ثابت):';
+    }
+    
+    // Safety check
+    if(discountValue > total) discountValue = total;
+    
+    var finalTotal = Math.max(0, total - discountValue);
+    
+    document.getElementById('totalAmount').textContent = finalTotal.toFixed(2);
+    document.getElementById('subtotalAmount').textContent = total.toFixed(2);
+    
+    var actualDiscountEl = document.getElementById('actualDiscount');
+    var discountLabelEl = document.getElementById('discountLabel');
+    if(actualDiscountEl) actualDiscountEl.textContent = discountValue.toFixed(2);
+    if(discountLabelEl) discountLabelEl.textContent = discountLabelText;
+}
+
+// ==========================================
+// 4. LAST INVOICE LOGIC & AUTO-NUMBERING
+// ==========================================
+function checkLastInvoice() {
+    var supplierId = document.getElementById('supplierId').value;
+    if (!supplierId) return;
+
+    // 1. Fetch Next Invoice Number
+    fetchNextInvoiceNumber(supplierId);
+    
+    // 2. Check for Last Invoice items
+    // Don't overwrite if items exist
+    if (invoiceItems.length > 0) return;
+
+    if (confirm('هل تريد استيراد أصناف آخر فاتورة لهذا المورد؟')) {
+        apiRequest('?page=purchases&action=getLastInvoice&supplier_id=' + supplierId)
+            .then(function(res) {
+                if (res.success && res.data && res.data.length > 0) {
+                    // Map items to our structure
+                    invoiceItems = res.data.map(function(i) {
+                        return {
+                            product_id: i.product_id,
+                            product_name: i.product_name,
+                            unit_mode: (i.pack_unit_quantity > 1 && i.purchase_price == i.current_pack_cost) ? 'pack' : 'unit', 
+                            quantity: parseFloat(i.quantity),
+                            
+                            db_pack_cost: parseFloat(i.current_pack_cost) || 0,
+                            db_unit_cost: parseFloat(i.current_unit_cost) || 0,
+                            db_pack_price: parseFloat(i.current_pack_price) || 0,
+                            db_unit_price: parseFloat(i.current_unit_price) || 0,
+                            pack_qty: parseFloat(i.pack_unit_quantity) || 1,
+                            pack_type: i.pack_type || 'عبوة',
+                            
+                            purchase_price: parseFloat(i.purchase_price),
+                            sale_price: 0
+                        };
+                    });
+                    
+                    // Fix sale price
+                    invoiceItems.forEach(function(i) {
+                        i.sale_price = i.unit_mode === 'pack' ? i.db_pack_price : i.db_unit_price;
+                    });
+                    
+                    renderItems();
+                } else {
+                    // alert('لا توجد فواتير سابقة لهذا المورد');
+                }
+            })
+            .catch(function(e) {
+                console.error(e);
+            });
+    }
+}
+
+function fetchNextInvoiceNumber(supplierId) {
+    apiRequest('?page=purchases&action=next_invoice_number&supplier_id=' + supplierId)
+        .then(function(res) {
+            if (res.success && res.next_number) {
+                document.getElementById('invoiceNumber').value = res.next_number;
+            }
+        })
+        .catch(function(e) {
+            console.error(e);
+        });
+}
+
+// ==========================================
+// 3. INVOICE ITEMS LOGIC
+// ==========================================
+// ==========================================
+// 3. INVOICE ITEMS LOGIC
+// ==========================================
+// ==========================================
+// 3. INVOICE ITEMS LOGIC
+// ==========================================
+// ==========================================
+// 3. INVOICE ITEMS LOGIC
+// ==========================================
+function addItem(product, qty) {
+    qty = qty || 1;
+    try {
+        if (!product || !product.id) {
+            alert("بيانات المنتج غير صحيحة");
+            return;
+        }
+
+        // Determine default unit type (Logic from POS)
+        var hasPack = (parseFloat(product.pack_unit_quantity) || 0) > 1;
+        var defaultMode = hasPack ? 'pack' : 'unit';
+        
+        // Define Unit Names based on Product Type
+        var unitName = 'قطعة';
+        if (product.type === 'weight') unitName = 'كيلو';
+        
+        var packName = product.pack_type || 'عبوة';
+        if (product.type === 'weight' && !product.pack_type) packName = 'شوال';
+        
+        // Set Current Unit Name
+        var currentUnitName = defaultMode === 'pack' ? packName : unitName;
+
+        // ALWAYS ADD NEW ROW - Per user request for flexibility
+        invoiceItems.push({
+            product_id: product.id,
+            product_name: product.name,
+            unit_mode: defaultMode, 
+            quantity: parseFloat(qty) || 1,
+            
+            // Current DB values (Safe Parsing)
+            db_pack_cost: parseFloat(product.pack_purchase_price) || 0,
+            db_unit_cost: parseFloat(product.purchase_price) || 0,
+            db_pack_price: parseFloat(product.pack_sale_price) || 0,
+            db_unit_price: parseFloat(product.sale_price_unit) || 0,
+            pack_qty: parseFloat(product.pack_unit_quantity) || 1,
+            
+            // Store Unit Names
+            unit_name: unitName,
+            pack_name: packName,
+            
+            // Current Selected Unit Name (Editable)
+            current_unit_name: currentUnitName,
+            
+            // Bonus Flag
+            is_bonus: false,
+            original_price: defaultMode === 'pack' ? (parseFloat(product.pack_purchase_price) || 0) : (parseFloat(product.purchase_price) || 0),
+            
+            // Editable values
+            purchase_price: defaultMode === 'pack' ? (parseFloat(product.pack_purchase_price) || 0) : (parseFloat(product.purchase_price) || 0),
+            sale_price: defaultMode === 'pack' ? (parseFloat(product.pack_sale_price) || 0) : (parseFloat(product.sale_price_unit) || 0),
+        });
+        
+        // Play success sound
+        var audio = new Audio("public/audio/beep.mp3");
+        audio.play().catch(function(e){});
+        
+        renderItems();
+
+        // Visual Feedback
+        var status = document.getElementById('scannerStatus');
+        if(status) {
+            status.textContent = "✅ تمت إضافة: " + product.name;
+        }
+
+    } catch(e) {
+        console.error("Error in addItem:", e);
+        alert("خطأ في إضافة المنتج: " + e.message);
+    }
+}
+
+function renderItems() {
+    var tbody = document.getElementById('invoiceItems');
+    if (invoiceItems.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted" style="padding:40px">امسح باركود أو ابحث لإضافة منتجات</td></tr>';
+        updateTotals();
+        return;
+    }
+    
+    var total = 0;
+    
+    tbody.innerHTML = invoiceItems.map(function(item, i) {
+        var isPack = item.unit_mode === 'pack';
+        var subtotal = item.quantity * item.purchase_price;
+        
+        // Build SELECT dropdown (not datalist)
+        var unitOptions = '';
+        
+        // Option 1: Unit (always available)
+        var unitLabel = item.unit_name + ' - ' + item.db_unit_cost.toFixed(2) + ' ج.م';
+        var unitSelected = item.unit_mode === 'unit' ? 'selected' : '';
+        unitOptions += '<option value="unit" ' + unitSelected + '>' + unitLabel + '</option>';
+        
+        // Option 2: Pack (only if pack_qty > 1)
+        if (item.pack_qty > 1) {
+            var packLabel = item.pack_name + ' (' + item.pack_qty + ' ' + item.unit_name + ') - ' + item.db_pack_cost.toFixed(2) + ' ج.م';
+            var packSelected = item.unit_mode === 'pack' ? 'selected' : '';
+            unitOptions += '<option value="pack" ' + packSelected + '>' + packLabel + '</option>';
+        }
+
+        var typeStyle = item.is_bonus ? 'background-color: #d4edda; border-left: 5px solid #28a745;' : '';
+        var priceStyle = item.is_bonus ? 'background-color: #f8f9fa; color: #6c757d; text-decoration: line-through;' : '';
+        var bonusBadge = item.is_bonus ? '<span style="background:#28a745; color:white; padding:2px 6px; border-radius:4px; font-size:10px; margin-right:5px;">🎁 هدية</span>' : '';
+
+        return '<tr style="' + typeStyle + '">' +
+                '<td>' + (i + 1) + '</td>' +
+                '<td>' + 
+                    item.product_name + 
+                    bonusBadge +
+                '</td>' +
+                '<td>' +
+                    '<select class="unit-select" onchange="switchUnitMode(' + i + ', this.value)" style="width:140px; padding:4px;">' +
+                        unitOptions +
+                    '</select>' +
+                '</td>' +
+                '<td>' +
+                    '<input type="number" class="qty-input" value="' + item.quantity + '" step="0.01" onchange="updateItemProp(' + i + ', \'quantity\', this.value)">' +
+                '</td>' +
+                '<td style="text-align:center;">' +
+                    '<div style="display:flex; flex-direction:column; align-items:center; gap:2px;">' +
+                        '<label style="font-size:10px; color:#666; margin:0;">هدية؟</label>' +
+                        '<input type="checkbox" ' + (item.is_bonus ? 'checked' : '') + ' onchange="toggleBonus(' + i + ', this.checked)" title="منتج هدية (بونص)" style="width:18px; height:18px; cursor:pointer;">' +
+                    '</div>' +
+                '</td>' +
+                '<td>' +
+                    '<input type="number" class="price-input" value="' + item.purchase_price + '" step="0.01" onchange="updateItemProp(' + i + ', \'purchase_price\', this.value)" ' + (item.is_bonus ? 'readonly' : '') + ' style="' + priceStyle + '">' +
+                '</td>' +
+                '<td>' +
+                    '<input type="number" class="price-input" value="' + item.sale_price + '" step="0.01" onchange="updateItemProp(' + i + ', \'sale_price\', this.value)">' +
+                '</td>' +
+                '<td style="font-weight:bold;">' + (item.is_bonus ? '0.00' : subtotal.toFixed(2)) + '</td>' +
+                '<td style="text-align:center;">' +
+                    '<button onclick="removeItem(' + i + ')" style="color:red; background:none; border:none; font-size:18px; cursor:pointer;">&times;</button>' +
+                '</td>' +
+            '</tr>';
+    }).join('');
+    
+    updateTotals();
+}
+
+function switchUnitMode(index, mode) {
+    var item = invoiceItems[index];
+    
+    console.log('🔄 Switching Unit Mode:', mode, 'for', item.product_name);
+    
+    if (mode === 'pack') {
+        item.unit_mode = 'pack';
+        item.original_price = item.db_pack_cost;
+        if (!item.is_bonus) item.purchase_price = item.db_pack_cost;
+        item.sale_price = item.db_pack_price;
+        console.log('✅ Switched to PACK | Price:', item.purchase_price);
+    } else {
+        item.unit_mode = 'unit';
+        item.original_price = item.db_unit_cost;
+        if (!item.is_bonus) item.purchase_price = item.db_unit_cost;
+        item.sale_price = item.db_unit_price;
+        console.log('✅ Switched to UNIT | Price:', item.purchase_price);
+    }
+    
+    renderItems();
+}
+
+function toggleBonus(index, isBonus) {
+    var item = invoiceItems[index];
+    item.is_bonus = isBonus;
+    
+    if (isBonus) {
+        // Look ahead: Save current price as original before zeroing? 
+        // Actually best to rely on db_cost unless user edited it.
+        // Let's assume if user edited price, that's the "deal" price.
+        // But for Bonus toggle, we usually mean "Free".
+        // item.original_price already stores the standard DB cost.
+        // If user manually changed price before clicking bonus, they lose that manual price.
+        // That's acceptable for now.
+        item.purchase_price = 0;
+    } else {
+        // Restore
+        item.purchase_price = item.original_price;
+    }
+    renderItems();
+}
+
+function updateItemProp(index, prop, value) {
+    var item = invoiceItems[index];
+    
+    // Handle string properties (like current_unit_name)
+    if (prop === 'current_unit_name') {
+        item.current_unit_name = value;
+        renderItems();
+        return;
+    }
+    
+    // Handle numeric properties
+    var val = parseFloat(value) || 0;
+    
+    if (prop === 'purchase_price' && !item.is_bonus) {
+        item.purchase_price = val;
+    } else if (prop === 'quantity') {
+        item.quantity = val;
+    } else if (prop === 'sale_price') {
+        item.sale_price = val;
+    } else {
+        item[prop] = val;
+    }
+    renderItems();
+}
+
+function removeItem(index) {
+    if (confirm('حذف هذا الصنف؟')) {
+        invoiceItems.splice(index, 1);
+        renderItems();
+    }
+}
+
+// ==========================================
+// 4. LAST INVOICE LOGIC
+// ==========================================
+function checkLastInvoice() {
+    var supplierId = document.getElementById('supplierId').value;
+    if (!supplierId) return;
+    
+    // Don't overwrite if items exist
+    if (invoiceItems.length > 0) return;
+
+    if (confirm('هل تريد استيراد أصناف آخر فاتورة لهذا المورد؟')) {
+        apiRequest('?page=purchases&action=getLastInvoice&supplier_id=' + supplierId)
+            .then(function(res) {
+                if (res.success && res.data && res.data.length > 0) {
+                    // Map items to our structure
+                    invoiceItems = res.data.map(function(i) {
+                        return {
+                            product_id: i.product_id,
+                            product_name: i.product_name,
+                            unit_mode: (i.pack_unit_quantity > 1 && i.purchase_price == i.current_pack_cost) ? 'pack' : 'unit', 
+                            quantity: parseFloat(i.quantity),
+                            
+                            db_pack_cost: parseFloat(i.current_pack_cost) || 0,
+                            db_unit_cost: parseFloat(i.current_unit_cost) || 0,
+                            db_pack_price: parseFloat(i.current_pack_price) || 0,
+                            db_unit_price: parseFloat(i.current_unit_price) || 0,
+                            pack_qty: parseFloat(i.pack_unit_quantity) || 1,
+                            pack_type: i.pack_type || 'عبوة',
+                            
+                            purchase_price: parseFloat(i.purchase_price),
+                            sale_price: 0 
+                        };
+                    });
+                    
+                    // Fix sale price
+                    invoiceItems.forEach(function(i) {
+                        i.sale_price = i.unit_mode === 'pack' ? i.db_pack_price : i.db_unit_price;
+                    });
+                    
+                    renderItems();
+                } else {
+                    alert('لا توجد فواتير سابقة لهذا المورد');
+                }
+            })
+            .catch(function(e) {
+                console.error(e);
+            });
+    }
+}
+
+// ==========================================
+// 5. SAVE
+// ==========================================
+function saveInvoice() {
+    if (invoiceItems.length === 0) {
+        alert('لا توجد أصناف في الفاتورة');
+        return;
+    }
+    
+    var supplierId = document.getElementById('supplierId').value;
+    if (!supplierId) {
+        alert('اختر المورد');
+        return;
+    }
+    
+    if (!confirm('هل أنت متأكد من حفظ الفاتورة؟ سيتم تحديث المخزون والأسعار.')) return;
+    
+    // Get actual calculated discount value
+    var discountValue = document.getElementById('actualDiscount').textContent;
+    
+    var payload = {
+        supplier_id: supplierId,
+        invoice_number: document.getElementById('invoiceNumber').value,
+        date: document.getElementById('invoiceDate').value,
+        items: invoiceItems,
+        discount: parseFloat(discountValue) || 0
+    };
+    
+    apiRequest('?page=purchases&action=save', {
+        method: 'POST',
+        body: payload
+    })
+    .then(function(res) {
+        if (res.success) {
+            alert('تم الحفظ بنجاح ✅');
+            window.location.href = '?page=purchases';
+        } else {
+            alert('خطأ: ' + res.message);
+        }
+    })
+    .catch(function(e) {
+        console.error(e);
+        alert('حدث خطأ في الاتصال');
+    });
+}
+</script>
+    </main>
+</div>
+<!-- App JS -->
+<!-- App JS -->
+
+</body>
+</html>

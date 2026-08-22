@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام نقاط البيع والمخزون</title>
+    <link rel="stylesheet" href="public/css/main.css?v=1770946417">
+    <script src="public/js/app_core.js?v=1770946417"></script>
+</head>
+<body>
+<div class="toast-container" id="toastContainer"></div>
+<div class="app-wrapper">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <h2>💰 POS System</h2>
+            <span>نظام نقاط البيع والمخزون</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="?page=dashboard" class="nav-item ">
+                <span class="icon">📊</span> لوحة التحكم
+            </a>
+            <a href="?page=pos" class="nav-item ">
+                <span class="icon">🛒</span> نقطة البيع
+            </a>
+            <a href="?page=products" class="nav-item ">
+                <span class="icon">📦</span> المنتجات
+            </a>
+            <a href="?page=suppliers" class="nav-item ">
+                <span class="icon">🏭</span> الموردين
+            </a>
+            <a href="?page=purchases" class="nav-item active">
+                <span class="icon">🧾</span> المشتريات
+            </a>
+            <a href="?page=inventory" class="nav-item ">
+                <span class="icon">📋</span> المخزون
+            </a>
+            <a href="?page=sales" class="nav-item ">
+                <span class="icon">💵</span> المبيعات
+            </a>
+            <a href="?page=reports" class="nav-item ">
+                <span class="icon">📈</span> التقارير
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            نظام نقاط البيع v1.0 &copy; 2026        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+<!-- Purchase Invoice Form (Overhauled) -->
+<style>
+    .pos-layout { display: flex; gap: 20px; height: calc(100vh - 100px); }
+    .pos-scanner-section { flex: 0 0 320px; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+    .pos-main-section { flex: 1; display: flex; flex-direction: column; gap: 15px; }
+    
+    #reader { width: 100%; border-radius: 8px; overflow: hidden; background: #000; min-height: 240px; }
+    .scanner-status { text-align: center; margin-top: 10px; font-weight: bold; padding: 5px; border-radius: 4px; }
+    
+    .items-table-container { background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex: 1; overflow: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th { background: #f8f9fa; padding: 12px; text-align: right; position: sticky; top: 0; z-index: 10; border-bottom: 2px solid #eee; }
+    td { padding: 8px 12px; border-bottom: 1px solid #eee; vertical-align: middle; }
+    
+    .qty-input, .price-input { width: 80px; padding: 5px; text-align: center; border: 1px solid #ddd; border-radius: 4px; }
+    .unit-select { padding: 5px; border: 1px solid #ddd; border-radius: 4px; }
+    
+    .summary-card { background: #2c3e50; color: white; padding: 20px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .total-amount { font-size: 24px; font-weight: bold; color: #f1c40f; }
+
+    /* Search Results Styling - FORCE VISIBILITY */
+    .search-results {
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+        background: #fff !important;
+        border: 1px solid #ddd !important;
+        border-radius: 0 0 8px 8px !important;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2) !important;
+        z-index: 9999 !important;
+        max-height: 300px;
+        overflow-y: auto;
+        display: none;
+    }
+    .search-results.active { display: block !important; }
+    .search-item {
+        padding: 12px 10px !important;
+        border-bottom: 1px solid #eee !important;
+        cursor: pointer;
+        background: #fff;
+        color: #333;
+        font-size: 14px;
+        transition: background 0.2s;
+    }
+    .search-item:hover { background: #f0f4f8 !important; }
+    .search-item strong { display: block; color: #000; }
+    .search-item small { color: #666; font-size: 11px; }
+</style>
+
+<div class="page-header">
+    <div>
+        <h1>📦 فاتورة شراء جديدة</h1>
+    </div>
+    <a href="?page=purchases" class="btn btn-outline">← العودة</a>
+</div>
+
+<div class="pos-layout">
+    <!-- Left: Scanner & Input -->
+    <div class="pos-scanner-section">
+        <!-- Supplier -->
+        <div class="form-group">
+            <label>المورد *</label>
+            <select id="supplierId" class="form-control" onchange="checkLastInvoice()">
+                <option value="">اختر المورد</option>
+                                <option value="2">شركة البركة</option>
+                                <option value="1">مورد افتراضي</option>
+                            </select>
+        </div>
+
+        <div class="form-group">
+            <label>رقم الفاتورة</label>
+            <input type="text" id="invoiceNumber" class="form-control" placeholder="اختياري">
+        </div>
+
+        <div class="form-group">
+            <label>التاريخ</label>
+            <input type="date" id="invoiceDate" class="form-control" value="2026-02-13">
+        </div>
+        
+        <hr>
+
+        <!-- Scanner -->
+        <div id="embeddedScanner" style="position: relative;">
+            <div id="reader"></div>
+            <div id="scannerStatus" class="scanner-status" style="background:rgba(0,0,0,0.05); color:#666;">جاري تحميل الكاميرا...</div>
+        </div>
+
+        <hr>
+        
+    <!-- Manual Search -->
+        <div class="form-group" style="position:relative;">
+            <label>بحث يدوي (باركد/اسم)</label>
+            <input type="text" id="manualSearch" class="form-control" placeholder="اكتب للبحث..." autocomplete="off" oninput="handleSearchInput(this.value)" onblur="hideSearchResults()">
+            <div id="searchDebug" style="color:#666; font-size:12px; margin-top:5px; min-height:18px;"></div>
+            <div id="searchResults" class="search-results"></div>
+        </div>
+    </div>
+
+    <!-- Right: Items Table -->
+    <div class="pos-main-section">
+        <div class="items-table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">#</th>
+                        <th style="width: 30%;">المنتج</th>
+                        <th style="width: 15%;">الوحدة</th>
+                        <th style="width: 15%;">الكمية</th>
+                        <th style="width: 15%;">سعر الشراء</th>
+                        <th style="width: 15%;">سعر البيع (تحديث)</th>
+                        <th style="width: 15%;">المجموع</th>
+                        <th style="width: 5%;"></th>
+                    </tr>
+                </thead>
+                <tbody id="invoiceItems">
+                    <!-- Items will go here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Summary -->
+        <div class="summary-card">
+            <div>
+                <div>الإجمالي النهائي</div>
+                <div class="total-amount" id="totalAmount">0.00</div>
+            </div>
+            <button class="btn btn-primary btn-lg" onclick="saveInvoice()">💾 حفظ الفاتورة</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Global Error Handler
+window.onerror = function(msg, url, line) {
+    alert("JS ERROR: " + msg + "\nLine: " + line);
+    return false;
+};
+</script>
+
+<script>
+// UTILITIES (ES5 Compatible)
+function debounce(func, wait) {
+    var timeout;
+    return function() {
+        var context = this;
+        var args = arguments;
+        var later = function() {
+            timeout = null;
+            func.apply(context, args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// API Request (ES5 - No Async/Await)
+function apiRequest(url, options) {
+    options = options || {};
+    var defaultOptions = {
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    };
+
+    if (options.body && typeof options.body === 'object') {
+        options.body = JSON.stringify(options.body);
+    }
+
+    var fetchOptions = Object.assign({}, defaultOptions, options);
+    
+    return fetch(url, fetchOptions)
+        .then(function(response) { 
+            return response.json(); 
+        })
+        .catch(function(error) {
+            console.error('API Error:', error);
+            return { success: false, message: 'خطأ في الاتصال: ' + error };
+        });
+}
+
+// MAIN LOGIC
+var invoiceItems = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+    // startScanner(); // Scanner Disabled for Compatibility Check
+    renderItems();
+});
+
+// Manual Search Logic
+var searchTimeout;
+function handleSearchInput(value) {
+    // Visual Feedback
+    var debugEl = document.getElementById('searchDebug');
+    if(debugEl) {
+        if(value && value.trim().length > 0) {
+            debugEl.innerText = "⏳ جاري البحث عن: " + value + "...";
+            debugEl.style.color = "blue";
+        } else {
+            debugEl.innerText = "";
+        }
+    }
+
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(function() {
+        if(value && value.trim().length > 0) {
+            handleManualSearch(value);
+        } else {
+            document.getElementById('searchResults').classList.remove('active');
+            if(debugEl) debugEl.innerText = "";
+        }
+    }, 300);
+}
+
+// Hide results on blur
+function hideSearchResults() {
+    setTimeout(function() {
+        var results = document.getElementById('searchResults');
+        if(results) results.classList.remove('active');
+    }, 400);
+}
+
+// ==========================================
+// 2. PRODUCT LOGIC
+// ==========================================
+function findAndAddProduct(query) {
+    if (!query) return;
+    
+    apiRequest('?page=pos&action=findProduct&q=' + encodeURIComponent(query))
+        .then(function(res) {
+            if (res.success && res.data) {
+                addItem(res.data);
+            } else {
+                alert('المنتج غير موجود: ' + query);
+            }
+        })
+        .catch(function(e) {
+            alert("Find Error: " + e.message);
+        });
+}
+
+// Manual Search Logic
+function handleManualSearch(q) {
+    var resultsBox = document.getElementById('searchResults');
+    var debugEl = document.getElementById('searchDebug');
+    q = q.trim();
+    
+    if (q.length < 2) {
+        resultsBox.innerHTML = '';
+        resultsBox.classList.remove('active');
+        return;
+    }
+    
+    if(debugEl) debugEl.innerText = "⏳ جاري الاتصال بالسيرفر: " + q + "...";
+    
+    // Use Date.now() for cache busting
+    apiRequest('?page=pos&action=search&q=' + encodeURIComponent(q) + '&_=' + Date.now())
+        .then(function(res) {
+            if(debugEl) debugEl.innerText = "✅ تم استلام الرد: " + (res.success ? "نجاح" : "فشل");
+            
+            if (res.success && res.data) {
+                if(res.data.length > 0) {
+                    if(debugEl) debugEl.innerText += " (وجد " + res.data.length + " منتج)";
+                    
+                    var html = res.data.map(function(p) {
+                         var json = JSON.stringify(p).replace(/'/g, "&#39;");
+                         return '<div class="search-item" onclick=\'selectSearchProduct(' + json + ')\'>' +
+                                '<strong>' + p.name + '</strong>' +
+                                '<small>باركود: ' + (p.barcode || '---') + ' | السعر: ' + p.sale_price_unit + '</small>' +
+                                '</div>';
+                    }).join('');
+                    
+                    resultsBox.innerHTML = html;
+                    resultsBox.classList.add('active');
+                } else {
+                    if(debugEl) debugEl.innerText += " (لا توجد نتائج)";
+                    resultsBox.innerHTML = '<div style="padding:10px">لا توجد نتائج</div>';
+                    resultsBox.classList.add('active');
+                }
+            } else {
+                if(debugEl) debugEl.innerText = "❌ خطأ في البيانات: " + JSON.stringify(res);
+            }
+        })
+        .catch(function(err) {
+            if(debugEl) debugEl.innerText = "❌ خطأ في الاتصال: " + err;
+            console.error(err);
+        });
+}
+
+function selectSearchProduct(product) {
+    addItem(product);
+    document.getElementById('manualSearch').value = '';
+    document.getElementById('searchResults').innerHTML = '';
+    document.getElementById('searchResults').classList.remove('active');
+}
+
+// ==========================================
+// 3. INVOICE ITEMS LOGIC
+// ==========================================
+function addItem(product, qty) {
+    qty = qty || 1;
+    try {
+        if (!product || !product.id) {
+            alert("بيانات المنتج غير صحيحة");
+            return;
+        }
+
+        // Check if exists
+        var existing = invoiceItems.find(function(i) { return i.product_id === product.id; });
+        if (existing) {
+            existing.quantity += parseFloat(qty) || 1;
+        } else {
+            // Determine default unit type
+            var hasPack = (parseFloat(product.pack_unit_quantity) || 0) > 1;
+            var defaultMode = hasPack ? 'pack' : 'unit';
+            
+            invoiceItems.push({
+                product_id: product.id,
+                product_name: product.name,
+                unit_mode: defaultMode, 
+                quantity: parseFloat(qty) || 1,
+                
+                // Current DB values (Safe Parsing)
+                db_pack_cost: parseFloat(product.pack_purchase_price) || 0,
+                db_unit_cost: parseFloat(product.purchase_price) || 0,
+                db_pack_price: parseFloat(product.pack_sale_price) || 0,
+                db_unit_price: parseFloat(product.sale_price_unit) || 0,
+                pack_qty: parseFloat(product.pack_unit_quantity) || 1,
+                pack_type: product.pack_type || 'عبوة',
+                
+                // Editable values
+                purchase_price: hasPack ? (parseFloat(product.pack_purchase_price) || 0) : (parseFloat(product.purchase_price) || 0),
+                sale_price: hasPack ? (parseFloat(product.pack_sale_price) || 0) : (parseFloat(product.sale_price_unit) || 0),
+            });
+        }
+        
+        // Play success sound
+        var audio = new Audio("public/audio/beep.mp3");
+        audio.play().catch(function(e){});
+        
+        renderItems();
+
+        // Visual Feedback
+        var status = document.getElementById('scannerStatus');
+        if(status) {
+            status.textContent = "✅ تمت إضافة: " + product.name;
+        }
+
+    } catch(e) {
+        console.error("Error in addItem:", e);
+        alert("خطأ في إضافة المنتج: " + e.message);
+    }
+}
+
+function renderItems() {
+    var tbody = document.getElementById('invoiceItems');
+    if (invoiceItems.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted" style="padding:40px">امسح باركود أو ابحث لإضافة منتجات</td></tr>';
+        document.getElementById('totalAmount').textContent = '0.00';
+        return;
+    }
+    
+    var total = 0;
+    
+    tbody.innerHTML = invoiceItems.map(function(item, i) {
+        var isPack = item.unit_mode === 'pack';
+        var subtotal = item.quantity * item.purchase_price;
+        total += subtotal;
+        
+        var packOption = '';
+        if(item.pack_qty > 1) {
+            packOption = '<option value="pack" ' + (isPack ? 'selected' : '') + '>' + item.pack_type + ' (' + item.db_pack_cost + ')</option>';
+        }
+
+        return '<tr>' +
+                '<td>' + (i + 1) + '</td>' +
+                '<td style="font-weight:bold;">' + item.product_name + '</td>' +
+                '<td>' +
+                    '<select class="unit-select" onchange="updateItemUnit(' + i + ', this.value)">' +
+                        '<option value="unit" ' + (!isPack ? 'selected' : '') + '>قطعة (' + item.db_unit_cost + ')</option>' +
+                        packOption +
+                    '</select>' +
+                '</td>' +
+                '<td>' +
+                    '<input type="number" class="qty-input" value="' + item.quantity + '" min="0.1" step="0.1" onchange="updateItemProp(' + i + ', \'quantity\', this.value)">' +
+                '</td>' +
+                '<td>' +
+                    '<input type="number" class="price-input" value="' + item.purchase_price + '" step="0.01" onchange="updateItemProp(' + i + ', \'purchase_price\', this.value)">' +
+                '</td>' +
+                '<td>' +
+                    '<input type="number" class="price-input" value="' + item.sale_price + '" step="0.01" onchange="updateItemProp(' + i + ', \'sale_price\', this.value)" style="border-color:#b3e5fc">' +
+                '</td>' +
+                '<td style="font-weight:bold;">' + subtotal.toFixed(2) + '</td>' +
+                '<td>' +
+                    '<button class="btn btn-sm btn-ghost text-danger" onclick="removeItem(' + i + ')">✕</button>' +
+                '</td>' +
+            '</tr>';
+    }).join('');
+    
+    document.getElementById('totalAmount').textContent = total.toFixed(2);
+}
+
+function updateItemUnit(index, mode) {
+    var item = invoiceItems[index];
+    item.unit_mode = mode;
+    
+    if (mode === 'pack') {
+        item.purchase_price = item.db_pack_cost;
+        item.sale_price = item.db_pack_price;
+    } else {
+        item.purchase_price = item.db_unit_cost;
+        item.sale_price = item.db_unit_price;
+    }
+    renderItems();
+}
+
+function updateItemProp(index, prop, value) {
+    invoiceItems[index][prop] = parseFloat(value) || 0;
+    renderItems();
+}
+
+function removeItem(index) {
+    if (confirm('حذف هذا الصنف؟')) {
+        invoiceItems.splice(index, 1);
+        renderItems();
+    }
+}
+
+// ==========================================
+// 4. LAST INVOICE LOGIC
+// ==========================================
+function checkLastInvoice() {
+    var supplierId = document.getElementById('supplierId').value;
+    if (!supplierId) return;
+    
+    // Don't overwrite if items exist
+    if (invoiceItems.length > 0) return;
+
+    if (confirm('هل تريد استيراد أصناف آخر فاتورة لهذا المورد؟')) {
+        apiRequest('?page=purchases&action=getLastInvoice&supplier_id=' + supplierId)
+            .then(function(res) {
+                if (res.success && res.data && res.data.length > 0) {
+                    // Map items to our structure
+                    invoiceItems = res.data.map(function(i) {
+                        return {
+                            product_id: i.product_id,
+                            product_name: i.product_name,
+                            unit_mode: (i.pack_unit_quantity > 1 && i.purchase_price == i.current_pack_cost) ? 'pack' : 'unit', 
+                            quantity: parseFloat(i.quantity),
+                            
+                            db_pack_cost: parseFloat(i.current_pack_cost) || 0,
+                            db_unit_cost: parseFloat(i.current_unit_cost) || 0,
+                            db_pack_price: parseFloat(i.current_pack_price) || 0,
+                            db_unit_price: parseFloat(i.current_unit_price) || 0,
+                            pack_qty: parseFloat(i.pack_unit_quantity) || 1,
+                            pack_type: i.pack_type || 'عبوة',
+                            
+                            purchase_price: parseFloat(i.purchase_price),
+                            sale_price: 0 
+                        };
+                    });
+                    
+                    // Fix sale price
+                    invoiceItems.forEach(function(i) {
+                        i.sale_price = i.unit_mode === 'pack' ? i.db_pack_price : i.db_unit_price;
+                    });
+                    
+                    renderItems();
+                } else {
+                    alert('لا توجد فواتير سابقة لهذا المورد');
+                }
+            })
+            .catch(function(e) {
+                console.error(e);
+            });
+    }
+}
+
+// ==========================================
+// 5. SAVE
+// ==========================================
+function saveInvoice() {
+    if (invoiceItems.length === 0) {
+        alert('لا توجد أصناف في الفاتورة');
+        return;
+    }
+    
+    var supplierId = document.getElementById('supplierId').value;
+    if (!supplierId) {
+        alert('اختر المورد');
+        return;
+    }
+    
+    if (!confirm('هل أنت متأكد من حفظ الفاتورة؟ سيتم تحديث المخزون والأسعار.')) return;
+    
+    var payload = {
+        supplier_id: supplierId,
+        invoice_number: document.getElementById('invoiceNumber').value,
+        date: document.getElementById('invoiceDate').value,
+        items: invoiceItems
+    };
+    
+    apiRequest('?page=purchases&action=save', {
+        method: 'POST',
+        body: payload
+    })
+    .then(function(res) {
+        if (res.success) {
+            alert('تم الحفظ بنجاح ✅');
+            window.location.href = '?page=purchases';
+        } else {
+            alert('خطأ: ' + res.message);
+        }
+    })
+    .catch(function(e) {
+        console.error(e);
+        alert('حدث خطأ في الاتصال');
+    });
+}
+</script>
+    </main>
+</div>
+<!-- App JS -->
+<!-- App JS -->
+
+</body>
+</html>
