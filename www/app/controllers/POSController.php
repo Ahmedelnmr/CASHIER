@@ -14,6 +14,8 @@ class POSController {
      * POS Main Screen
      */
     public function index() {
+        $settingsService = new SettingsService();
+        $storeInfo = $settingsService->getStoreInfo();
         include APP_PATH . '/views/pos/index.php';
     }
 

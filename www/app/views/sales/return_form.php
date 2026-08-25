@@ -30,7 +30,7 @@
                                            data-product-name="<?= htmlspecialchars($item['product_name']) ?>"
                                            data-price="<?= $item['price'] ?>"
                                            data-max="<?= $item['quantity'] ?>"
-                                           min="0" max="<?= $item['quantity'] ?>" value="0" step="1">
+                                           min="0" max="<?= $item['quantity'] ?>" value="0" step="0.001">
                                 </td>
                                 <td class="line-total">0.00</td>
                             </tr>

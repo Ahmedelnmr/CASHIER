@@ -2,9 +2,9 @@
 <?php $isEdit = !empty($product); ?>
 <div class="page-header">
     <div>
-        <h1><?= $isEdit ? '✏️ تعديل المنتج' : '➕ إضافة منتج جديد' ?></h1>
+        <h1><?= $isEdit ? 'تعديل المنتج' : 'إضافة منتج جديد' ?></h1>
     </div>
-    <a href="?page=products" class="btn btn-outline">← العودة للقائمة</a>
+    <a href="?page=products" class="btn btn-outline">العودة للقائمة</a>
 </div>
 
 <div class="card">
@@ -88,7 +88,7 @@
                 </div>
                 <div class="form-group">
                     <label id="lbl_unit_buy">سعر شراء القطعة الواحدة *</label>
-                    <input type="number" name="purchase_price" id="purchase_price" class="form-control" step="0.001" min="0" required value="<?= $product['purchase_price'] ?? '0' ?>" readonly style="background-color: #f0f0f0;">
+                    <input type="number" name="purchase_price" id="purchase_price" class="form-control" step="0.001" min="0" required value="<?= $product['purchase_price'] ?? '0' ?>">
                     <small class="text-muted">محسوب تلقائياً</small>
                 </div>
             </div>

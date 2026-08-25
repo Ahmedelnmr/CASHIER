@@ -7,6 +7,11 @@ class PurchaseController {
     private $purchaseService;
 
     public function __construct() {
+        $auth = new AuthService();
+        if (!$auth->hasRole('manager')) {
+            header('Location: ?page=dashboard');
+            exit;
+        }
         $this->purchaseService = new PurchaseService();
     }
 

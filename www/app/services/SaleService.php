@@ -51,14 +51,24 @@ class SaleService {
                 }
             }
 
-            // 2. Revert Safe Transaction (cancel original sale income)
+            // 2. Revert Safe Transaction
             if ($sale['total'] > 0) {
+                 // Original sale was income → record reversal (money out)
                  $stmt = $db->getConnection()->prepare("INSERT INTO safe_transactions (type, amount, date, description) VALUES (?, ?, ?, ?)");
                  $stmt->execute([
                      'sale_void', 
                      $sale['total'], 
                      date('Y-m-d'), 
                      "إلغاء فاتورة مبيعات #{$sale['sale_number']}"
+                 ]);
+            } elseif ($sale['total'] < 0) {
+                 // Original was a return (money went out) → reverse it (money back in)
+                 $stmt = $db->getConnection()->prepare("INSERT INTO safe_transactions (type, amount, date, description) VALUES (?, ?, ?, ?)");
+                 $stmt->execute([
+                     'sale', 
+                     abs($sale['total']), 
+                     date('Y-m-d'), 
+                     "إلغاء مرتجع مبيعات #{$sale['sale_number']}"
                  ]);
             }
 
@@ -81,13 +91,37 @@ class SaleService {
         $originalSale = $this->saleRepo->findById($originalSaleId);
         if (!$originalSale) return ['success' => false, 'message' => 'الفاتورة الأصلية غير موجودة'];
 
+        // Block return on voided or return-type sales
+        if ($originalSale['status'] === 'voided') {
+            return ['success' => false, 'message' => 'لا يمكن تسجيل مرتجع على فاتورة ملغاة'];
+        }
+        if ($originalSale['type'] !== 'sale') {
+            return ['success' => false, 'message' => 'لا يمكن تسجيل مرتجع على فاتورة مرتجعة'];
+        }
+
         $db = Database::getInstance();
 
-        // Calculate Return Total and enforce absolute positive quantities
+        // Build a map of original quantities for validation
+        $originalQtyMap = [];
+        if (!empty($originalSale['items'])) {
+            foreach ($originalSale['items'] as $origItem) {
+                $pid = $origItem['product_id'];
+                $originalQtyMap[$pid] = ($originalQtyMap[$pid] ?? 0) + abs(floatval($origItem['quantity']));
+            }
+        }
+
+        // Calculate Return Total, enforce absolute positive quantities, and validate
         $returnTotal = 0;
         foreach ($items as &$item) {
             $item['quantity'] = abs(floatval($item['quantity'])); // Prevent negative quantities
             $returnTotal += ($item['quantity'] * $item['price']);
+
+            // Validate: return qty cannot exceed original qty
+            $pid = $item['product_id'];
+            $maxQty = $originalQtyMap[$pid] ?? 0;
+            if ($item['quantity'] > $maxQty) {
+                return ['success' => false, 'message' => "الكمية المرتجعة للمنتج '{$item['product_name']}' تتجاوز الكمية الأصلية ({$maxQty})"];
+            }
         }
         unset($item);
 
@@ -186,31 +220,43 @@ class SaleService {
         try {
             $db->beginTransaction();
 
-            // 1. Restore Stock
-            if (!empty($sale['items'])) {
-                foreach ($sale['items'] as $item) {
-                     $this->productRepo->updateStock($item['product_id'], $item['quantity']);
-                     
-                     $this->stockMovementRepo->create([
-                         'product_id' => $item['product_id'],
-                         'type' => 'adjustment',
-                         'quantity' => $item['quantity'],
-                         'reference_type' => 'sale_delete',
-                         'reference_id' => $id,
-                         'notes' => "حذف فاتورة #{$sale['sale_number']}" 
+            // Only restore stock if sale was NOT already voided (void already restored it)
+            if ($sale['status'] !== 'voided') {
+                // 1. Restore Stock
+                if (!empty($sale['items'])) {
+                    foreach ($sale['items'] as $item) {
+                         $this->productRepo->updateStock($item['product_id'], $item['quantity']);
+                         
+                         $this->stockMovementRepo->create([
+                             'product_id' => $item['product_id'],
+                             'type' => 'adjustment',
+                             'quantity' => $item['quantity'],
+                             'reference_type' => 'sale_delete',
+                             'reference_id' => $id,
+                             'notes' => "حذف فاتورة #{$sale['sale_number']}" 
+                         ]);
+                    }
+                }
+
+                // 2. Reverse Safe Transaction (cancel original sale income)
+                if ($sale['total'] > 0) {
+                     $stmt = $db->getConnection()->prepare("INSERT INTO safe_transactions (type, amount, date, description) VALUES (?, ?, ?, ?)");
+                     $stmt->execute([
+                         'sale_void', 
+                         $sale['total'], 
+                         date('Y-m-d'), 
+                         "حذف فاتورة مبيعات #{$sale['sale_number']}"
+                     ]);
+                } elseif ($sale['total'] < 0) {
+                     // Was a return → reverse it
+                     $stmt = $db->getConnection()->prepare("INSERT INTO safe_transactions (type, amount, date, description) VALUES (?, ?, ?, ?)");
+                     $stmt->execute([
+                         'sale', 
+                         abs($sale['total']), 
+                         date('Y-m-d'), 
+                         "حذف مرتجع مبيعات #{$sale['sale_number']}"
                      ]);
                 }
-            }
-
-            // 2. Reverse Safe Transaction (cancel original sale income)
-            if ($sale['total'] > 0) {
-                 $stmt = $db->getConnection()->prepare("INSERT INTO safe_transactions (type, amount, date, description) VALUES (?, ?, ?, ?)");
-                 $stmt->execute([
-                     'sale_void', 
-                     $sale['total'], 
-                     date('Y-m-d'), 
-                     "حذف فاتورة مبيعات #{$sale['sale_number']}"
-                 ]);
             }
 
             // 3. Delete Record

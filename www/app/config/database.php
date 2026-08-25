@@ -48,23 +48,50 @@ class Database {
     }
 
     /**
-     * Run database migrations
+     * Run pending database migrations (versioned)
      */
     public function migrate() {
+        // Ensure migrations tracking table exists
+        $this->pdo->exec(
+            "CREATE TABLE IF NOT EXISTS migrations (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                filename TEXT NOT NULL UNIQUE,
+                applied_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
+            )"
+        );
+
         $migrationsDir = __DIR__ . '/../database/migrations/';
         $migrationFiles = glob($migrationsDir . '*.sql');
         sort($migrationFiles);
 
+        // Get already applied migrations
+        $applied = [];
+        $stmt = $this->pdo->query("SELECT filename FROM migrations");
+        while ($row = $stmt->fetch()) {
+            $applied[$row['filename']] = true;
+        }
+
         foreach ($migrationFiles as $file) {
+            $filename = basename($file);
+            if (isset($applied[$filename])) {
+                continue; // Already applied, skip
+            }
+
             $sql = file_get_contents($file);
             try {
                 $this->pdo->exec($sql);
+                // Record successful migration
+                $insert = $this->pdo->prepare("INSERT INTO migrations (filename) VALUES (?)");
+                $insert->execute([$filename]);
             } catch (PDOException $e) {
-                // Skip if tables/columns already exist (common on repeated migrations)
-                if (strpos($e->getMessage(), 'already exists') === false &&
-                    strpos($e->getMessage(), 'UNIQUE constraint') === false &&
-                    strpos($e->getMessage(), 'duplicate column name') === false) {
-                    error_log('Migration error in ' . basename($file) . ': ' . $e->getMessage());
+                // Record even if errors are "already exists" (first-time upgrade from unversioned)
+                if (strpos($e->getMessage(), 'already exists') !== false ||
+                    strpos($e->getMessage(), 'UNIQUE constraint') !== false ||
+                    strpos($e->getMessage(), 'duplicate column name') !== false) {
+                    $insert = $this->pdo->prepare("INSERT OR IGNORE INTO migrations (filename) VALUES (?)");
+                    $insert->execute([$filename]);
+                } else {
+                    error_log('Migration error in ' . $filename . ': ' . $e->getMessage());
                 }
             }
         }

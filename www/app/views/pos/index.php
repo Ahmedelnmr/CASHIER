@@ -19,6 +19,8 @@ if (isset($_SESSION['pos_cart_restore'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نقطة البيع - POS</title>
     <link rel="stylesheet" href="public/css/pos_simple.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="public/css/pos_fixes.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="public/css/main.css?v=<?= time() ?>">
 </head>
 <body>
 <div class="toast-container" id="toastContainer"></div>
@@ -26,34 +28,41 @@ if (isset($_SESSION['pos_cart_restore'])) {
 <div class="pos-fullscreen">
     <!-- Top Navigation Bar -->
     <div class="pos-topbar">
-        <div style="display:flex;align-items:center;gap:20px;">
-            <a href="?page=dashboard" class="btn btn-ghost btn-sm">🏠 الرئيسية</a>
-            <h2>🛒 نقطة البيع</h2>
+        <div style="display:flex;align-items:center;gap:16px;">
+            <a href="?page=dashboard" class="btn btn-ghost btn-sm">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                الرئيسية
+            </a>
+            <h2>نقطة البيع</h2>
         </div>
-        <div style="display:flex;align-items:center;gap:12px;">
-            <button class="btn btn-outline btn-sm" onclick="openDiscount()">🏷️ خصم</button>
-            <button class="btn btn-outline btn-sm" onclick="openManualPrice()">💲 يدوي</button>
-            <button class="btn btn-outline btn-sm" onclick="openWeightInput()">⚖️ وزن</button>
-            <button class="btn btn-danger btn-sm" onclick="clearCart()">🗑️ تفريغ</button>
+        <div style="display:flex;align-items:center;gap:8px;">
+            <button class="btn btn-outline btn-sm" onclick="openDiscount()">خصم</button>
+            <button class="btn btn-outline btn-sm" onclick="openManualPrice()">يدوي</button>
+            <button class="btn btn-outline btn-sm" onclick="openWeightInput()">وزن</button>
+            <button class="btn btn-danger btn-sm" onclick="clearCart()">تفريغ</button>
+            <a href="?page=login&action=logout" class="btn btn-ghost btn-sm" style="color:#ef4444;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            </a>
         </div>
     </div>
 
     <!-- Input Section -->
     <div class="pos-input-section">
         <div class="pos-input-wrapper">
-             <!-- Embedded Scanner Container -->
-
-
             <div style="flex: 1;">
                 <div class="pos-input-group">
-                    <span class="pos-input-icon">📷</span>
+                    <span class="pos-input-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="1" width="18" height="22" rx="2" ry="2"></rect><line x1="7" y1="6" x2="7" y2="6"></line><line x1="12" y1="6" x2="12" y2="6"></line><line x1="17" y1="6" x2="17" y2="6"></line></svg>
+                    </span>
                     <input type="text" id="barcodeInput" class="pos-barcode-input" 
                            placeholder="امسح الباركود أو أدخل الكود (F2)..." 
                            autocomplete="off" autofocus>
                     <div class="pos-search-results" id="searchResults"></div>
                 </div>
                 <div class="pos-input-group">
-                    <span class="pos-input-icon">🔍</span>
+                    <span class="pos-input-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </span>
                     <input type="text" id="productSearch" class="pos-barcode-input" 
                            placeholder="ابحث عن منتج بالاسم..." 
                            oninput="searchProducts(this.value)">
@@ -89,8 +98,10 @@ if (isset($_SESSION['pos_cart_restore'])) {
                     <tr id="emptyCart">
                         <td colspan="7">
                             <div class="empty-cart-state">
-                                <div class="icon">🛒</div>
-                                <p>السلة فارغة - ابدأ بمسح باركود أو البحث عن منتج</p>
+                                <div class="icon">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#8899aa" stroke-width="1.5"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                                </div>
+                                <p>السلة فارغة — ابدأ بمسح باركود أو البحث عن منتج</p>
                             </div>
                         </td>
                     </tr>
@@ -117,7 +128,7 @@ if (isset($_SESSION['pos_cart_restore'])) {
                 </div>
             </div>
             <button id="checkoutBtn" onclick="processCheckout()" disabled>
-                ✅ إتمام البيع (F5)
+                إتمام البيع (F5)
             </button>
         </div>
     </div>
@@ -129,7 +140,7 @@ if (isset($_SESSION['pos_cart_restore'])) {
 <div class="modal-overlay" id="manualPriceModal">
     <div class="modal">
         <div class="modal-header">
-            <h3>💲 سعر يدوي</h3>
+            <h3>سعر يدوي</h3>
             <button class="modal-close" onclick="closeModal('manualPriceModal')">&times;</button>
         </div>
         <div class="modal-body">
@@ -157,7 +168,7 @@ if (isset($_SESSION['pos_cart_restore'])) {
 <div class="modal-overlay" id="weightModal">
     <div class="modal">
         <div class="modal-header">
-            <h3>⚖️ إدخال الوزن</h3>
+            <h3>إدخال الوزن</h3>
             <button class="modal-close" onclick="closeModal('weightModal')">&times;</button>
         </div>
         <div class="modal-body">
@@ -197,7 +208,7 @@ if (isset($_SESSION['pos_cart_restore'])) {
 <div class="modal-overlay" id="discountModal">
     <div class="modal">
         <div class="modal-header">
-            <h3>🏷️ خصم</h3>
+            <h3>خصم</h3>
             <button class="modal-close" onclick="closeModal('discountModal')">&times;</button>
         </div>
         <div class="modal-body">
@@ -233,6 +244,16 @@ if (isset($_SESSION['pos_cart_restore'])) {
 <script src="public/js/pos_core_v2.js?v=<?= time() ?>"></script>
 <script src="public/js/pos_shortcuts.js?v=<?= time() ?>"></script>
 <script>
+// Store info from settings (used by showReceipt)
+window.STORE_INFO = {
+    name: <?= json_encode($storeInfo['name'] ?? 'تاجر') ?>,
+    phone: <?= json_encode($storeInfo['phone'] ?? '') ?>,
+    address: <?= json_encode($storeInfo['address'] ?? '') ?>,
+    receiptHeader: <?= json_encode($storeInfo['receipt_header'] ?? '') ?>,
+    receiptFooter: <?= json_encode($storeInfo['receipt_footer'] ?? 'شكراً لتسوقكم معنا - نتمنى لكم يوماً سعيداً') ?>,
+    currency: <?= json_encode($storeInfo['currency_symbol'] ?? 'ج.م') ?>
+};
+
 <?php if (!empty($restoreCart)): ?>
     window.addEventListener('load', function() {
         try {

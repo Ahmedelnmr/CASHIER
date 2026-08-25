@@ -1,0 +1,34 @@
+# Database files
+www/data/*.db
+www/data/*.db-wal
+www/data/*.db-shm
+www/data/backups/
+
+# Logs
+www/error.log
+www/debug.log
+debug.log
+*.log
+
+# Cache
+webcache/
+
+# PHP Desktop
+natives_blob.bin
+snapshot_blob.bin
+cef_*.pak
+cef.pak
+cef_extensions.pak
+chrome_elf.dll
+d3dcompiler_*.dll
+icudtl.dat
+libcef.dll
+libEGL.dll
+libGLESv2.dll
+widevinecdmadapter.dll
+devtools_resources.pak
+locales/
+
+# Temp
+*.tmp
+*.temp

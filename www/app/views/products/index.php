@@ -1,18 +1,21 @@
 <!-- Products List View -->
 <div class="page-header">
     <div>
-        <h1>📦 إدارة المنتجات</h1>
+        <h1>إدارة المنتجات</h1>
         <p class="subtitle">إجمالي المنتجات: <?= count($products) ?></p>
     </div>
-    <a href="?page=products&action=create" class="btn btn-primary">➕ إضافة منتج</a>
+    <a href="?page=products&action=create" class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        إضافة منتج
+    </a>
 </div>
 
 <!-- Filters -->
 <div class="card" style="padding:14px 20px;">
-    <form class="d-flex align-center gap-2" method="GET">
+    <form style="display:flex;align-items:center;gap:12px;" method="GET">
         <input type="hidden" name="page" value="products">
         <div class="search-box" style="flex:1;">
-            <input type="text" name="search" class="form-control" placeholder="🔍 بحث بالاسم أو الباركود..." value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
+            <input type="text" name="search" class="form-control" placeholder="بحث بالاسم أو الباركود..." value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
         </div>
         <select name="category" class="form-control" style="width:180px;">
             <option value="">كل الأقسام</option>
@@ -27,7 +30,7 @@
             <option value="weight" <?= ($_GET['type'] ?? '') === 'weight' ? 'selected' : '' ?>>وزن</option>
         </select>
         <button type="submit" class="btn btn-outline">بحث</button>
-        <a href="?page=products" class="btn btn-ghost">إعادة تعيين</a>
+        <a href="?page=products" class="btn btn-ghost">إعادة</a>
     </form>
 </div>
 
@@ -46,7 +49,6 @@
                     <th>سعر الشراء</th>
                     <th>سعر البيع</th>
                     <th>المخزون</th>
-                    <th>القسم</th>
                     <th>إجراءات</th>
                 </tr>
             </thead>
@@ -73,7 +75,6 @@
                             <span class="badge badge-success"><?= $p['stock_quantity'] ?></span>
                         <?php endif; ?>
                     </td>
-                    <td class="text-muted fs-sm"><?= $p['category'] ?: '—' ?></td>
                     <td>
                         <div class="btn-group">
                             <a href="?page=products&action=edit&id=<?= $p['id'] ?>" class="btn btn-sm btn-outline">✏️</a>
@@ -87,9 +88,8 @@
     </div>
     <?php else: ?>
     <div class="empty-state">
-        <div class="icon">📦</div>
         <p>لا توجد منتجات بعد</p>
-        <a href="?page=products&action=create" class="btn btn-primary mt-2">➕ إضافة منتج جديد</a>
+        <a href="?page=products&action=create" class="btn btn-primary mt-2">إضافة منتج جديد</a>
     </div>
     <?php endif; ?>
 </div>

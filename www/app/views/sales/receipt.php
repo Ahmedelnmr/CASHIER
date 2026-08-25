@@ -14,8 +14,8 @@
         
         <!-- ===== HEADER with Logo ===== -->
         <div style="border-bottom:2px solid #333;padding-bottom:12px;margin-bottom:10px;text-align:center;">
-            <img src="public/images/logo.png" alt="عطارة الحكمة" style="width:50px;height:50px;margin-bottom:6px;">
-            <div style="font-size:22px;font-weight:bold;color:#2c3e50;margin-bottom:4px;">عطارة الحكمة</div>
+            <img src="public/images/logo.png" alt="تاجر" style="width:50px;height:50px;margin-bottom:6px;">
+            <div style="font-size:22px;font-weight:bold;color:#2c3e50;margin-bottom:4px;">تاجر</div>
             <div style="font-size:11px;color:#666;line-height:1.8;">
                 📞 01096107040<br>
                 📍 القاهرة - المرج - ش الشهيد محمد عبدالفتاح الحجار المتفرع من ش مؤسسة الزكاة

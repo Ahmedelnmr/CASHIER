@@ -1,28 +1,35 @@
 <!-- Inventory View -->
 <div class="page-header">
     <div>
-        <h1>📋 إدارة المخزون</h1>
+        <h1>إدارة المخزون</h1>
+        <p class="subtitle">متابعة وتعديل المخزون</p>
     </div>
 </div>
 
 <!-- Summary Stats -->
 <div class="stats-grid">
     <div class="stat-card">
-        <div class="stat-icon blue">📦</div>
+        <div class="stat-icon purple">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+        </div>
         <div class="stat-info">
             <h4><?= $summary['total_products'] ?? 0 ?></h4>
             <p>إجمالي المنتجات</p>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon green">💰</div>
+        <div class="stat-icon teal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        </div>
         <div class="stat-info">
             <h4><?= number_format($summary['total_value'] ?? 0, 2) ?></h4>
             <p>قيمة المخزون</p>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon red">⚠️</div>
+        <div class="stat-icon red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        </div>
         <div class="stat-info">
             <h4><?= $summary['low_stock_count'] ?? 0 ?></h4>
             <p>منتجات منخفضة</p>
@@ -34,7 +41,7 @@
 <!-- Low Stock Alerts -->
 <div class="card">
     <div class="card-header">
-        <h3>⚠️ تنبيهات المخزون المنخفض (<?= count($lowStock) ?>)</h3>
+        <h3>تنبيهات المخزون المنخفض (<?= count($lowStock) ?>)</h3>
     </div>
     <div class="table-wrapper">
         <table>
@@ -72,13 +79,13 @@
 <!-- All Products Stock -->
 <div class="card">
     <div class="card-header">
-        <h3>📦 مخزون المنتجات</h3>
+        <h3>مخزون المنتجات</h3>
     </div>
     
     <div style="margin-bottom:12px;">
-        <form class="d-flex align-center gap-1" method="GET">
+        <form style="display:flex;align-items:center;gap:8px;" method="GET">
             <input type="hidden" name="page" value="inventory">
-            <input type="text" name="search" class="form-control" style="max-width:300px;" placeholder="🔍 بحث..." value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
+            <input type="text" name="search" class="form-control" style="max-width:300px;" placeholder="بحث..." value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
             <button type="submit" class="btn btn-outline btn-sm">بحث</button>
         </form>
     </div>
@@ -106,7 +113,6 @@
                         $packQty = $p['pack_unit_quantity'] ?? 1;
                         $badgeClass = ($p['min_stock'] > 0 && $stockQty <= $p['min_stock']) ? 'badge-danger' : 'badge-success';
                         
-                        // Calculate Pack + Unit breakdown
                         if ($packQty > 1) {
                             $packs = floor($stockQty / $packQty);
                             $units = $stockQty % $packQty;
@@ -125,8 +131,10 @@
                     <td><?= $p['min_stock'] ?></td>
                     <td class="text-muted"><?= number_format($p['stock_quantity'] * $p['purchase_price'], 2) ?></td>
                     <td>
-                        <button class="btn btn-sm btn-outline" onclick="openAdjust(<?= $p['id'] ?>)" style="cursor:pointer;">📝 تعديل</button>
-                        <button class="btn btn-sm btn-ghost" onclick="viewMoves(<?= $p['id'] ?>)" style="cursor:pointer;">📊 الحركات</button>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-outline" onclick="openAdjust(<?= $p['id'] ?>)">تعديل</button>
+                            <button class="btn btn-sm btn-ghost" onclick="viewMoves(<?= $p['id'] ?>)">الحركات</button>
+                        </div>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -139,7 +147,7 @@
 <div class="modal-overlay" id="adjustModal">
     <div class="modal">
         <div class="modal-header">
-            <h3>📝 تعديل المخزون</h3>
+            <h3>تعديل المخزون</h3>
             <button class="modal-close" onclick="closeModal('adjustModal')">&times;</button>
         </div>
         <div class="modal-body">
@@ -160,7 +168,7 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-outline" onclick="closeModal('adjustModal')">إلغاء</button>
-            <button class="btn btn-primary" onclick="saveAdjustment()">💾 حفظ</button>
+            <button class="btn btn-primary" onclick="saveAdjustment()">حفظ</button>
         </div>
     </div>
 </div>
@@ -169,7 +177,7 @@
 <div class="modal-overlay" id="movementsModal">
     <div class="modal" style="max-width:700px;">
         <div class="modal-header">
-            <h3>📊 حركات المخزون</h3>
+            <h3>حركات المخزون</h3>
             <button class="modal-close" onclick="closeModal('movementsModal')">&times;</button>
         </div>
         <div class="modal-body" id="movementsContent">
@@ -179,30 +187,15 @@
 </div>
 
 <script>
-// ===== DEBUG: Test if JavaScript runs =====
-console.log('✅ Inventory JavaScript loaded!');
-
-// Relying on app_core.js for apiRequest and modal functions.
-
-// Global product map (populated from PHP)
 var productMap = {
     <?php foreach ($products as $p): ?>
-    <?= $p['id'] ?>: {
-        id: <?= $p['id'] ?>,
-        name: "<?= addslashes($p['name']) ?>",
-        qty: <?= $p['stock_quantity'] ?>
-    },
+    <?= $p['id'] ?>: { id: <?= $p['id'] ?>, name: "<?= addslashes($p['name']) ?>", qty: <?= $p['stock_quantity'] ?> },
     <?php endforeach; ?>
 };
 
-// Simple global functions for onclick
 function openAdjust(id) {
-    console.log('openAdjust called:', id);
     var p = productMap[id];
-    if (!p) {
-        alert('Product not found');
-        return;
-    }
+    if (!p) return;
     document.getElementById('adjustProductId').value = p.id;
     document.getElementById('adjustProductName').textContent = p.name;
     document.getElementById('adjustCurrentQty').value = p.qty;
@@ -211,21 +204,28 @@ function openAdjust(id) {
 }
 
 function viewMoves(id) {
-    console.log('viewMoves called:', id);
-    viewMovements(id);
-}
+    openModal('movementsModal');
+    var content = document.getElementById('movementsContent');
+    content.innerHTML = '<div class="spinner"></div>';
 
-function openAdjustModal(id, name, currentQty) {
-    console.log('🖱️ Button clicked - openAdjustModal:', {id: id, name: name, currentQty: currentQty});
-    document.getElementById('adjustProductId').value = id;
-    document.getElementById('adjustProductName').textContent = name;
-    document.getElementById('adjustCurrentQty').value = currentQty;
-    document.getElementById('adjustNewQty').value = currentQty;
-    openModal('adjustModal');
+    apiRequest('?page=inventory&action=movements&product_id=' + id).then(function(res) {
+        if (res.success && res.data && res.data.length > 0) {
+            var typeLabels = { purchase: 'شراء', sale: 'بيع', adjustment: 'تعديل' };
+            var rows = '';
+            for (var i = 0; i < res.data.length; i++) {
+                var m = res.data[i];
+                var colorClass = m.quantity >= 0 ? 'text-success' : 'text-danger';
+                var sign = m.quantity >= 0 ? '+' : '';
+                rows += '<tr><td class="fs-sm">' + m.created_at + '</td><td>' + (typeLabels[m.type] || m.type) + '</td><td class="' + colorClass + ' fw-bold">' + sign + m.quantity + '</td><td class="text-muted fs-sm">' + (m.notes || '—') + '</td></tr>';
+            }
+            content.innerHTML = '<div class="table-wrapper"><table><thead><tr><th>التاريخ</th><th>النوع</th><th>الكمية</th><th>ملاحظات</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+        } else {
+            content.innerHTML = '<div class="empty-state"><p>لا توجد حركات</p></div>';
+        }
+    });
 }
 
 function saveAdjustment() {
-    console.log('💾 Saving adjustment...');
     var productId = document.getElementById('adjustProductId').value;
     var newQty = parseFloat(document.getElementById('adjustNewQty').value);
     var reason = document.getElementById('adjustReason').value;
@@ -235,51 +235,11 @@ function saveAdjustment() {
         body: { product_id: productId, new_quantity: newQty, reason: reason }
     }).then(function(res) {
         if (res.success) {
-            if (typeof showToast !== 'undefined') {
-                showToast('✅ تم تعديل المخزون');
-            } else {
-                alert('✅ تم تعديل المخزون');
-            }
+            showToast('تم تعديل المخزون');
             closeModal('adjustModal');
             setTimeout(function() { location.reload(); }, 500);
         } else {
-            if (typeof showToast !== 'undefined') {
-                showToast(res.message || 'خطأ', 'error');
-            } else {
-                alert(res.message || 'خطأ');
-            }
-        }
-    });
-}
-
-function viewMovements(productId) {
-    console.log('🖱️ Button clicked - viewMovements:', productId);
-    openModal('movementsModal');
-    var content = document.getElementById('movementsContent');
-    content.innerHTML = '<div class="spinner"></div>';
-
-    apiRequest('?page=inventory&action=movements&product_id=' + productId).then(function(res) {
-        if (res.success && res.data && res.data.length > 0) {
-            var typeLabels = { purchase: '🟢 شراء', sale: '🔴 بيع', adjustment: '🟡 تعديل' };
-            var rows = '';
-            for (var i = 0; i < res.data.length; i++) {
-                var m = res.data[i];
-                var colorClass = m.quantity >= 0 ? 'text-success' : 'text-danger';
-                var sign = m.quantity >= 0 ? '+' : '';
-                rows += '<tr>' +
-                    '<td class="fs-sm">' + m.created_at + '</td>' +
-                    '<td>' + (typeLabels[m.type] || m.type) + '</td>' +
-                    '<td class="' + colorClass + ' fw-bold">' + sign + m.quantity + '</td>' +
-                    '<td class="text-muted fs-sm">' + (m.notes || '—') + '</td>' +
-                    '</tr>';
-            }
-            content.innerHTML = '<div class="table-wrapper">' +
-                '<table>' +
-                '<thead><tr><th>التاريخ</th><th>النوع</th><th>الكمية</th><th>ملاحظات</th></tr></thead>' +
-                '<tbody>' + rows + '</tbody>' +
-                '</table></div>';
-        } else {
-            content.innerHTML = '<div class="empty-state"><p>لا توجد حركات</p></div>';
+            showToast(res.message || 'خطأ', 'error');
         }
     });
 }

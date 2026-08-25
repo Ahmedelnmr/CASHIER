@@ -6,6 +6,11 @@ class SafeController {
     private $db;
     
     public function __construct() {
+        $auth = new AuthService();
+        if (!$auth->hasRole('admin')) {
+            header('Location: ?page=dashboard');
+            exit;
+        }
         $this->db = Database::getInstance()->getConnection();
     }
     
@@ -45,7 +50,9 @@ class SafeController {
         $empStmt = $this->db->query("SELECT * FROM employees WHERE is_active = 1 ORDER BY name ASC");
         $employees = $empStmt->fetchAll(PDO::FETCH_ASSOC);
         
+        include APP_PATH . '/views/layout/header.php';
         include APP_PATH . '/views/safe/index.php';
+        include APP_PATH . '/views/layout/footer.php';
     }
     
     // Get Current Balance

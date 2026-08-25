@@ -112,6 +112,20 @@ class PurchaseService {
                                 $updateData['pack_purchase_price'] = $item['purchase_price'] * $product['pack_unit_quantity'];
                             }
                         }
+                        // Propagate sale price if provided in purchase invoice
+                        if (!empty($item['sale_price']) && floatval($item['sale_price']) > 0) {
+                            if ($isPack) {
+                                $updateData['pack_sale_price'] = $item['sale_price'];
+                                if ($product['pack_unit_quantity'] > 0) {
+                                    $updateData['sale_price_unit'] = $item['sale_price'] / $product['pack_unit_quantity'];
+                                }
+                            } else {
+                                $updateData['sale_price_unit'] = $item['sale_price'];
+                                if ($product['pack_unit_quantity'] > 0) {
+                                    $updateData['pack_sale_price'] = $item['sale_price'] * $product['pack_unit_quantity'];
+                                }
+                            }
+                        }
                         if (!empty($updateData)) {
                             $this->productRepo->update($productId, $updateData);
                         }

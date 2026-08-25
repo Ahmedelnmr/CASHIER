@@ -5,6 +5,11 @@ ob_start();
  * Routes requests to appropriate controllers
  */
 
+// Start session
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 // Error reporting — log to file only (display OFF to prevent PHPDesktop header overflow)
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
@@ -28,6 +33,7 @@ define('APP_PATH', __DIR__ . '/app');
 require_once APP_PATH . '/config/database.php';
 require_once APP_PATH . '/helpers/Response.php';
 require_once APP_PATH . '/helpers/Validator.php';
+require_once APP_PATH . '/services/AuthService.php';
 
 // Initialize database & run migrations
 $db = Database::getInstance();
@@ -47,8 +53,23 @@ try {
 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
 $action = isset($_GET['action']) ? $_GET['action'] : 'index';
 
+// =====================================================
+// AUTHENTICATION CHECK
+// =====================================================
+$publicPages = ['login'];
+$isPublicPage = in_array($page, $publicPages);
+
+if (!$isPublicPage) {
+    $auth = new AuthService();
+    if (!$auth->isLoggedIn()) {
+        header('Location: ?page=login');
+        exit;
+    }
+}
+
 // Route map
 $routes = [
+    'login'      => 'LoginController',
     'dashboard'  => 'DashboardController',
     'pos'        => 'POSController',
     'products'   => 'ProductController',
@@ -59,6 +80,12 @@ $routes = [
     'reports'    => 'ReportController',
     'employees'  => 'EmployeeController',
     'safe'       => 'SafeController',
+    'users'      => 'UsersController',
+    'settings'   => 'SettingsController',
+    'backup'     => 'BackupController',
+    'shifts'     => 'ShiftController',
+    'customers'  => 'CustomerController',
+    'barcode'    => 'BarcodeController',
 ];
 
 // Load required files based on route

@@ -7,6 +7,11 @@ class InventoryController {
     private $inventoryService;
 
     public function __construct() {
+        $auth = new AuthService();
+        if (!$auth->hasRole('manager')) {
+            header('Location: ?page=dashboard');
+            exit;
+        }
         $this->inventoryService = new InventoryService();
     }
 

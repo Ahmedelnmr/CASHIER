@@ -1,77 +1,100 @@
 // ==========================================
-// CORE APP UTILITIES
+// CORE APP UTILITIES (ES5 - Chrome 57 Compatible)
 // ==========================================
 
 // Modal Controls
 function openModal(modalId) {
-    const modal = document.getElementById(modalId);
+    var modal = document.getElementById(modalId);
     if (modal) modal.classList.add('active');
 }
 
 function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
+    var modal = document.getElementById(modalId);
     if (modal) modal.classList.remove('active');
 }
 
 // Toast Notifications
-function showToast(message, type = 'success') {
-    const container = document.getElementById('toastContainer');
+function showToast(message, type) {
+    type = type || 'success';
+    var container = document.getElementById('toastContainer');
     if (!container) return;
 
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
+    var toast = document.createElement('div');
+    toast.className = 'toast toast-' + type;
     toast.textContent = message;
-    toast.style.cssText = `
-        background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
-        color: white;
-        padding: 12px 20px;
-        border-radius: 6px;
-        margin-bottom: 10px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        animation: slideIn 0.3s ease;
-    `;
+
+    var bg = type === 'success' ? '#10b981' : (type === 'error' ? '#ef4444' : '#3b82f6');
+    toast.style.cssText =
+        'background:' + bg + ';' +
+        'color:white;' +
+        'padding:12px 20px;' +
+        'border-radius:6px;' +
+        'margin-bottom:10px;' +
+        'box-shadow:0 4px 8px rgba(0,0,0,0.2);' +
+        'animation:slideIn 0.3s ease;';
 
     container.appendChild(toast);
 
-    setTimeout(() => {
+    setTimeout(function () {
         toast.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
+        setTimeout(function () {
+            if (toast.parentNode) toast.remove();
+        }, 300);
     }, 3000);
 }
 
 // Debounce utility
 function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
+    var timeout;
+    return function () {
+        var context = this;
+        var args = arguments;
+        var later = function () {
             clearTimeout(timeout);
-            func(...args);
+            func.apply(context, args);
         };
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
     };
 }
 
-// API Request Helper
-async function apiRequest(url, options = {}) {
-    try {
-        const defaultOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
+// API Request Helper (XMLHttpRequest for PHPDesktop compatibility)
+function apiRequest(url, options) {
+    options = options || {};
+    return new Promise(function(resolve) {
+        var xhr = new XMLHttpRequest();
+        var method = options.method || 'GET';
+        xhr.open(method, url, true);
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+        if (method !== 'GET') {
+            xhr.setRequestHeader('Content-Type', 'application/json');
+        }
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                try {
+                    var data = JSON.parse(xhr.responseText);
+                    resolve(data);
+                } catch (e) {
+                    console.error('API parse error:', e, 'Response:', xhr.responseText.substring(0, 300));
+                    resolve({ success: false, message: 'استجابة غير صالحة من الخادم' });
+                }
             }
         };
 
-        if (options.body && typeof options.body === 'object') {
-            options.body = JSON.stringify(options.body);
-        }
+        xhr.onerror = function() {
+            console.error('API network error');
+            resolve({ success: false, message: 'خطأ في الاتصال بالخادم' });
+        };
 
-        const response = await fetch(url, Object.assign({}, defaultOptions, options));
-        return await response.json();
-    } catch (error) {
-        console.error('API Error:', error);
-        return { success: false, message: 'خطأ في الاتصال' };
-    }
+        if (options.body) {
+            var body = typeof options.body === 'object' ? JSON.stringify(options.body) : options.body;
+            xhr.send(body);
+        } else {
+            xhr.send();
+        }
+    });
 }
 
 // Delete Item - Used by Products & Suppliers
@@ -82,29 +105,8 @@ function deleteItem(url, confirmMessage) {
 }
 
 // Add CSS animations
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideIn {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes slideOut {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-    }
-`;
+var style = document.createElement('style');
+style.textContent =
+    '@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }' +
+    '@keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }';
 document.head.appendChild(style);
-

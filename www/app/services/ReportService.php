@@ -376,14 +376,6 @@ class ReportService {
                 FROM safe_transactions
                 WHERE date(date) BETWEEN :from3 AND :to3
                 GROUP BY date(date)
-
-                UNION ALL
-
-                SELECT date AS report_date,
-                    0, 0, 0, SUM(total) as purchase_total, 0, 0, 0, 0
-                FROM purchase_invoices
-                WHERE date BETWEEN :from4 AND :to4 AND status != 'voided' AND type = 'purchase'
-                GROUP BY date
              )
              GROUP BY report_date
              ORDER BY report_date DESC"
@@ -392,7 +384,6 @@ class ReportService {
             ':from'  => $dateFrom, ':to'  => $dateTo,
             ':from2' => $dateFrom, ':to2' => $dateTo,
             ':from3' => $dateFrom, ':to3' => $dateTo,
-            ':from4' => $dateFrom, ':to4' => $dateTo,
         ]);
         $dailyRows = $dailyStmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -444,6 +435,134 @@ class ReportService {
                 'profit'      => $netProfit,
             ]
         ];
+    }
+
+    /**
+     * Sales by category breakdown
+     */
+    public function salesByCategory($dateFrom = null, $dateTo = null) {
+        $sql = "SELECT 
+                    COALESCE(p.category, 'بدون قسم') as category,
+                    COUNT(DISTINCT si.sale_id) as sale_count,
+                    SUM(si.quantity) as total_qty,
+                    SUM(si.subtotal) as total_revenue
+                FROM sale_items si
+                JOIN sales s ON si.sale_id = s.id
+                LEFT JOIN products p ON si.product_id = p.id
+                WHERE s.status != 'voided' AND s.type = 'sale'";
+        $params = [];
+        if ($dateFrom) {
+            $sql .= " AND date(s.datetime) >= :from";
+            $params[':from'] = $dateFrom;
+        }
+        if ($dateTo) {
+            $sql .= " AND date(s.datetime) <= :to";
+            $params[':to'] = $dateTo;
+        }
+        $sql .= " GROUP BY COALESCE(p.category, 'بدون قسم') ORDER BY total_revenue DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Profit margin per product
+     */
+    public function productProfitMargin($dateFrom = null, $dateTo = null, $limit = 30) {
+        $sql = "SELECT 
+                    si.product_id,
+                    si.product_name,
+                    SUM(si.quantity) as total_qty,
+                    SUM(si.subtotal) as total_revenue,
+                    COALESCE(p.purchase_price, 0) as avg_cost,
+                    SUM(si.quantity) * COALESCE(p.purchase_price, 0) as total_cost,
+                    SUM(si.subtotal) - (SUM(si.quantity) * COALESCE(p.purchase_price, 0)) as profit,
+                    CASE WHEN SUM(si.subtotal) > 0 
+                        THEN ((SUM(si.subtotal) - (SUM(si.quantity) * COALESCE(p.purchase_price, 0))) / SUM(si.subtotal)) * 100 
+                        ELSE 0 END as margin_pct
+                FROM sale_items si
+                JOIN sales s ON si.sale_id = s.id
+                LEFT JOIN products p ON si.product_id = p.id
+                WHERE s.status != 'voided' AND s.type = 'sale'";
+        $params = [];
+        if ($dateFrom) {
+            $sql .= " AND date(s.datetime) >= :from";
+            $params[':from'] = $dateFrom;
+        }
+        if ($dateTo) {
+            $sql .= " AND date(s.datetime) <= :to";
+            $params[':to'] = $dateTo;
+        }
+        $sql .= " GROUP BY si.product_id, si.product_name ORDER BY profit DESC LIMIT :limit";
+        $stmt = $this->db->prepare($sql);
+        foreach ($params as $k => $v) $stmt->bindValue($k, $v);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Dead stock report (no sales in last N days)
+     */
+    public function deadStock($days = 30) {
+        $stmt = $this->db->prepare(
+            "SELECT p.id, p.name, p.barcode, p.stock_quantity, p.purchase_price, p.sale_price_unit,
+                    p.category, p.type,
+                    COALESCE(MAX(s.datetime), 'لم يُبَع') as last_sale_date,
+                    COALESCE(SUM(si.quantity), 0) as total_sold,
+                    (p.stock_quantity * p.purchase_price) as stock_value
+             FROM products p
+             LEFT JOIN sale_items si ON p.id = si.product_id
+             LEFT JOIN sales s ON si.sale_id = s.id AND s.status != 'voided' AND s.type = 'sale'
+             WHERE p.is_active = 1 AND p.stock_quantity > 0
+             GROUP BY p.id
+             HAVING last_sale_date = 'لم يُبَع' OR MAX(s.datetime) < date('now', '-' || ? || ' days')
+             ORDER BY stock_value DESC"
+        );
+        $stmt->execute([$days]);
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Cashier performance report
+     */
+    public function cashierPerformance($dateFrom = null, $dateTo = null) {
+        $sql = "SELECT 
+                    u.id as user_id,
+                    u.name as cashier_name,
+                    COUNT(s.id) as sale_count,
+                    COALESCE(SUM(s.total), 0) as total_sales,
+                    COALESCE(SUM(s.discount), 0) as total_discounts,
+                    COALESCE(AVG(s.total), 0) as avg_sale
+                FROM users u
+                LEFT JOIN sales s ON s.shift_id IN (SELECT id FROM shifts WHERE user_id = u.id)
+                    AND s.status != 'voided' AND s.type = 'sale'";
+        $params = [];
+        if ($dateFrom) {
+            $sql .= " AND date(s.datetime) >= :from";
+            $params[':from'] = $dateFrom;
+        }
+        if ($dateTo) {
+            $sql .= " AND date(s.datetime) <= :to";
+            $params[':to'] = $dateTo;
+        }
+        $sql .= " GROUP BY u.id, u.name HAVING sale_count > 0 ORDER BY total_sales DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Customer debtors report
+     */
+    public function customerDebtors() {
+        $stmt = $this->db->prepare(
+            "SELECT id, name, phone, balance, credit_limit, created_at
+             FROM customers WHERE balance > 0 AND is_active = 1
+             ORDER BY balance DESC"
+        );
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 }
         

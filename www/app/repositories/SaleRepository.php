@@ -18,8 +18,8 @@ class SaleRepository {
         $saleNumber = $this->getNextSaleNumber();
 
         $stmt = $this->db->prepare(
-            "INSERT INTO sales (sale_number, subtotal, discount, total, payment_method, notes, type, status, parent_sale_id)
-             VALUES (:sale_number, :subtotal, :discount, :total, :payment_method, :notes, :type, :status, :parent_sale_id)"
+            "INSERT INTO sales (sale_number, subtotal, discount, total, payment_method, notes, type, status, parent_sale_id, customer_id, shift_id)
+             VALUES (:sale_number, :subtotal, :discount, :total, :payment_method, :notes, :type, :status, :parent_sale_id, :customer_id, :shift_id)"
         );
         $stmt->execute([
             ':sale_number' => $saleNumber,
@@ -31,6 +31,8 @@ class SaleRepository {
             ':type' => $saleData['type'] ?? 'sale',
             ':status' => $saleData['status'] ?? 'completed',
             ':parent_sale_id' => $saleData['parent_sale_id'] ?? null,
+            ':customer_id' => $saleData['customer_id'] ?? null,
+            ':shift_id' => $saleData['shift_id'] ?? null,
         ]);
 
         $saleId = $this->db->lastInsertId();
@@ -194,13 +196,14 @@ class SaleRepository {
     public function updateTotals($saleId, $total, $discount, $reason) {
         $stmt = $this->db->prepare(
             "UPDATE sales 
-             SET total = :total, discount = :discount, notes = :reason
+             SET total = :total, discount = :discount, subtotal = :subtotal, notes = :reason
              WHERE id = :id"
         );
         $stmt->execute([
             ':id' => $saleId,
             ':total' => $total,
             ':discount' => $discount,
+            ':subtotal' => $total + $discount,
             ':reason' => $reason
         ]);
     }

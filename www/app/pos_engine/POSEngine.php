@@ -108,6 +108,8 @@ class POSEngine {
             'total' => $total,
             'payment_method' => $saleData['payment_method'] ?? 'cash',
             'notes' => $saleData['notes'] ?? null,
+            'customer_id' => $saleData['customer_id'] ?? null,
+            'shift_id' => $saleData['shift_id'] ?? ($_SESSION['current_shift_id'] ?? null),
         ];
 
         try {

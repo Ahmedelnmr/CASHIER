@@ -26,7 +26,8 @@
     };
 
     // API Request Helper
-    window.apiRequest = async function (url, options = {}) {
+    window.apiRequest = function (url, options) {
+        options = options || {};
         try {
             var defaultOptions = {
                 headers: {
@@ -39,16 +40,19 @@
                 options.body = JSON.stringify(options.body);
             }
 
-            var response = await fetch(url, Object.assign({}, defaultOptions, options));
-            return await response.json();
+            return fetch(url, Object.assign({}, defaultOptions, options))
+                .then(function (response) {
+                    return response.json();
+                });
         } catch (error) {
             console.error('API Error:', error);
-            return { success: false, message: 'خطأ في الاتصال' };
+            return Promise.resolve({ success: false, message: 'خطأ في الاتصال' });
         }
     };
 
     // Toast Notifications
-    window.showToast = function (message, type = 'success') {
+    window.showToast = function (message, type) {
+        type = type || 'success';
         var container = document.getElementById('toastContainer');
         if (!container) return;
 
@@ -146,7 +150,7 @@
             // Global Scanner Listener (Buffer rapid keystrokes)
             var posScanBuffer = '';
             var lastKeyTime = 0;
-            const SCAN_TIMING_THRESHOLD = 100; // ms
+            var SCAN_TIMING_THRESHOLD = 100; // ms
 
             document.addEventListener('keydown', function (e) {
                 // SCANNER SAFETY: Block F12 and DevTools shortcuts first
@@ -161,12 +165,12 @@
                 }
 
                 // If user is typing in an input, ignore (unless it's the body or some non-input element)
-                const target = e.target;
+                var target = e.target;
                 if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
                     return;
                 }
 
-                const currentTime = Date.now();
+                var currentTime = Date.now();
 
                 // Reset buffer if too slow (manual typing detected)
                 if (currentTime - lastKeyTime > SCAN_TIMING_THRESHOLD) {
@@ -268,8 +272,8 @@
             showToast(res.message || 'المنتج غير موجود: [' + code + ']', 'error');
 
             // Play error sound
-            let audio = new Audio("public/audio/error.mp3"); // Ensure this exists or just beep
-            audio.play().catch(e => { });
+            var audio = new Audio("public/audio/error.mp3");
+            audio.play().catch(function () { });
         }
     };
 
@@ -353,7 +357,10 @@
         }
     };
 
-    window.addToCart = function (product, quantity = 1, saleMode = 'unit', unitType = 'قطعة') {
+    window.addToCart = function (product, quantity, saleMode, unitType) {
+        quantity = quantity || 1;
+        saleMode = saleMode || 'unit';
+        unitType = unitType || 'قطعة';
         var price;
         var actualQty = quantity;
 
@@ -712,9 +719,9 @@
                     alert('JS Error in showReceipt: ' + e.message);
                 }
             }
-            // cart = [];
-            // discount = 0;
-            // renderCart();
+            cart = [];
+            discount = 0;
+            renderCart();
         } else {
             showToast(res.message || 'خطأ في عملية البيع', 'error');
         }
@@ -728,11 +735,14 @@
         var content = document.getElementById('receiptContent');
         if (!content) return;
 
-        // ========== STORE INFO (Change these values) ==========
-        var storeName = 'عطارة الحكمة';
-        var storePhone = '01096107040';
-        var storeAddress = 'القاهرة - المرج - ش الشهيد محمد عبدالفتاح الحجار المتفرع من ش مؤسسة الزكاة';
-        // ======================================================
+        // Store info from settings (passed from PHP)
+        var info = window.STORE_INFO || {};
+        var storeName = info.name || 'تاجر';
+        var storePhone = info.phone || '';
+        var storeAddress = info.address || '';
+        var receiptHeader = info.receiptHeader || '';
+        var receiptFooter = info.receiptFooter || 'شكراً لتسوقكم معنا 🙏';
+        var currency = info.currency || 'ج.م';
 
         var itemsHtml = (sale.items || []).map(function (item, i) {
             var qty = parseFloat(item.quantity);
@@ -767,10 +777,11 @@
             // ===== HEADER =====
             '<div style="border-bottom:2px solid #333;padding-bottom:12px;margin-bottom:10px;">' +
             '<img src="public/images/logo.png" alt="' + storeName + '" style="width:50px;height:50px;margin-bottom:6px;">' +
-            '<div style="font-size:22px;font-weight:bold;color:#2c3e50;margin-bottom:4px;">' + storeName + '</div>' +
+            '<div style="font-size:22px;font-weight:bold;color:#2c3e50;margin-bottom:4px;">' + escapeHtml(storeName) + '</div>' +
+            (receiptHeader ? '<div style="font-size:12px;color:#555;margin-bottom:4px;">' + escapeHtml(receiptHeader) + '</div>' : '') +
             '<div style="font-size:12px;color:#666;line-height:1.8;">' +
-            '📞 ' + storePhone + '<br>' +
-            '📍 ' + storeAddress +
+            (storePhone ? '📞 ' + escapeHtml(storePhone) + '<br>' : '') +
+            (storeAddress ? '📍 ' + escapeHtml(storeAddress) : '') +
             '</div>' +
             '</div>' +
 
@@ -807,14 +818,13 @@
             discountRow +
             '<div style="display:flex;justify-content:space-between;padding:8px 0;margin-top:5px;border-top:2px dashed #333;font-size:20px;font-weight:bold;color:#2c3e50;">' +
             '<span>الإجمالي:</span>' +
-            '<span>' + total.toFixed(2) + ' ج.م</span>' +
+            '<span>' + total.toFixed(2) + ' ' + escapeHtml(currency) + '</span>' +
             '</div>' +
             '</div>' +
 
             // ===== FOOTER =====
             '<div style="border-top:1px dashed #ccc;margin-top:10px;padding-top:10px;font-size:11px;color:#999;">' +
-            '<div>شكراً لتسوقكم معنا 🙏</div>' +
-            '<div style="margin-top:3px;">نتمنى لكم يوماً سعيداً</div>' +
+            '<div>' + escapeHtml(receiptFooter) + '</div>' +
             '</div>' +
 
             '</div>';

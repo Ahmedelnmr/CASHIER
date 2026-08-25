@@ -7365,3 +7365,17 @@ Stack trace:
 [07-May-2026 17:38:21 Africa/Cairo] PHP Fatal error:  Cannot redeclare PurchaseController::edit_form() in C:\Users\DELL\3D Objects\cashier_system\www\app\controllers\PurchaseController.php on line 194
 [07-May-2026 17:38:21 Africa/Cairo] PHP Fatal error:  Cannot redeclare PurchaseController::edit_form() in C:\Users\DELL\3D Objects\cashier_system\www\app\controllers\PurchaseController.php on line 194
 [07-May-2026 17:38:26 Africa/Cairo] PHP Fatal error:  Cannot redeclare PurchaseController::edit_form() in C:\Users\DELL\3D Objects\cashier_system\www\app\controllers\PurchaseController.php on line 194
+[24-Aug-2026 20:43:59 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\POS System\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[24-Aug-2026 20:44:03 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\POS System\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[25-Aug-2026 21:21:38 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\POS System\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[25-Aug-2026 21:21:38 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\POS System\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[25-Aug-2026 21:21:38 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\POS System\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[25-Aug-2026 21:21:38 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\POS System\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[25-Aug-2026 21:21:38 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\POS System\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[25-Aug-2026 21:21:38 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\POS System\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[25-Aug-2026 21:21:38 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\POS System\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[25-Aug-2026 21:21:38 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\POS System\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[25-Aug-2026 21:21:38 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\POS System\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[25-Aug-2026 21:21:38 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\POS System\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[25-Aug-2026 21:21:38 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\POS System\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[25-Aug-2026 21:21:38 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\POS System\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27

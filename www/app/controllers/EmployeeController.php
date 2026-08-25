@@ -6,6 +6,11 @@ class EmployeeController {
     private $db;
     
     public function __construct() {
+        $auth = new AuthService();
+        if (!$auth->hasRole('admin')) {
+            header('Location: ?page=dashboard');
+            exit;
+        }
         $this->db = Database::getInstance()->getConnection();
     }
     
@@ -16,7 +21,9 @@ class EmployeeController {
         // Get Employees with Ledger Balance
         $employees = $employeeService->getAllWithBalance();
         
+        include APP_PATH . '/views/layout/header.php';
         include APP_PATH . '/views/employees/index.php';
+        include APP_PATH . '/views/layout/footer.php';
     }
     
     // Get Employee History
