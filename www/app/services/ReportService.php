@@ -11,22 +11,35 @@ class ReportService {
     }
 
     /**
+     * Build half-open date interval boundaries.
+     * Returns [startDate, endDateExclusive] as 'Y-m-d H:i:s' strings.
+     * Usage: datetime >= startDate AND datetime < endDateExclusive
+     */
+    private static function dateBoundaries($dateFrom, $dateTo) {
+        $start = $dateFrom . ' 00:00:00';
+        $endExclusive = date('Y-m-d', strtotime($dateTo . ' +1 day')) . ' 00:00:00';
+        return [$start, $endExclusive];
+    }
+
+    /**
      * Daily sales report
      */
     public function dailySales($date = null) {
         $date = $date ?: date('Y-m-d');
+        [$start, $endExclusive] = self::dateBoundaries($date, $date);
+
         $stmt = $this->db->prepare(
-            "SELECT s.id, s.sale_number, s.datetime, s.total, s.payment_method,
+            "SELECT s.id, s.invoice_number, s.sale_number, s.datetime, s.total, s.payment_method,
                     COUNT(si.id) as item_count
              FROM sales s
              LEFT JOIN sale_items si ON s.id = si.sale_id
-             WHERE date(s.datetime) = :date
+             WHERE s.datetime >= :start AND s.datetime < :end
                AND s.status != 'voided'
                AND s.type = 'sale'
              GROUP BY s.id
              ORDER BY s.datetime DESC"
         );
-        $stmt->execute([':date' => $date]);
+        $stmt->execute([':start' => $start, ':end' => $endExclusive]);
         $sales = $stmt->fetchAll();
 
         // Summary — only completed sales (not voided, not returns)
@@ -34,11 +47,11 @@ class ReportService {
             "SELECT COUNT(*) as count, COALESCE(SUM(total), 0) as total,
                     COALESCE(SUM(discount), 0) as discount
              FROM sales
-             WHERE date(datetime) = :date
+             WHERE datetime >= :start AND datetime < :end
                AND status != 'voided'
                AND type = 'sale'"
         );
-        $summaryStmt->execute([':date' => $date]);
+        $summaryStmt->execute([':start' => $start, ':end' => $endExclusive]);
         $summary = $summaryStmt->fetch();
 
         return ['sales' => $sales, 'summary' => $summary, 'date' => $date];
@@ -48,26 +61,28 @@ class ReportService {
      * Sales report by date range
      */
     public function salesByRange($dateFrom, $dateTo) {
+        [$start, $endExclusive] = self::dateBoundaries($dateFrom, $dateTo);
+
         $stmt = $this->db->prepare(
             "SELECT date(datetime) as sale_date, COUNT(*) as count, SUM(total) as total
              FROM sales
-             WHERE date(datetime) >= :from AND date(datetime) <= :to
+             WHERE datetime >= :start AND datetime < :end
                AND status != 'voided'
                AND type = 'sale'
              GROUP BY date(datetime)
              ORDER BY sale_date DESC"
         );
-        $stmt->execute([':from' => $dateFrom, ':to' => $dateTo]);
+        $stmt->execute([':start' => $start, ':end' => $endExclusive]);
         $daily = $stmt->fetchAll();
 
         $totalStmt = $this->db->prepare(
             "SELECT COUNT(*) as count, COALESCE(SUM(total), 0) as total
              FROM sales
-             WHERE date(datetime) >= :from AND date(datetime) <= :to
+             WHERE datetime >= :start AND datetime < :end
                AND status != 'voided'
                AND type = 'sale'"
         );
-        $totalStmt->execute([':from' => $dateFrom, ':to' => $dateTo]);
+        $totalStmt->execute([':start' => $start, ':end' => $endExclusive]);
         $totals = $totalStmt->fetch();
 
         return ['daily' => $daily, 'totals' => $totals];
@@ -86,12 +101,10 @@ class ReportService {
         $params = [];
 
         if ($dateFrom) {
-            $sql .= " AND date(s.datetime) >= :from";
-            $params[':from'] = $dateFrom;
-            if ($dateTo) {
-                $sql .= " AND date(s.datetime) <= :to";
-                $params[':to'] = $dateTo;
-            }
+            [$start, $endExclusive] = self::dateBoundaries($dateFrom, $dateTo ?: $dateFrom);
+            $sql .= " AND s.datetime >= :start AND s.datetime < :end";
+            $params[':start'] = $start;
+            $params[':end'] = $endExclusive;
         }
 
         $sql .= " GROUP BY si.product_id, si.product_name
@@ -148,12 +161,10 @@ class ReportService {
         $params = [];
 
         if ($dateFrom) {
-            $sql .= " AND pi.date >= :from";
-            $params[':from'] = $dateFrom;
-        }
-        if ($dateTo) {
-            $sql .= " AND pi.date <= :to";
-            $params[':to'] = $dateTo;
+            $endExclusive = date('Y-m-d', strtotime(($dateTo ?: $dateFrom) . ' +1 day'));
+            $sql .= " AND pi.date >= :start AND pi.date < :end";
+            $params[':start'] = $dateFrom;
+            $params[':end'] = $endExclusive;
         }
 
         $sql .= " GROUP BY s.id ORDER BY total DESC";
@@ -182,12 +193,10 @@ class ReportService {
             $params[':type'] = $type;
         }
         if ($dateFrom) {
-            $sql .= " AND date(sm.created_at) >= :from";
-            $params[':from'] = $dateFrom;
-        }
-        if ($dateTo) {
-            $sql .= " AND date(sm.created_at) <= :to";
-            $params[':to'] = $dateTo;
+            $endExclusive = date('Y-m-d', strtotime(($dateTo ?: $dateFrom) . ' +1 day'));
+            $sql .= " AND sm.created_at >= :start AND sm.created_at < :end";
+            $params[':start'] = $dateFrom;
+            $params[':end'] = $endExclusive;
         }
 
         $sql .= " ORDER BY sm.created_at DESC LIMIT :limit";
@@ -203,15 +212,18 @@ class ReportService {
      * Dashboard summary
      */
     public function dashboardSummary() {
+        $today = date('Y-m-d');
+        [$start, $endExclusive] = self::dateBoundaries($today, $today);
+
         // Today's sales — exclude voided and returns
         $todayStmt = $this->db->prepare(
             "SELECT COUNT(*) as sales_count, COALESCE(SUM(total), 0) as sales_total
              FROM sales
-             WHERE date(datetime) = date('now', 'localtime')
+             WHERE datetime >= :start AND datetime < :end
                AND status != 'voided'
                AND type = 'sale'"
         );
-        $todayStmt->execute();
+        $todayStmt->execute([':start' => $start, ':end' => $endExclusive]);
         $today = $todayStmt->fetch();
 
         // Product count
@@ -227,13 +239,15 @@ class ReportService {
         $lowStockCount = $lowStmt->fetchColumn();
 
         // Monthly sales — exclude voided and returns
+        $monthStart = date('Y-m-01');
+        $monthEndExclusive = date('Y-m-d', strtotime('+1 day')) . ' 00:00:00';
         $monthStmt = $this->db->prepare(
             "SELECT COALESCE(SUM(total), 0) as total FROM sales
-             WHERE strftime('%Y-%m', datetime) = strftime('%Y-%m', 'now', 'localtime')
+             WHERE datetime >= :start AND datetime < :end
                AND status != 'voided'
                AND type = 'sale'"
         );
-        $monthStmt->execute();
+        $monthStmt->execute([':start' => $monthStart . ' 00:00:00', ':end' => $monthEndExclusive]);
         $monthTotal = $monthStmt->fetchColumn();
 
         return [
@@ -250,17 +264,18 @@ class ReportService {
      * Reads from actual business tables to avoid distortion from safe_transactions journal entries
      */
     public function financialReport($dateFrom, $dateTo) {
+        [$start, $endExclusive] = self::dateBoundaries($dateFrom, $dateTo);
 
         // === INCOME ===
         // 1. Real Sales (completed, not voided, type=sale only)
         $salesStmt = $this->db->prepare(
             "SELECT COALESCE(SUM(total), 0) as total, COALESCE(SUM(discount), 0) as discounts
              FROM sales
-             WHERE date(datetime) BETWEEN :from AND :to
+             WHERE datetime >= :start AND datetime < :end
                AND status != 'voided'
                AND type = 'sale'"
         );
-        $salesStmt->execute([':from' => $dateFrom, ':to' => $dateTo]);
+        $salesStmt->execute([':start' => $start, ':end' => $endExclusive]);
         $salesRow = $salesStmt->fetch(PDO::FETCH_ASSOC);
         $totalSales = floatval($salesRow['total']);
         $totalDiscounts = floatval($salesRow['discounts']);
@@ -269,20 +284,21 @@ class ReportService {
         $returnsStmt = $this->db->prepare(
             "SELECT COALESCE(SUM(ABS(total)), 0) as total
              FROM sales
-             WHERE date(datetime) BETWEEN :from AND :to
+             WHERE datetime >= :start AND datetime < :end
                AND type = 'return'
                AND status != 'voided'"
         );
-        $returnsStmt->execute([':from' => $dateFrom, ':to' => $dateTo]);
+        $returnsStmt->execute([':start' => $start, ':end' => $endExclusive]);
         $totalReturns = floatval($returnsStmt->fetchColumn());
 
-        // 3. Manual Deposits from safe
+        // 3. Manual Deposits from safe (exclude reversed and reversal entries)
         $depositStmt = $this->db->prepare(
             "SELECT COALESCE(SUM(amount), 0) as total
              FROM safe_transactions
-             WHERE date(date) BETWEEN :from AND :to AND type IN ('deposit', 'opening')"
+             WHERE date >= :start AND date < :end AND type IN ('deposit', 'opening', 'funding', 'debt_settlement')
+               AND status != 'reversed' AND transaction_type != 'reversal'"
         );
-        $depositStmt->execute([':from' => $dateFrom, ':to' => $dateTo]);
+        $depositStmt->execute([':start' => $dateFrom, ':end' => date('Y-m-d', strtotime($dateTo . ' +1 day'))]);
         $totalDeposit = floatval($depositStmt->fetchColumn());
 
         $netIncome = $totalSales - $totalReturns + $totalDeposit;
@@ -292,42 +308,45 @@ class ReportService {
         $purchaseStmt = $this->db->prepare(
             "SELECT COALESCE(SUM(total), 0) as total
              FROM purchase_invoices
-             WHERE date BETWEEN :from AND :to
+             WHERE date >= :start AND date < :end
                AND status != 'voided'
                AND type = 'purchase'"
         );
-        $purchaseStmt->execute([':from' => $dateFrom, ':to' => $dateTo]);
+        $purchaseStmt->execute([':start' => $dateFrom, ':end' => date('Y-m-d', strtotime($dateTo . ' +1 day'))]);
         $totalPurchases = floatval($purchaseStmt->fetchColumn());
 
-        // 5. Salaries & Advances (from safe only - manual entries)
+        // 5. Salaries & Advances (from safe only - manual entries, exclude reversed/reversal)
         $salaryStmt = $this->db->prepare(
             "SELECT
                 COALESCE(SUM(CASE WHEN type IN ('salary','salary_payment') THEN amount ELSE 0 END), 0) as salaries,
                 COALESCE(SUM(CASE WHEN type = 'advance' THEN amount ELSE 0 END), 0) as advances
              FROM safe_transactions
-             WHERE date(date) BETWEEN :from AND :to"
+             WHERE date >= :start AND date < :end
+               AND status != 'reversed' AND transaction_type != 'reversal'"
         );
-        $salaryStmt->execute([':from' => $dateFrom, ':to' => $dateTo]);
+        $salaryStmt->execute([':start' => $dateFrom, ':end' => date('Y-m-d', strtotime($dateTo . ' +1 day'))]);
         $salaryRow = $salaryStmt->fetch(PDO::FETCH_ASSOC);
         $totalSalaries = floatval($salaryRow['salaries']);
         $totalAdvances = floatval($salaryRow['advances']);
 
-        // 6. Operational Expenses
+        // 6. Operational Expenses (exclude reversed/reversal)
         $expenseStmt = $this->db->prepare(
             "SELECT COALESCE(SUM(amount), 0) as total
              FROM safe_transactions
-             WHERE date(date) BETWEEN :from AND :to AND type = 'expense'"
+             WHERE date >= :start AND date < :end AND type = 'expense'
+               AND status != 'reversed' AND transaction_type != 'reversal'"
         );
-        $expenseStmt->execute([':from' => $dateFrom, ':to' => $dateTo]);
+        $expenseStmt->execute([':start' => $dateFrom, ':end' => date('Y-m-d', strtotime($dateTo . ' +1 day'))]);
         $totalExpenses = floatval($expenseStmt->fetchColumn());
 
-        // 7. Personal Withdrawals (owner draws — NOT an operating expense)
+        // 7. Personal Withdrawals (owner draws — NOT an operating expense, exclude reversed/reversal)
         $withdrawalStmt = $this->db->prepare(
             "SELECT COALESCE(SUM(amount), 0) as total
              FROM safe_transactions
-             WHERE date(date) BETWEEN :from AND :to AND type = 'withdrawal'"
+             WHERE date >= :start AND date < :end AND type = 'withdrawal'
+               AND status != 'reversed' AND transaction_type != 'reversal'"
         );
-        $withdrawalStmt->execute([':from' => $dateFrom, ':to' => $dateTo]);
+        $withdrawalStmt->execute([':start' => $dateFrom, ':end' => date('Y-m-d', strtotime($dateTo . ' +1 day'))]);
         $totalWithdrawals = floatval($withdrawalStmt->fetchColumn());
 
         // Operating expenses ONLY (excludes withdrawals which are equity, not costs)
@@ -352,7 +371,7 @@ class ReportService {
                     0 as purchase_total, 0 as salary_total, 0 as advance_total,
                     0 as expense_total, 0 as withdrawal_total
                 FROM sales
-                WHERE date(datetime) BETWEEN :from AND :to AND status != 'voided' AND type = 'sale'
+                WHERE datetime >= :start AND datetime < :end AND status != 'voided' AND type = 'sale'
                 GROUP BY date(datetime)
 
                 UNION ALL
@@ -360,30 +379,32 @@ class ReportService {
                 SELECT date(datetime) as report_date,
                     0, SUM(ABS(total)) as returns_total, 0, 0, 0, 0, 0, 0
                 FROM sales
-                WHERE date(datetime) BETWEEN :from2 AND :to2 AND type = 'return' AND status != 'voided'
+                WHERE datetime >= :start2 AND datetime < :end2 AND type = 'return' AND status != 'voided'
                 GROUP BY date(datetime)
 
                 UNION ALL
 
                 SELECT date(date) as report_date,
                     0, 0,
-                    SUM(CASE WHEN type IN ('deposit','opening') THEN amount ELSE 0 END),
+                    SUM(CASE WHEN type IN ('deposit','opening','funding','debt_settlement') THEN amount ELSE 0 END),
                     SUM(CASE WHEN type = 'purchase' THEN amount ELSE 0 END),
                     SUM(CASE WHEN type IN ('salary','salary_payment') THEN amount ELSE 0 END),
                     SUM(CASE WHEN type = 'advance' THEN amount ELSE 0 END),
                     SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END),
                     SUM(CASE WHEN type = 'withdrawal' THEN amount ELSE 0 END)
                 FROM safe_transactions
-                WHERE date(date) BETWEEN :from3 AND :to3
+                WHERE date >= :start3 AND date < :end3
+                  AND status != 'reversed' AND transaction_type != 'reversal'
                 GROUP BY date(date)
              )
              GROUP BY report_date
              ORDER BY report_date DESC"
         );
+        $safeEndExclusive = date('Y-m-d', strtotime($dateTo . ' +1 day'));
         $dailyStmt->execute([
-            ':from'  => $dateFrom, ':to'  => $dateTo,
-            ':from2' => $dateFrom, ':to2' => $dateTo,
-            ':from3' => $dateFrom, ':to3' => $dateTo,
+            ':start'  => $start, ':end'  => $endExclusive,
+            ':start2' => $start, ':end2' => $endExclusive,
+            ':start3' => $dateFrom, ':end3' => $safeEndExclusive,
         ]);
         $dailyRows = $dailyStmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -452,12 +473,10 @@ class ReportService {
                 WHERE s.status != 'voided' AND s.type = 'sale'";
         $params = [];
         if ($dateFrom) {
-            $sql .= " AND date(s.datetime) >= :from";
-            $params[':from'] = $dateFrom;
-        }
-        if ($dateTo) {
-            $sql .= " AND date(s.datetime) <= :to";
-            $params[':to'] = $dateTo;
+            [$start, $endExclusive] = self::dateBoundaries($dateFrom, $dateTo ?: $dateFrom);
+            $sql .= " AND s.datetime >= :start AND s.datetime < :end";
+            $params[':start'] = $start;
+            $params[':end'] = $endExclusive;
         }
         $sql .= " GROUP BY COALESCE(p.category, 'بدون قسم') ORDER BY total_revenue DESC";
         $stmt = $this->db->prepare($sql);
@@ -486,12 +505,10 @@ class ReportService {
                 WHERE s.status != 'voided' AND s.type = 'sale'";
         $params = [];
         if ($dateFrom) {
-            $sql .= " AND date(s.datetime) >= :from";
-            $params[':from'] = $dateFrom;
-        }
-        if ($dateTo) {
-            $sql .= " AND date(s.datetime) <= :to";
-            $params[':to'] = $dateTo;
+            [$start, $endExclusive] = self::dateBoundaries($dateFrom, $dateTo ?: $dateFrom);
+            $sql .= " AND s.datetime >= :start AND s.datetime < :end";
+            $params[':start'] = $start;
+            $params[':end'] = $endExclusive;
         }
         $sql .= " GROUP BY si.product_id, si.product_name ORDER BY profit DESC LIMIT :limit";
         $stmt = $this->db->prepare($sql);
@@ -539,12 +556,10 @@ class ReportService {
                     AND s.status != 'voided' AND s.type = 'sale'";
         $params = [];
         if ($dateFrom) {
-            $sql .= " AND date(s.datetime) >= :from";
-            $params[':from'] = $dateFrom;
-        }
-        if ($dateTo) {
-            $sql .= " AND date(s.datetime) <= :to";
-            $params[':to'] = $dateTo;
+            [$start, $endExclusive] = self::dateBoundaries($dateFrom, $dateTo ?: $dateFrom);
+            $sql .= " AND s.datetime >= :start AND s.datetime < :end";
+            $params[':start'] = $start;
+            $params[':end'] = $endExclusive;
         }
         $sql .= " GROUP BY u.id, u.name HAVING sale_count > 0 ORDER BY total_sales DESC";
         $stmt = $this->db->prepare($sql);

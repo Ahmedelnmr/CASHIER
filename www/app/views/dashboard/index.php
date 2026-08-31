@@ -144,7 +144,7 @@
                 <tbody>
                     <?php foreach ($recentSales as $s): ?>
                     <tr>
-                        <td class="fw-bold">#<?= $s['sale_number'] ?? $s['id'] ?></td>
+                        <td class="fw-bold"><?= $s['invoice_number'] ?? ('#' . $s['id']) ?></td>
                         <td class="fs-sm text-muted"><?= $s['datetime'] ?></td>
                         <td class="fw-bold text-accent"><?= number_format($s['total'], 2) ?></td>
                     </tr>

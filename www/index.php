@@ -62,6 +62,12 @@ $isPublicPage = in_array($page, $publicPages);
 if (!$isPublicPage) {
     $auth = new AuthService();
     if (!$auth->isLoggedIn()) {
+        // For AJAX/API requests, return JSON error instead of HTML redirect
+        $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
+                  strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+        if ($isAjax) {
+            Response::error('غير مصرح - يرجى تسجيل الدخول', 401);
+        }
         header('Location: ?page=login');
         exit;
     }
@@ -85,6 +91,7 @@ $routes = [
     'backup'     => 'BackupController',
     'shifts'     => 'ShiftController',
     'customers'  => 'CustomerController',
+    'categories' => 'CategoryController',
     'barcode'    => 'BarcodeController',
 ];
 

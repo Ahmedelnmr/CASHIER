@@ -46,9 +46,18 @@ class EmployeeController {
         
         try {
             $data = json_decode(file_get_contents('php://input'), true);
+            $data = Validator::trimAll($data);
             
-            if (empty($data['name'])) {
-                echo json_encode(['success' => false, 'message' => 'الاسم مطلوب']);
+            $validator = new Validator($data);
+            $validator->name('name', 'الاسم', true);
+            $validator->phone('phone', 'التليفون', false);
+            $validator->numeric('base_salary', 'الراتب الأساسي');
+            $validator->nonNegative('base_salary', 'الراتب الأساسي');
+            $validator->max('base_salary', 999999.99, 'الراتب الأساسي');
+            
+            if ($validator->fails()) {
+                $errors = $validator->errors();
+                echo json_encode(['success' => false, 'message' => reset($errors), 'errors' => $errors]);
                 return;
             }
             
@@ -56,7 +65,7 @@ class EmployeeController {
             $stmt->execute([
                 $data['name'],
                 $data['phone'] ?? '',
-                $data['base_salary'] ?? 0
+                floatval($data['base_salary'] ?? 0)
             ]);
             
             echo json_encode(['success' => true, 'message' => 'تم إضافة الموظف بنجاح']);
@@ -72,9 +81,20 @@ class EmployeeController {
         
         try {
             $data = json_decode(file_get_contents('php://input'), true);
+            $data = Validator::trimAll($data);
             
-            if (empty($data['id']) || empty($data['name'])) {
-                echo json_encode(['success' => false, 'message' => 'بيانات غير مكتملة']);
+            $validator = new Validator($data);
+            $validator->required('id', 'معرف الموظف');
+            $validator->numeric('id', 'معرف الموظف');
+            $validator->name('name', 'الاسم', true);
+            $validator->phone('phone', 'التليفون', false);
+            $validator->numeric('base_salary', 'الراتب الأساسي');
+            $validator->nonNegative('base_salary', 'الراتب الأساسي');
+            $validator->max('base_salary', 999999.99, 'الراتب الأساسي');
+            
+            if ($validator->fails()) {
+                $errors = $validator->errors();
+                echo json_encode(['success' => false, 'message' => reset($errors), 'errors' => $errors]);
                 return;
             }
             
@@ -82,7 +102,7 @@ class EmployeeController {
             $stmt->execute([
                 $data['name'],
                 $data['phone'] ?? '',
-                $data['base_salary'] ?? 0,
+                floatval($data['base_salary'] ?? 0),
                 $data['id']
             ]);
             
@@ -99,6 +119,19 @@ class EmployeeController {
         
         try {
             $id = $_GET['id'] ?? 0;
+            
+            if (!is_numeric($id) || $id <= 0) {
+                echo json_encode(['success' => false, 'message' => 'معرف الموظف غير صالح']);
+                return;
+            }
+            
+            // Check for outstanding debt before deletion
+            $employeeService = new EmployeeService();
+            $balance = $employeeService->getBalance($id);
+            if ($balance < 0) {
+                echo json_encode(['success' => false, 'message' => 'لا يمكن حذف الموظف لوجود مديونية قدره ' . number_format(abs($balance), 2) . ' جنيه. يرجى تسوية المديونية أولاً']);
+                return;
+            }
             
             $stmt = $this->db->prepare("UPDATE employees SET is_active = 0 WHERE id = ?");
             $stmt->execute([$id]);

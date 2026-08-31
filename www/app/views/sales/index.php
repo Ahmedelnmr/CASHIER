@@ -14,7 +14,7 @@
 
 <!-- Filters -->
 <div class="card" style="padding:14px 20px;">
-    <form style="display:flex;align-items:center;gap:12px;" method="GET">
+    <form style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;" method="GET">
         <input type="hidden" name="page" value="sales">
         <label class="text-muted">من:</label>
         <input type="date" name="date_from" class="form-control" style="width:160px;" value="<?= htmlspecialchars($dateFrom) ?>">
@@ -22,8 +22,20 @@
         <input type="date" name="date_to" class="form-control" style="width:160px;" value="<?= htmlspecialchars($dateTo) ?>">
         <button type="submit" class="btn btn-outline">بحث</button>
         <a href="?page=sales" class="btn btn-ghost">اليوم</a>
+        <span style="border-right:1px solid var(--border-color);height:24px;margin:0 4px;"></span>
+        <label class="text-muted">رقم الفاتورة:</label>
+        <input type="text" id="invoiceSearch" class="form-control" style="width:180px;" placeholder="INV-083126-001">
+        <button type="button" class="btn btn-outline" onclick="searchInvoice()">بحث</button>
     </form>
 </div>
+
+<script>
+function searchInvoice() {
+    var q = document.getElementById('invoiceSearch').value.trim();
+    if (!q) return;
+    window.location.href = '?page=sales&action=view_by_invoice&invoice=' + encodeURIComponent(q);
+}
+</script>
 
 <div class="card">
     <?php if (!empty($sales)): ?>
@@ -44,7 +56,7 @@
                 <?php foreach ($sales as $s): ?>
                 <tr>
                     <td class="text-muted"><?= $s['id'] ?></td>
-                    <td class="fw-bold">#<?= $s['sale_number'] ?? $s['id'] ?>
+                    <td class="fw-bold"><?= $s['invoice_number'] ?? ('#' . $s['id']) ?>
                         <?php if (($s['status'] ?? '') === 'voided'): ?>
                             <span class="badge badge-danger" style="font-size:10px;margin-right:4px;">ملغاة</span>
                         <?php elseif (($s['type'] ?? 'sale') === 'return'): ?>

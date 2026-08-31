@@ -12,6 +12,21 @@ class CustomerService {
     }
 
     /**
+     * Validate customer data
+     */
+    private function validate($data, $isUpdate = false) {
+        $validator = new Validator($data);
+        $validator->name('name', 'اسم العميل', true);
+        $validator->phone('phone', 'رقم الهاتف', false);
+        $validator->maxLength('address', 255, 'العنوان');
+        $validator->maxLength('notes', 500, 'ملاحظات');
+        $validator->numeric('credit_limit', 'الحد الائتماني');
+        $validator->nonNegative('credit_limit', 'الحد الائتماني');
+        $validator->max('credit_limit', 999999.99, 'الحد الائتماني');
+        return $validator;
+    }
+
+    /**
      * Get all customers
      */
     public function getAll($search = '') {
@@ -52,12 +67,20 @@ class CustomerService {
      * Create customer
      */
     public function create($data) {
+        $validator = $this->validate($data);
+        if (!$validator->passes()) {
+            return ['success' => false, 'errors' => $validator->errors(), 'message' => $validator->firstError()];
+        }
+
         $stmt = $this->db->prepare(
             "INSERT INTO customers (name, phone, address, notes, credit_limit) VALUES (?, ?, ?, ?, ?)"
         );
         $stmt->execute([
-            $data['name'], $data['phone'] ?? '', $data['address'] ?? '',
-            $data['notes'] ?? '', $data['credit_limit'] ?? 0
+            $data['name'],
+            $data['phone'] ?? '',
+            $data['address'] ?? '',
+            $data['notes'] ?? '',
+            floatval($data['credit_limit'] ?? 0)
         ]);
         return ['success' => true, 'id' => $this->db->lastInsertId()];
     }
@@ -66,12 +89,30 @@ class CustomerService {
      * Update customer
      */
     public function update($id, $data) {
+        if (!is_numeric($id) || $id <= 0) {
+            return ['success' => false, 'message' => 'معرف العميل غير صالح'];
+        }
+
+        $existing = $this->findById($id);
+        if (!$existing) {
+            return ['success' => false, 'message' => 'العميل غير موجود'];
+        }
+
+        $validator = $this->validate($data, true);
+        if (!$validator->passes()) {
+            return ['success' => false, 'errors' => $validator->errors(), 'message' => $validator->firstError()];
+        }
+
         $stmt = $this->db->prepare(
             "UPDATE customers SET name=?, phone=?, address=?, notes=?, credit_limit=?, updated_at=datetime('now','localtime') WHERE id=?"
         );
         $stmt->execute([
-            $data['name'], $data['phone'] ?? '', $data['address'] ?? '',
-            $data['notes'] ?? '', $data['credit_limit'] ?? 0, $id
+            $data['name'],
+            $data['phone'] ?? '',
+            $data['address'] ?? '',
+            $data['notes'] ?? '',
+            floatval($data['credit_limit'] ?? 0),
+            $id
         ]);
         return ['success' => true];
     }
@@ -80,6 +121,13 @@ class CustomerService {
      * Delete (deactivate) customer
      */
     public function delete($id) {
+        $customer = $this->findById($id);
+        if (!$customer) {
+            return ['success' => false, 'message' => 'العميل غير موجود'];
+        }
+        if (floatval($customer['balance']) > 0) {
+            return ['success' => false, 'message' => 'لا يمكن حذف العميل لوجود رصيد مستحق قدره ' . number_format($customer['balance'], 2) . ' جنيه. يرجى تسوية الرصيد أولاً'];
+        }
         $stmt = $this->db->prepare("UPDATE customers SET is_active = 0 WHERE id = ?");
         $stmt->execute([$id]);
         return ['success' => true];

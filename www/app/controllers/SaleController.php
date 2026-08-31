@@ -13,6 +13,18 @@ class SaleController {
     public function index() {
         $dateFrom = $_GET['date_from'] ?? date('Y-m-d');
         $dateTo = $_GET['date_to'] ?? date('Y-m-d');
+
+        // Validate dates
+        $fromTs = strtotime($dateFrom);
+        $toTs = strtotime($dateTo);
+        if ($fromTs === false || $toTs === false) {
+            $dateFrom = date('Y-m-d');
+            $dateTo = date('Y-m-d');
+        } elseif ($fromTs > $toTs) {
+            // Swap inverted dates
+            [$dateFrom, $dateTo] = [$dateTo, $dateFrom];
+        }
+
         $sales = $this->saleService->getAll($dateFrom, $dateTo);
         $todaySummary = $this->saleService->getTodaySummary();
 
@@ -52,6 +64,49 @@ class SaleController {
         } else {
             Response::error('الفاتورة غير موجودة');
         }
+    }
+
+    /**
+     * API: Search by invoice number
+     */
+    public function search() {
+        $q = trim($_GET['q'] ?? '');
+        if ($q === '') {
+            Response::error('أدخل رقم الفاتورة');
+            return;
+        }
+
+        // Try exact invoice number lookup first
+        if (InvoiceNumberGenerator::isValidFormat($q)) {
+            $sale = $this->saleService->findByInvoiceNumber($q);
+            if ($sale) {
+                Response::success($sale);
+                return;
+            }
+        }
+
+        // Fallback: search by invoice_number LIKE pattern
+        Response::error('الفاتورة غير موجودة');
+    }
+
+    /**
+     * View sale by invoice number (redirects to view)
+     */
+    public function view_by_invoice() {
+        $invoice = trim($_GET['invoice'] ?? '');
+        if ($invoice === '') {
+            header('Location: ?page=sales');
+            exit;
+        }
+
+        $sale = $this->saleService->findByInvoiceNumber($invoice);
+        if ($sale) {
+            header('Location: ?page=sales&action=view&id=' . $sale['id']);
+            exit;
+        }
+
+        header('Location: ?page=sales&error=' . urlencode('الفاتورة غير موجودة: ' . $invoice));
+        exit;
     }
 
     /**

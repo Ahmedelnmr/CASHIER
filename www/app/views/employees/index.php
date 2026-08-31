@@ -48,6 +48,9 @@
                     <td>
                         <div class="btn-group">
                             <button class="btn btn-sm btn-outline" onclick='showHistory(<?= $emp['id'] ?>, "<?= htmlspecialchars($emp['name']) ?>")'>📜 التفاصيل</button>
+                            <?php if ($emp['ledger_balance'] < 0): ?>
+                            <button class="btn btn-sm btn-success" onclick='openSettleModal(<?= $emp['id'] ?>, "<?= htmlspecialchars($emp['name']) ?>", <?= abs($emp['ledger_balance']) ?>)'>💰 تسوية</button>
+                            <?php endif; ?>
                             <button class="btn btn-sm btn-ghost" onclick='editEmployee(<?= json_encode($emp) ?>)'>✏️</button>
                             <button class="btn btn-sm btn-danger" onclick="deleteEmployee(<?= $emp['id'] ?>)">🗑️</button>
                         </div>
@@ -97,19 +100,22 @@
             <button class="modal-close" onclick="closeModal('employeeModal')">&times;</button>
         </div>
         <div class="modal-body">
-            <form id="employeeForm">
+            <form id="employeeForm" onsubmit="return false;">
                 <input type="hidden" id="empId" name="id">
                 <div class="form-group">
                     <label>الاسم *</label>
                     <input type="text" class="form-control" id="empName" name="name" required>
+                    <small class="field-error" id="empNameError" style="color:var(--danger);display:none;"></small>
                 </div>
                 <div class="form-group">
                     <label>التليفون</label>
-                    <input type="text" class="form-control" id="empPhone" name="phone">
+                    <input type="text" class="form-control" id="empPhone" name="phone" maxlength="15" dir="ltr">
+                    <small class="field-error" id="empPhoneError" style="color:var(--danger);display:none;"></small>
                 </div>
                 <div class="form-group">
                     <label>الراتب الأساسي</label>
-                    <input type="number" class="form-control" id="empSalary" name="base_salary" step="0.01">
+                    <input type="number" class="form-control" id="empSalary" name="base_salary" step="0.01" min="0" max="999999.99" dir="ltr">
+                    <small class="field-error" id="empSalaryError" style="color:var(--danger);display:none;"></small>
                 </div>
             </form>
         </div>
@@ -120,7 +126,118 @@
     </div>
 </div>
 
+<!-- Debt Settlement Modal -->
+<div class="modal-overlay" id="settleModal">
+    <div class="modal" style="min-width:450px;">
+        <div class="modal-header">
+            <h3>💰 تسوية مديونية موظف</h3>
+            <button class="modal-close" onclick="closeModal('settleModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div style="background:var(--bg-secondary);padding:12px;border-radius:8px;margin-bottom:16px;">
+                <p><strong>الموظف:</strong> <span id="settleEmpName"></span></p>
+                <p><strong>المديونية الحالية:</strong> <span id="settleDebt" style="color:var(--danger);font-weight:bold;direction:ltr;display:inline-block;"></span> جنيه</p>
+            </div>
+            <div class="form-group">
+                <label>مبلغ التسوية *</label>
+                <input type="number" class="form-control" id="settleAmount" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label>ملاحظات</label>
+                <textarea class="form-control" id="settleNotes" rows="2" placeholder="سبب التسوية..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeModal('settleModal')">إلغاء</button>
+            <button class="btn btn-success" onclick="confirmSettle()">تسوية المديونية</button>
+        </div>
+    </div>
+</div>
+
 <script>
+// Employee form validation
+function validateEmployeeForm() {
+    var valid = true;
+    var name = document.getElementById('empName').value.trim();
+    var phone = document.getElementById('empPhone').value.trim();
+    var salary = document.getElementById('empSalary').value;
+
+    // Clear errors
+    clearFieldError('empName');
+    clearFieldError('empPhone');
+    clearFieldError('empSalary');
+
+    // Name validation
+    if (!name) {
+        showFieldError('empName', 'الاسم مطلوب');
+        valid = false;
+    } else if (name.length < 2) {
+        showFieldError('empName', 'الاسم يجب أن يكون حرفين على الأقل');
+        valid = false;
+    } else if (name.length > 100) {
+        showFieldError('empName', 'الاسم يجب أن لا يتجاوز 100 حرف');
+        valid = false;
+    } else if (/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/.test(name)) {
+        showFieldError('empName', 'الاسم يحتوي على أحرف غير صالحة');
+        valid = false;
+    } else if (/\s{2,}/.test(name)) {
+        showFieldError('empName', 'الاسم يحتوي على مسافات متكررة');
+        valid = false;
+    }
+
+    // Phone validation (optional but if provided must be digits only)
+    if (phone && !/^[0-9]{7,15}$/.test(phone)) {
+        showFieldError('empPhone', 'رقم الهاتف يجب أن يحتوي على أرقام فقط (7-15 رقم)');
+        valid = false;
+    }
+
+    // Salary validation
+    if (salary !== '' && salary !== null) {
+        if (isNaN(salary) || parseFloat(salary) < 0) {
+            showFieldError('empSalary', 'الراتب يجب أن يكون رقم موجب');
+            valid = false;
+        } else if (parseFloat(salary) > 999999.99) {
+            showFieldError('empSalary', 'الراتب يتجاوز الحد المسموح');
+            valid = false;
+        }
+    }
+
+    return valid;
+}
+
+function showFieldError(fieldId, message) {
+    var errorEl = document.getElementById(fieldId + 'Error');
+    var inputEl = document.getElementById(fieldId);
+    if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.style.display = 'block';
+    }
+    if (inputEl) {
+        inputEl.style.borderColor = 'var(--danger)';
+    }
+}
+
+function clearFieldError(fieldId) {
+    var errorEl = document.getElementById(fieldId + 'Error');
+    var inputEl = document.getElementById(fieldId);
+    if (errorEl) {
+        errorEl.textContent = '';
+        errorEl.style.display = 'none';
+    }
+    if (inputEl) {
+        inputEl.style.borderColor = '';
+    }
+}
+
+// Clear errors on input
+document.getElementById('empName').addEventListener('input', function() { clearFieldError('empName'); });
+document.getElementById('empPhone').addEventListener('input', function() {
+    clearFieldError('empPhone');
+    // Strip non-digits on input
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+document.getElementById('empSalary').addEventListener('input', function() { clearFieldError('empSalary'); });
+
 function showHistory(id, name) {
     document.getElementById('historyEmpName').textContent = name;
     openModal('historyModal');
@@ -163,6 +280,9 @@ function openEmployeeModal() {
     document.getElementById('modalTitle').textContent = 'إضافة موظف';
     document.getElementById('employeeForm').reset();
     document.getElementById('empId').value = '';
+    clearFieldError('empName');
+    clearFieldError('empPhone');
+    clearFieldError('empSalary');
     openModal('employeeModal');
 }
 
@@ -172,19 +292,21 @@ function editEmployee(emp) {
     document.getElementById('empName').value = emp.name;
     document.getElementById('empPhone').value = emp.phone;
     document.getElementById('empSalary').value = emp.base_salary;
+    clearFieldError('empName');
+    clearFieldError('empPhone');
+    clearFieldError('empSalary');
     openModal('employeeModal');
 }
 
 function saveEmployee() {
-    var id = document.getElementById('empId').value;
-    var name = document.getElementById('empName').value;
-    var phone = document.getElementById('empPhone').value;
-    var salary = document.getElementById('empSalary').value;
-    
-    if (!name) {
-        showToast('الاسم مطلوب', 'error');
+    if (!validateEmployeeForm()) {
         return;
     }
+    
+    var id = document.getElementById('empId').value;
+    var name = document.getElementById('empName').value.trim();
+    var phone = document.getElementById('empPhone').value.trim();
+    var salary = document.getElementById('empSalary').value;
     
     var url = id ? '?page=employees&action=update' : '?page=employees&action=store';
     
@@ -214,6 +336,54 @@ function deleteEmployee(id) {
                 }
             });
     }
+}
+
+var settleEmployeeId = 0;
+var settleMaxAmount = 0;
+
+function openSettleModal(id, name, maxAmount) {
+    settleEmployeeId = id;
+    settleMaxAmount = maxAmount;
+    document.getElementById('settleEmpName').textContent = name;
+    document.getElementById('settleDebt').textContent = parseFloat(maxAmount).toFixed(2);
+    document.getElementById('settleAmount').value = '';
+    document.getElementById('settleAmount').max = maxAmount;
+    document.getElementById('settleNotes').value = '';
+    openModal('settleModal');
+}
+
+function confirmSettle() {
+    var amount = parseFloat(document.getElementById('settleAmount').value);
+    var notes = document.getElementById('settleNotes').value;
+    
+    if (!amount || amount <= 0) {
+        showToast('أدخل مبلغ صحيح', 'error');
+        return;
+    }
+    
+    if (amount > settleMaxAmount + 0.01) {
+        showToast('المبلغ يتجاوز المديونية (' + parseFloat(settleMaxAmount).toFixed(2) + ')', 'error');
+        return;
+    }
+    
+    apiRequest('?page=safe&action=store', {
+        method: 'POST',
+        body: { 
+            type: 'debt_settlement', 
+            amount: amount, 
+            date: new Date().toISOString().split('T')[0], 
+            description: notes || 'تسوية مديونية موظف', 
+            employee_id: settleEmployeeId 
+        }
+    }).then(function(res) {
+        if (res.success) {
+            showToast(res.message);
+            closeModal('settleModal');
+            setTimeout(function() { location.reload(); }, 1000);
+        } else {
+            showToast(res.message, 'error');
+        }
+    });
 }
 </script>
 

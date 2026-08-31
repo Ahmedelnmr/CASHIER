@@ -1,7 +1,7 @@
 <!-- Sale Receipt View -->
 <div class="page-header no-print">
     <div>
-        <h1>🧾 إيصال بيع #<?= $sale['sale_number'] ?? $sale['id'] ?></h1>
+        <h1>🧾 إيصال بيع <?= $sale['invoice_number'] ?? ('#' . $sale['id']) ?></h1>
     </div>
     <div class="btn-group">
         <button class="btn btn-primary" onclick="window.print()">🖨️ طباعة</button>
@@ -24,7 +24,7 @@
 
         <!-- ===== INVOICE INFO ===== -->
         <div style="display:flex;justify-content:space-between;font-size:11px;color:#888;margin-bottom:8px;">
-            <span>فاتورة رقم: <strong style="color:#333;"><?= $sale['sale_number'] ?? $sale['id'] ?></strong></span>
+            <span>فاتورة رقم: <strong style="color:#333;"><?= $sale['invoice_number'] ?? ('#' . $sale['id']) ?></strong></span>
             <span><?= $sale['datetime'] ?></span>
         </div>
 

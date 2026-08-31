@@ -10,8 +10,10 @@ class Response {
      * Send JSON success response
      */
     public static function json($data, $statusCode = 200) {
-        // Clear any previous output or warnings
-        if (ob_get_length()) ob_clean();
+        // Clear any previous output (warnings/notices) without destroying session
+        if (ob_get_level() > 0) {
+            ob_clean();
+        }
         
         http_response_code($statusCode);
         header('Content-Type: application/json; charset=utf-8');

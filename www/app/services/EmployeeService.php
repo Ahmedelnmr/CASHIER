@@ -35,7 +35,7 @@ class EmployeeService {
 
     /**
      * Calculate Running Balance for Employee
-     * Balance = Accruals − SalaryPaid − Advances
+     * Balance = Accruals − SalaryPaid − Advances + DebtSettlements
      * 
      * Positive = Company owes Employee (مستحق له).
      * Negative = Employee owes Company (مديونية - سلف).
@@ -43,11 +43,20 @@ class EmployeeService {
      * Auto-accrual runs every month, so the cycle resets automatically.
      */
     public function getBalance($employeeId) {
-        $accruals   = $this->employeeRepo->getTotalAccruals($employeeId);
-        $salaryPaid = $this->employeeRepo->getTotalSalaryPaid($employeeId);
-        $advances   = $this->employeeRepo->getTotalAdvances($employeeId);
+        $accruals     = $this->employeeRepo->getTotalAccruals($employeeId);
+        $salaryPaid   = $this->employeeRepo->getTotalSalaryPaid($employeeId);
+        $advances     = $this->employeeRepo->getTotalAdvances($employeeId);
+        $settlements  = $this->employeeRepo->getTotalDebtSettlements($employeeId);
 
-        return $accruals - $salaryPaid - $advances;
+        return $accruals - $salaryPaid - $advances + $settlements;
+    }
+
+    /**
+     * Get outstanding debt (how much employee owes company)
+     * Returns 0 if employee doesn't owe anything.
+     */
+    public function getOutstandingDebt($employeeId) {
+        return $this->employeeRepo->getOutstandingDebt($employeeId);
     }
 
     public function getAllWithBalance() {

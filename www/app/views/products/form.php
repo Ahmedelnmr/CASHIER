@@ -44,7 +44,20 @@
 
         <!-- Hidden Type Field (Default to 'unit') -->
         <input type="hidden" name="type" value="unit">
-        <!-- Removed Category Field -->
+        <div class="form-group">
+            <label>القسم</label>
+            <select name="category_id" id="category_id" class="form-control">
+                <option value="">-- بدون قسم --</option>
+                <?php 
+                $db = Database::getInstance()->getConnection();
+                $catStmt = $db->query("SELECT id, name FROM categories ORDER BY name");
+                $categories = $catStmt->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($categories as $cat): 
+                ?>
+                <option value="<?= $cat['id'] ?>" <?= ($product['category_id'] ?? '') == $cat['id'] ? 'selected' : '' ?>><?= htmlspecialchars($cat['name']) ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
 
         <fieldset style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
             <legend style="font-size: 16px; font-weight: bold; padding: 0 10px;">📦 بيانات التسعير والتعبئة</legend>
@@ -59,9 +72,9 @@
 
             <div class="form-row">
                 <div class="form-group">
-                    <label id="lbl_pack_type">نوع التعبئة</label>
-                    <select name="pack_type" id="pack_type" class="form-control">
-                        <option value="">-- بدون تعبئة --</option>
+                    <label id="lbl_pack_type">نوع التعبئة *</label>
+                    <select name="pack_type" id="pack_type" class="form-control" required>
+                        <option value="">-- اختر نوع التعبئة --</option>
                         <?php 
                         $packTypes = ['كرتونة', 'لفة', 'عبوة', 'حزمة', 'صندوق', 'علبة', 'دستة', 'باكيت', 'شنطة', 'كيس', 'شوال', 'جت'];
                         foreach ($packTypes as $type): 
@@ -69,6 +82,7 @@
                         <option value="<?= $type ?>" <?= ($product['pack_type'] ?? '') === $type ? 'selected' : '' ?>><?= $type ?></option>
                         <?php endforeach; ?>
                     </select>
+                    <div id="pack_type_error" style="display:none; color:#e74c3c; font-size:12px; margin-top:4px; padding:4px 8px; background:#ffeaea; border-radius:4px;">نوع التعبئة مطلوب. يرجى تحديد نوع التعبئة قبل حفظ المنتج.</div>
                 </div>
                 <div class="form-group">
                     <label id="lbl_pack_qty">عدد القطع في الوحدة</label>
@@ -343,8 +357,25 @@ function checkDuplicate(field, value) {
         });
 }
 
-// Block form submission if duplicates exist
+// Block form submission if duplicates exist or pack_type is missing
 document.getElementById('productForm').addEventListener('submit', function(e) {
+    // Validate pack_type
+    var packTypeSelect = document.getElementById('pack_type');
+    var packTypeError = document.getElementById('pack_type_error');
+    if (!packTypeSelect.value || packTypeSelect.value.trim() === '') {
+        e.preventDefault();
+        packTypeSelect.style.borderColor = '#e74c3c';
+        packTypeSelect.style.boxShadow = '0 0 0 2px rgba(231,76,60,0.2)';
+        packTypeError.style.display = 'block';
+        packTypeSelect.focus();
+        return false;
+    } else {
+        packTypeSelect.style.borderColor = '';
+        packTypeSelect.style.boxShadow = '';
+        packTypeError.style.display = 'none';
+    }
+
+    // Check duplicates
     if (duplicateFlags.barcode || duplicateFlags.barcode2 || duplicateFlags.barcode3 || duplicateFlags.plu_code) {
         e.preventDefault();
         var msg = '⚠️ لا يمكن حفظ المنتج:\n';
@@ -355,6 +386,15 @@ document.getElementById('productForm').addEventListener('submit', function(e) {
         msg += '\nالرجاء تغيير القيم المكررة أولاً.';
         alert(msg);
         return false;
+    }
+});
+
+// Clear pack_type error when user selects a value
+document.getElementById('pack_type').addEventListener('change', function() {
+    if (this.value && this.value.trim() !== '') {
+        this.style.borderColor = '';
+        this.style.boxShadow = '';
+        document.getElementById('pack_type_error').style.display = 'none';
     }
 });
 </script>

@@ -43,6 +43,7 @@ class ProductService {
         $validator = new Validator($data);
         $validator->required('name', 'اسم المنتج')
                   ->maxLength('name', 60, 'اسم المنتج')
+                  ->required('pack_type', 'نوع التعبئة')
                   ->numeric('purchase_price', 'سعر الشراء')
                   ->numeric('sale_price_unit', 'سعر البيع')
                   ->min('purchase_price', 0, 'سعر الشراء')
@@ -89,6 +90,7 @@ class ProductService {
         $validator = new Validator($data);
         $validator->required('name', 'اسم المنتج')
                   ->maxLength('name', 60, 'اسم المنتج')
+                  ->required('pack_type', 'نوع التعبئة')
                   ->numeric('purchase_price', 'سعر الشراء')
                   ->numeric('sale_price_unit', 'سعر البيع');
 

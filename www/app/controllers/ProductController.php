@@ -46,25 +46,46 @@ class ProductController {
     }
 
     public function save() {
-        $data = $_POST;
-        $id = $data['id'] ?? '';
+        try {
+            $data = $_POST;
+            $id = $data['id'] ?? '';
 
-        if ($id) {
-            $result = $this->productService->update($id, $data);
-        } else {
-            $result = $this->productService->create($data);
-        }
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-            // AJAX request
-            if ($result['success']) {
-                Response::success($result);
+            if ($id) {
+                $result = $this->productService->update($id, $data);
             } else {
-                Response::error($result['errors'] ?? $result['message'] ?? 'خطأ');
+                $result = $this->productService->create($data);
             }
-        } else {
-            header('Location: ?page=products');
-            exit;
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+                // AJAX request
+                if ($result['success']) {
+                    Response::success($result);
+                } else {
+                    Response::error($result['errors'] ?? $result['message'] ?? 'خطأ');
+                }
+            } else {
+                if ($result['success']) {
+                    header('Location: ?page=products');
+                    exit;
+                } else {
+                    // Validation failed — redirect back with errors
+                    $_SESSION['form_errors'] = $result['errors'] ?? ['general' => 'حدث خطأ أثناء الحفظ'];
+                    $_SESSION['form_data'] = $data;
+                    header('Location: ?page=products&action=' . ($id ? 'edit&id=' . $id : 'create'));
+                    exit;
+                }
+            }
+        } catch (Exception $e) {
+            error_log('Product save error: ' . $e->getMessage());
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+                Response::error('حدث خطأ غير متوقع أثناء حفظ المنتج: ' . $e->getMessage());
+            } else {
+                $_SESSION['form_errors'] = ['general' => 'حدث خطأ غير متوقع أثناء حفظ المنتج'];
+                $_SESSION['form_data'] = $_POST;
+                $id = $_POST['id'] ?? '';
+                header('Location: ?page=products&action=' . ($id ? 'edit&id=' . $id : 'create'));
+                exit;
+            }
         }
     }
 

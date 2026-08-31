@@ -48,6 +48,14 @@
 <script>
 var currentReport = '';
 
+// Format a Date object as YYYY-MM-DD using LOCAL time (not UTC)
+function localDateStr(d) {
+    var y = d.getFullYear();
+    var m = ('0' + (d.getMonth() + 1)).slice(-2);
+    var day = ('0' + d.getDate()).slice(-2);
+    return y + '-' + m + '-' + day;
+}
+
 function loadRangeReport() {
     var from = document.getElementById('reportDateFrom').value;
     var to = document.getElementById('reportDateTo').value;
@@ -81,7 +89,7 @@ function loadReport(type) {
     switch (type) {
         case 'daily':
             dateCard.style.display = 'none';
-            url = '?page=reports&action=daily&date=' + new Date().toISOString().split('T')[0];
+            url = '?page=reports&action=daily&date=' + localDateStr(new Date());
             apiRequest(url).then(function(res) {
                 if (res.success) renderDailyReport(res.data);
                 else showError(res.message);
@@ -90,8 +98,8 @@ function loadReport(type) {
 
         case 'weekly':
             dateCard.style.display = 'none';
-            var weekFrom = new Date(Date.now() - 7 * 86400000).toISOString().split('T')[0];
-            var weekTo = new Date().toISOString().split('T')[0];
+            var weekFrom = localDateStr(new Date(Date.now() - 7 * 86400000));
+            var weekTo = localDateStr(new Date());
             url = '?page=reports&action=range&from=' + weekFrom + '&to=' + weekTo;
             apiRequest(url).then(function(res) {
                 if (res.success) renderRangeReport(res.data, 'التقرير الأسبوعي');
@@ -101,8 +109,9 @@ function loadReport(type) {
 
         case 'monthly':
             dateCard.style.display = 'none';
-            var monthFrom = new Date().toISOString().slice(0, 8) + '01';
-            var monthTo = new Date().toISOString().split('T')[0];
+            var now = new Date();
+            var monthFrom = now.getFullYear() + '-' + ('0' + (now.getMonth() + 1)).slice(-2) + '-01';
+            var monthTo = localDateStr(now);
             url = '?page=reports&action=range&from=' + monthFrom + '&to=' + monthTo;
             apiRequest(url).then(function(res) {
                 if (res.success) renderRangeReport(res.data, 'التقرير الشهري');
@@ -144,8 +153,9 @@ function loadReport(type) {
 
         case 'financial':
             dateCard.style.display = 'flex';
-            var finFrom = document.getElementById('reportDateFrom').value || (new Date().toISOString().slice(0, 8) + '01');
-            var finTo = document.getElementById('reportDateTo').value || new Date().toISOString().split('T')[0];
+            var finNow = new Date();
+            var finFrom = document.getElementById('reportDateFrom').value || (finNow.getFullYear() + '-' + ('0' + (finNow.getMonth() + 1)).slice(-2) + '-01');
+            var finTo = document.getElementById('reportDateTo').value || localDateStr(finNow);
             if (!document.getElementById('reportDateFrom').value) {
                 document.getElementById('reportDateFrom').value = finFrom;
                 document.getElementById('reportDateTo').value = finTo;
@@ -219,7 +229,7 @@ function renderDailyReport(data) {
     var rows = '';
     for (var i = 0; i < data.sales.length; i++) {
         var sale = data.sales[i];
-        rows += '<tr><td>#' + (sale.sale_number || sale.id) + '</td><td class="fs-sm">' + sale.datetime + '</td><td>' + sale.item_count + '</td><td><span class="badge badge-success">نقدي</span></td><td class="fw-bold text-accent">' + parseFloat(sale.total).toFixed(2) + '</td></tr>';
+        rows += '<tr><td>' + (sale.invoice_number || '#' + sale.id) + '</td><td class="fs-sm">' + sale.datetime + '</td><td>' + sale.item_count + '</td><td><span class="badge badge-success">نقدي</span></td><td class="fw-bold text-accent">' + parseFloat(sale.total).toFixed(2) + '</td></tr>';
     }
     c.innerHTML =
         '<div class="card-header"><h3>تقرير يومي — ' + data.date + '</h3></div>' +
@@ -354,6 +364,7 @@ function exportReport() {
     var url = '?page=reports&action=export&type=' + currentReport;
     if (from) url += '&from=' + from;
     if (to) url += '&to=' + to;
+    if (currentReport === 'deadStock') url += '&days=30';
     window.open(url, '_blank');
 }
 
@@ -412,7 +423,7 @@ function renderCashierReport(data) {
         rows += '<tr><td>' + (i + 1) + '</td><td class="fw-bold">' + escapeHtml(d.cashier_name) + '</td><td>' + d.sale_count + '</td><td class="fw-bold text-accent">' + parseFloat(d.total_sales).toFixed(2) + '</td><td>' + parseFloat(d.total_discounts).toFixed(2) + '</td><td>' + parseFloat(d.avg_sale).toFixed(2) + '</td></tr>';
     }
     c.innerHTML =
-        '<div class="card-header"><h3>أداء الكاشير</h3></div>' +
+        '<div class="card-header"><h3>أداء الكاشير</h3><button class="btn btn-sm btn-outline" onclick="exportReport()">📥 تصدير</button></div>' +
         (data.length ? '<div class="table-wrapper"><table><thead><tr><th>#</th><th>الكاشير</th><th>الفواتير</th><th>إجمالي المبيعات</th><th>الخصومات</th><th>متوسط الفاتورة</th></tr></thead><tbody>' + rows + '</tbody></table></div>' : '<div class="empty-state"><p>لا توجد بيانات</p></div>');
 }
 

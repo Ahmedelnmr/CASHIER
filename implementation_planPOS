@@ -1,0 +1,195 @@
+# POS Module — Full Functional Audit, Fix & Enhancement Plan
+
+## System Analysis Summary
+
+After auditing the entire codebase, here is the current architecture:
+
+| Layer | Components |
+|-------|-----------|
+| **Database** | SQLite via PDO singleton (`Database` class), WAL mode, 11 migrations |
+| **Repositories** | `ProductRepository`, `SaleRepository`, `StockMovementRepository`, `SupplierRepository`, `PurchaseRepository`, `EmployeeRepository` |
+| **Services** | `SaleService`, `ProductService`, `CustomerService`, `ShiftService`, `SettingsService`, `AuthService`, `InventoryService`, `PurchaseService`, `ReportService`, `EmployeeService`, `SupplierService` |
+| **Engines** | `POSEngine` (checkout logic), `InventoryEngine`, `ReportEngine` |
+| **Controllers** | `POSController`, `SaleController`, `CustomerController`, `ShiftController`, etc. |
+| **Frontend** | `pos_core_v2.js` (876 lines), `pos_shortcuts.js`, CSS: `pos_simple.css`, `pos_fixes.css`, `main.css` |
+| **Auth** | Session-based, 3 roles: `cashier`, `manager`, `admin` (hierarchical) |
+| **Modules** | Products, Suppliers, Purchases, Sales, Inventory, Employees, Safe/Treasury, Customers, Shifts, Reports, Barcode, Settings, Backup, Users |
+
+### Identified Problems
+
+1. **PHP startup warnings corrupting JSON responses** — `php_mysql.dll` missing + `display_errors=On` ✅ (Already fixed)
+2. **No product grid on POS open** — POS only has search fields, no initial product listing
+3. **No category filtering** — Categories exist in DB but POS has no filter UI
+4. **No customer selection in POS** — `customer_id` column exists on `sales` but POS never sets it
+5. **No payment flow** — Checkout immediately processes as `cash` with no payment modal (no change calculation, no credit support)
+6. **No stock validation** — Neither frontend nor backend check stock before selling
+7. **No server-side price validation** — Checkout trusts frontend prices entirely
+8. **No duplicate submission prevention** — Double-click on checkout could create duplicate invoices
+9. **Broken `addToCart` quantity accumulation** — When same product exists, `actual_quantity` accumulates incorrectly (adds `actualQty` instead of recalculating)
+10. **Missing `sale_mode` column in `sale_items` check constraint** — Does not include `'custom'` in the `CREATE TABLE` but migration 001 adds it properly (this is fine, schema has it)
+11. **Receipt modal English labels** — "Receipt", "Close", "Print" should be Arabic
+12. **`pos_cart_restore` via session** (edit_as_new) uses `localStorage` in redirect page but POS doesn't read from `localStorage`
+13. **Shift integration** — POS doesn't check if a shift is open before allowing sales
+
+### What IS Working
+
+- Core cart operations (add/remove/quantity/unit switching/manual price/weight)
+- Barcode scanner detection (rapid keystroke buffer)
+- Receipt generation and printing
+- Sale creation with stock deduction and safe transaction (transactional)
+- Sale void, return, delete, update flows
+- Customer module (CRUD, credit, payments, search API)
+- Shift management (open/close, X/Z reports)
+- Keyboard shortcuts (F2/F3/F5/F8/Esc/Arrows)
+
+---
+
+## Proposed Changes
+
+### Component 1: Database Migration
+
+#### [NEW] [012_pos_enhancements.sql](file:///d:/Tajer/Tajer/www/app/database/migrations/012_pos_enhancements.sql)
+- Add `payment_amount_paid` and `payment_change` columns to `sales` table
+- Add composite index on `products(is_active, category)` for efficient category-filtered queries
+- Add index on `products(is_active, name)` for efficient product listing
+
+---
+
+### Component 2: Backend — POSController & POSEngine
+
+#### [MODIFY] [POSController.php](file:///d:/Tajer/Tajer/www/app/controllers/POSController.php)
+- Add `listProducts()` API action — paginated product listing with category filter (20 products/page)
+- Add `getCategories()` API action — returns distinct categories
+- Add `searchCustomers()` API action — delegates to `CustomerService::search()`
+- Add `getCustomer()` API action — gets customer by ID
+- Add `createCustomer()` API action — quick-create customer from POS
+- Enhance `checkout()` to accept `customer_id`, `payment_method`, `amount_paid`
+- Add anti-duplicate-submission token check
+
+#### [MODIFY] [POSEngine.php](file:///d:/Tajer/Tajer/www/app/pos_engine/POSEngine.php)
+- Add server-side **stock validation** before checkout (reject if insufficient stock, unless product is weight/custom)
+- Add server-side **price re-validation** — recalculate totals from DB prices, reject if frontend total differs significantly (>0.50 tolerance for rounding)
+- Calculate `amount_paid` and `change` in checkout result
+- Support `customer_id` → delegate to `CustomerService::addCreditSale()` for credit payments
+- Record `payment_method` properly (support `cash`, `card`, `credit`)
+- Store `shift_id` from session
+- Return checkout token to prevent duplicate submissions
+
+---
+
+### Component 3: Frontend — pos_core_v2.js (Major Enhancement)
+
+#### [MODIFY] [pos_core_v2.js](file:///d:/Tajer/Tajer/www/public/js/pos_core_v2.js)
+Major additions to the IIFE:
+
+**Product Grid System:**
+- On DOM load, fetch and display products in a scrollable grid below the search area
+- Show product name, price, stock quantity, category badge
+- Clicking a product adds it to cart
+- Lazy-load with "Load More" button (pagination, 20 at a time)
+- Category filter buttons at the top of the grid
+- Stock indicators (green=in stock, red=out of stock, yellow=low stock)
+- Out-of-stock products shown dimmed but not hidden
+
+**Enhanced Search:**
+- Searching filters the product grid in real-time (server-side)
+- Clearing search restores normal product listing
+- Category filter + search work together
+- "No products found" empty state
+
+**Cart Enhancements:**
+- Fix `actual_quantity` accumulation bug
+- Add stock validation on frontend (warn if exceeding stock, but don't hard-block — backend is authority)
+- Show stock remaining next to product name in cart
+
+**Customer Selection:**
+- Add customer search/select UI in bottom bar area
+- Show selected customer name and balance
+- Quick-create customer modal
+- "Walk-in" default (no customer selected)
+
+**Payment Modal:**
+- New proper payment modal triggered before final checkout
+- Shows subtotal, discount, total
+- Payment method selector (cash/card/credit)
+- Amount paid input (for cash — auto-calculates change)
+- For credit: show customer balance, validate credit limit
+- Clear confirmation flow
+
+**Anti-Duplicate:**
+- Disable checkout button immediately on click
+- Use a checkout token (generated server-side, consumed on use)
+- Re-enable button only after response received
+
+**Keyboard Shortcuts:**
+- F9: Open customer selection
+- F10: Open payment modal
+- Delete: Remove selected cart item
+- +/−: Adjust selected item quantity
+
+---
+
+### Component 4: POS View (HTML)
+
+#### [MODIFY] [index.php](file:///d:/Tajer/Tajer/www/app/views/pos/index.php)
+- Add product grid container between input section and cart
+- Add category filter bar
+- Add customer selection UI in bottom bar
+- Add payment modal HTML
+- Add customer quick-create modal HTML
+- Fix receipt modal labels to Arabic
+- Update shortcuts hint bar with new shortcuts
+- Restructure layout: left panel = product grid, right panel = cart (side-by-side on wide screens)
+
+---
+
+### Component 5: CSS
+
+#### [MODIFY] [pos_simple.css](file:///d:/Tajer/Tajer/www/public/css/pos_simple.css)
+- Add product grid styles (card layout, responsive grid)
+- Add category filter bar styles
+- Add customer section styles
+- Add payment modal styles
+- Add stock indicator styles (badges with colors)
+- Add split-panel layout for product grid + cart
+
+---
+
+## Open Questions
+
+> [!IMPORTANT]
+> **Q1: Stock enforcement strictness** — Should the POS **hard-block** selling when stock is insufficient (zero or negative)? Or should it allow overselling with a warning? Current system has no stock checks at all. I will implement **hard-block on backend** (reject checkout if stock < requested quantity for non-custom items) with a clear error message, but allow managers/admins to override. Please confirm.
+
+> [!IMPORTANT]
+> **Q2: Credit sales flow** — The system has `CustomerService::addCreditSale()` which updates customer balance. When payment method is "credit", should the sale still record a safe transaction? Currently sales always create a safe transaction. For credit sales, I'll skip the safe transaction (since no cash exchanged) and only update the customer's balance. Please confirm.
+
+> [!IMPORTANT]
+> **Q3: Layout preference** — Should the POS use a **split layout** (product grid on left, cart on right — like most modern POS systems)? Or keep the current **full-width cart** with the product grid above it? I recommend the split layout for a professional POS experience.
+
+> [!IMPORTANT]
+> **Q4: Shift requirement** — Should the POS **require** an open shift before allowing sales? The system has shift management but POS currently doesn't check. I'll add a check that warns if no shift is open, but still allows sales. Please confirm.
+
+---
+
+## Verification Plan
+
+### Automated Tests
+- Run PHP syntax check on all modified files: `php -l <file>`
+- Test the `listProducts`, `search`, `findProduct`, and `checkout` API endpoints via CLI
+
+### Manual Verification
+1. Open POS → verify products load immediately in grid
+2. Click a category → verify grid filters
+3. Search by name (Arabic/English, partial) → verify results
+4. Search by barcode → verify exact match and add to cart
+5. Scan barcode (rapid input) → verify auto-add
+6. Add multiple products, change quantities, remove items, clear cart
+7. Switch unit types (unit/pack)
+8. Select a customer → verify balance shown
+9. Checkout with cash → verify change calculation
+10. Checkout with credit → verify customer balance updated
+11. Attempt to sell more than stock → verify rejection
+12. Print receipt → verify correct content
+13. Verify safe transaction created
+14. Verify stock movements recorded
+15. Double-click checkout → verify only one invoice created

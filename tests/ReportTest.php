@@ -150,59 +150,67 @@ function createShift($pdo, $userId, $openingCash = 0) {
 }
 
 // ============================================================
-// Replicate ReportService methods
+// Replicate ReportService methods (using half-open intervals)
 // ============================================================
+function dateBoundaries($dateFrom, $dateTo) {
+    $start = $dateFrom . ' 00:00:00';
+    $endExclusive = date('Y-m-d', strtotime($dateTo . ' +1 day')) . ' 00:00:00';
+    return [$start, $endExclusive];
+}
+
 function dailySales($pdo, $date = null) {
     $date = $date ?: date('Y-m-d');
+    [$start, $endExclusive] = dateBoundaries($date, $date);
     $stmt = $pdo->prepare(
         "SELECT s.id, s.sale_number, s.datetime, s.total, s.payment_method,
                 COUNT(si.id) as item_count
          FROM sales s
          LEFT JOIN sale_items si ON s.id = si.sale_id
-         WHERE date(s.datetime) = :date
+         WHERE s.datetime >= :start AND s.datetime < :end
            AND s.status != 'voided'
            AND s.type = 'sale'
          GROUP BY s.id
          ORDER BY s.datetime DESC"
     );
-    $stmt->execute([':date' => $date]);
+    $stmt->execute([':start' => $start, ':end' => $endExclusive]);
     $sales = $stmt->fetchAll();
 
     $summaryStmt = $pdo->prepare(
         "SELECT COUNT(*) as count, COALESCE(SUM(total), 0) as total,
                 COALESCE(SUM(discount), 0) as discount
          FROM sales
-         WHERE date(datetime) = :date
+         WHERE datetime >= :start AND datetime < :end
            AND status != 'voided'
            AND type = 'sale'"
     );
-    $summaryStmt->execute([':date' => $date]);
+    $summaryStmt->execute([':start' => $start, ':end' => $endExclusive]);
     $summary = $summaryStmt->fetch();
 
     return ['sales' => $sales, 'summary' => $summary, 'date' => $date];
 }
 
 function salesByRange($pdo, $dateFrom, $dateTo) {
+    [$start, $endExclusive] = dateBoundaries($dateFrom, $dateTo);
     $stmt = $pdo->prepare(
         "SELECT date(datetime) as sale_date, COUNT(*) as count, SUM(total) as total
          FROM sales
-         WHERE date(datetime) >= :from AND date(datetime) <= :to
+         WHERE datetime >= :start AND datetime < :end
            AND status != 'voided'
            AND type = 'sale'
          GROUP BY date(datetime)
          ORDER BY sale_date DESC"
     );
-    $stmt->execute([':from' => $dateFrom, ':to' => $dateTo]);
+    $stmt->execute([':start' => $start, ':end' => $endExclusive]);
     $daily = $stmt->fetchAll();
 
     $totalStmt = $pdo->prepare(
         "SELECT COUNT(*) as count, COALESCE(SUM(total), 0) as total
          FROM sales
-         WHERE date(datetime) >= :from AND date(datetime) <= :to
+         WHERE datetime >= :start AND datetime < :end
            AND status != 'voided'
            AND type = 'sale'"
     );
-    $totalStmt->execute([':from' => $dateFrom, ':to' => $dateTo]);
+    $totalStmt->execute([':start' => $start, ':end' => $endExclusive]);
     $totals = $totalStmt->fetch();
 
     return ['daily' => $daily, 'totals' => $totals];
@@ -218,12 +226,10 @@ function topProducts($pdo, $limit = 20, $dateFrom = null, $dateTo = null) {
     $params = [];
 
     if ($dateFrom) {
-        $sql .= " AND date(s.datetime) >= :from";
-        $params[':from'] = $dateFrom;
-        if ($dateTo) {
-            $sql .= " AND date(s.datetime) <= :to";
-            $params[':to'] = $dateTo;
-        }
+        [$start, $endExclusive] = dateBoundaries($dateFrom, $dateTo ?: $dateFrom);
+        $sql .= " AND s.datetime >= :start AND s.datetime < :end";
+        $params[':start'] = $start;
+        $params[':end'] = $endExclusive;
     }
 
     $sql .= " GROUP BY si.product_id, si.product_name
@@ -271,12 +277,10 @@ function purchasesBySupplier($pdo, $dateFrom = null, $dateTo = null) {
     $params = [];
 
     if ($dateFrom) {
-        $sql .= " AND pi.date >= :from";
-        $params[':from'] = $dateFrom;
-    }
-    if ($dateTo) {
-        $sql .= " AND pi.date <= :to";
-        $params[':to'] = $dateTo;
+        $endExclusive = date('Y-m-d', strtotime(($dateTo ?: $dateFrom) . ' +1 day'));
+        $sql .= " AND pi.date >= :start AND pi.date < :end";
+        $params[':start'] = $dateFrom;
+        $params[':end'] = $endExclusive;
     }
 
     $sql .= " GROUP BY s.id ORDER BY total DESC";
@@ -302,12 +306,10 @@ function stockMovements($pdo, $productId = null, $type = '', $dateFrom = null, $
         $params[':type'] = $type;
     }
     if ($dateFrom) {
-        $sql .= " AND date(sm.created_at) >= :from";
-        $params[':from'] = $dateFrom;
-    }
-    if ($dateTo) {
-        $sql .= " AND date(sm.created_at) <= :to";
-        $params[':to'] = $dateTo;
+        $endExclusive = date('Y-m-d', strtotime(($dateTo ?: $dateFrom) . ' +1 day'));
+        $sql .= " AND sm.created_at >= :start AND sm.created_at < :end";
+        $params[':start'] = $dateFrom;
+        $params[':end'] = $endExclusive;
     }
 
     $sql .= " ORDER BY sm.created_at DESC LIMIT :limit";
@@ -320,15 +322,18 @@ function stockMovements($pdo, $productId = null, $type = '', $dateFrom = null, $
 }
 
 function financialReport($pdo, $dateFrom, $dateTo) {
+    [$start, $endExclusive] = dateBoundaries($dateFrom, $dateTo);
+    $safeEndExclusive = date('Y-m-d', strtotime($dateTo . ' +1 day'));
+
     // Sales
     $salesStmt = $pdo->prepare(
         "SELECT COALESCE(SUM(total), 0) as total, COALESCE(SUM(discount), 0) as discounts
          FROM sales
-         WHERE date(datetime) BETWEEN :from AND :to
+         WHERE datetime >= :start AND datetime < :end
            AND status != 'voided'
            AND type = 'sale'"
     );
-    $salesStmt->execute([':from' => $dateFrom, ':to' => $dateTo]);
+    $salesStmt->execute([':start' => $start, ':end' => $endExclusive]);
     $salesRow = $salesStmt->fetch();
     $totalSales = floatval($salesRow['total']);
 
@@ -336,20 +341,20 @@ function financialReport($pdo, $dateFrom, $dateTo) {
     $returnsStmt = $pdo->prepare(
         "SELECT COALESCE(SUM(ABS(total)), 0) as total
          FROM sales
-         WHERE date(datetime) BETWEEN :from AND :to
+         WHERE datetime >= :start AND datetime < :end
            AND type = 'return'
            AND status != 'voided'"
     );
-    $returnsStmt->execute([':from' => $dateFrom, ':to' => $dateTo]);
+    $returnsStmt->execute([':start' => $start, ':end' => $endExclusive]);
     $totalReturns = floatval($returnsStmt->fetchColumn());
 
     // Deposits
     $depositStmt = $pdo->prepare(
         "SELECT COALESCE(SUM(amount), 0) as total
          FROM safe_transactions
-         WHERE date(date) BETWEEN :from AND :to AND type IN ('deposit', 'opening')"
+         WHERE date >= :start AND date < :end AND type IN ('deposit', 'opening')"
     );
-    $depositStmt->execute([':from' => $dateFrom, ':to' => $dateTo]);
+    $depositStmt->execute([':start' => $dateFrom, ':end' => $safeEndExclusive]);
     $totalDeposit = floatval($depositStmt->fetchColumn());
 
     $netIncome = $totalSales - $totalReturns + $totalDeposit;
@@ -358,20 +363,20 @@ function financialReport($pdo, $dateFrom, $dateTo) {
     $purchaseStmt = $pdo->prepare(
         "SELECT COALESCE(SUM(total), 0) as total
          FROM purchase_invoices
-         WHERE date BETWEEN :from AND :to
+         WHERE date >= :start AND date < :end
            AND status != 'voided'
            AND type = 'purchase'"
     );
-    $purchaseStmt->execute([':from' => $dateFrom, ':to' => $dateTo]);
+    $purchaseStmt->execute([':start' => $dateFrom, ':end' => $safeEndExclusive]);
     $totalPurchases = floatval($purchaseStmt->fetchColumn());
 
     // Expenses
     $expenseStmt = $pdo->prepare(
         "SELECT COALESCE(SUM(amount), 0) as total
          FROM safe_transactions
-         WHERE date(date) BETWEEN :from AND :to AND type = 'expense'"
+         WHERE date >= :start AND date < :end AND type = 'expense'"
     );
-    $expenseStmt->execute([':from' => $dateFrom, ':to' => $dateTo]);
+    $expenseStmt->execute([':start' => $dateFrom, ':end' => $safeEndExclusive]);
     $totalExpenses = floatval($expenseStmt->fetchColumn());
 
     $netProfit = $netIncome - $totalPurchases - $totalExpenses;
@@ -401,12 +406,10 @@ function salesByCategory($pdo, $dateFrom = null, $dateTo = null) {
             WHERE s.status != 'voided' AND s.type = 'sale'";
     $params = [];
     if ($dateFrom) {
-        $sql .= " AND date(s.datetime) >= :from";
-        $params[':from'] = $dateFrom;
-    }
-    if ($dateTo) {
-        $sql .= " AND date(s.datetime) <= :to";
-        $params[':to'] = $dateTo;
+        [$start, $endExclusive] = dateBoundaries($dateFrom, $dateTo ?: $dateFrom);
+        $sql .= " AND s.datetime >= :start AND s.datetime < :end";
+        $params[':start'] = $start;
+        $params[':end'] = $endExclusive;
     }
     $sql .= " GROUP BY COALESCE(p.category, 'بدون قسم') ORDER BY total_revenue DESC";
     $stmt = $pdo->prepare($sql);
@@ -432,12 +435,10 @@ function productProfitMargin($pdo, $dateFrom = null, $dateTo = null, $limit = 30
             WHERE s.status != 'voided' AND s.type = 'sale'";
     $params = [];
     if ($dateFrom) {
-        $sql .= " AND date(s.datetime) >= :from";
-        $params[':from'] = $dateFrom;
-    }
-    if ($dateTo) {
-        $sql .= " AND date(s.datetime) <= :to";
-        $params[':to'] = $dateTo;
+        [$start, $endExclusive] = dateBoundaries($dateFrom, $dateTo ?: $dateFrom);
+        $sql .= " AND s.datetime >= :start AND s.datetime < :end";
+        $params[':start'] = $start;
+        $params[':end'] = $endExclusive;
     }
     $sql .= " GROUP BY si.product_id, si.product_name ORDER BY profit DESC LIMIT :limit";
     $stmt = $pdo->prepare($sql);
@@ -479,12 +480,10 @@ function cashierPerformance($pdo, $dateFrom = null, $dateTo = null) {
                 AND s.status != 'voided' AND s.type = 'sale'";
     $params = [];
     if ($dateFrom) {
-        $sql .= " AND date(s.datetime) >= :from";
-        $params[':from'] = $dateFrom;
-    }
-    if ($dateTo) {
-        $sql .= " AND date(s.datetime) <= :to";
-        $params[':to'] = $dateTo;
+        [$start, $endExclusive] = dateBoundaries($dateFrom, $dateTo ?: $dateFrom);
+        $sql .= " AND s.datetime >= :start AND s.datetime < :end";
+        $params[':start'] = $start;
+        $params[':end'] = $endExclusive;
     }
     $sql .= " GROUP BY u.id, u.name HAVING sale_count > 0 ORDER BY total_sales DESC";
     $stmt = $pdo->prepare($sql);
@@ -871,6 +870,121 @@ assert_true(isset($first['credit_limit']), 'RPT-020h', 'Debtor has credit_limit'
 
 // Verify ordering (highest balance first)
 assert_equals(500.0, floatval($result[0]['balance']), 'RPT-020i', 'Debtors ordered by balance DESC');
+
+// ----------------------------------------------------------
+// RPT-021: Date boundary — Same-day sales
+// ----------------------------------------------------------
+echo "\n--- RPT-021: Date boundary — Same-day sales ---\n";
+
+$boundaryDate = '2026-08-31';
+createSaleRecord($pdo, 100, 0, 'sale', 'completed', '2026-08-31 10:30:00', $shiftId);
+createSaleRecord($pdo, 200, 0, 'sale', 'completed', '2026-08-31 14:00:00', $shiftId);
+
+// Earlier tests created 2 sales on today (2026-08-31): 200 + 150 = 350
+// Now we added 2 more: 100 + 200 = 300
+$result = dailySales($pdo, $boundaryDate);
+assert_equals(4, count($result['sales']), 'RPT-021a', 'Same-day: 4 completed sales (2 earlier + 2 new)');
+assert_equals(650.0, floatval($result['summary']['total']), 'RPT-021b', 'Same-day: total is 650 (350+300)');
+
+// ----------------------------------------------------------
+// RPT-022: Date boundary — Midnight sale
+// ----------------------------------------------------------
+echo "\n--- RPT-022: Date boundary — Midnight sale ---\n";
+
+createSaleRecord($pdo, 50, 0, 'sale', 'completed', '2026-08-31 00:00:00', $shiftId);
+
+$result = dailySales($pdo, $boundaryDate);
+assert_equals(5, count($result['sales']), 'RPT-022a', 'Midnight sale at 00:00:00 is included');
+
+// ----------------------------------------------------------
+// RPT-023: Date boundary — End of day sale
+// ----------------------------------------------------------
+echo "\n--- RPT-023: Date boundary — End of day sale ---\n";
+
+createSaleRecord($pdo, 75, 0, 'sale', 'completed', '2026-08-31 23:59:59', $shiftId);
+
+$result = dailySales($pdo, $boundaryDate);
+assert_equals(6, count($result['sales']), 'RPT-023a', 'End-of-day sale at 23:59:59 is included');
+
+// ----------------------------------------------------------
+// RPT-024: Date boundary — Previous day excluded
+// ----------------------------------------------------------
+echo "\n--- RPT-024: Date boundary — Previous day excluded ---\n";
+
+createSaleRecord($pdo, 999, 0, 'sale', 'completed', '2026-08-30 23:59:59', $shiftId);
+
+$result = dailySales($pdo, $boundaryDate);
+assert_equals(6, count($result['sales']), 'RPT-024a', 'Previous day 23:59:59 excluded from Aug 31');
+
+// ----------------------------------------------------------
+// RPT-025: Date boundary — Next day excluded
+// ----------------------------------------------------------
+echo "\n--- RPT-025: Date boundary — Next day excluded ---\n";
+
+createSaleRecord($pdo, 888, 0, 'sale', 'completed', '2026-09-01 00:00:00', $shiftId);
+
+$result = dailySales($pdo, $boundaryDate);
+assert_equals(6, count($result['sales']), 'RPT-025a', 'Next day 00:00:00 excluded from Aug 31');
+
+// ----------------------------------------------------------
+// RPT-026: Multi-day range
+// ----------------------------------------------------------
+echo "\n--- RPT-026: Multi-day range ---\n";
+
+$result = salesByRange($pdo, '2026-08-30', '2026-08-31');
+$allDates = array_column($result['daily'], 'sale_date');
+assert_true(in_array('2026-08-30', $allDates), 'RPT-026a', 'Multi-day range includes Aug 30');
+assert_true(in_array('2026-08-31', $allDates), 'RPT-026b', 'Multi-day range includes Aug 31');
+
+// Aug 30 has 2 sales (300+999=1299), Aug 31 has 6 sales (200+150+100+200+50+75=775)
+$totalInRange = floatval($result['totals']['total']);
+assert_equals(2074.0, $totalInRange, 'RPT-026c', 'Multi-day range total = 1299 + 775 = 2074');
+
+// ----------------------------------------------------------
+// RPT-027: Empty range
+// ----------------------------------------------------------
+echo "\n--- RPT-027: Empty range ---\n";
+
+$result = dailySales($pdo, '2020-01-01');
+assert_equals(0, count($result['sales']), 'RPT-027a', 'Empty date returns 0 sales');
+assert_equals(0, intval($result['summary']['count']), 'RPT-027b', 'Empty date summary count is 0');
+assert_equals(0.0, floatval($result['summary']['total']), 'RPT-027c', 'Empty date summary total is 0');
+
+$result = salesByRange($pdo, '2020-01-01', '2020-01-07');
+assert_equals(0, count($result['daily']), 'RPT-027d', 'Empty range returns 0 daily entries');
+assert_equals(0, intval($result['totals']['count']), 'RPT-027e', 'Empty range totals count is 0');
+
+// ----------------------------------------------------------
+// RPT-028: Range boundary — sale at start of range
+// ----------------------------------------------------------
+echo "\n--- RPT-028: Range boundary — sale at start of range ---\n";
+
+$result = salesByRange($pdo, '2026-08-31', '2026-08-31');
+$dates = array_column($result['daily'], 'sale_date');
+assert_true(in_array('2026-08-31', $dates), 'RPT-028a', 'Single-day range includes sales from that day');
+assert_equals(6, intval($result['totals']['count']), 'RPT-028b', 'Single-day range count matches daily sales');
+
+// ----------------------------------------------------------
+// RPT-029: Voided sales excluded from boundary tests
+// ----------------------------------------------------------
+echo "\n--- RPT-029: Voided sales excluded from boundary tests ---\n";
+
+createSaleRecord($pdo, 500, 0, 'sale', 'voided', '2026-08-31 12:00:00', $shiftId);
+
+$result = dailySales($pdo, $boundaryDate);
+assert_equals(6, count($result['sales']), 'RPT-029a', 'Voided sale excluded from boundary date');
+
+// ----------------------------------------------------------
+// RPT-030: Returns excluded from daily sales count
+// ----------------------------------------------------------
+echo "\n--- RPT-030: Returns excluded from daily sales count ---\n";
+
+createSaleRecord($pdo, -25, 0, 'return', 'completed', '2026-08-31 15:00:00', $shiftId);
+
+$result = dailySales($pdo, $boundaryDate);
+assert_equals(6, count($result['sales']), 'RPT-030a', 'Return excluded from daily sales list');
+// Summary should still only count completed sales
+assert_equals(6, intval($result['summary']['count']), 'RPT-030b', 'Summary excludes returns');
 
 $pdo = null;
 

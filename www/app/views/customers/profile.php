@@ -1,9 +1,4 @@
 <!-- Customer Profile View -->
-<?php
-$toastSuccess = $_SESSION['toast_success'] ?? '';
-$toastError = $_SESSION['toast_error'] ?? '';
-unset($_SESSION['toast_success'], $_SESSION['toast_error']);
-?>
 
 <div class="page-header">
     <div>
@@ -12,16 +7,16 @@ unset($_SESSION['toast_success'], $_SESSION['toast_error']);
     </div>
     <div class="btn-group">
         <button class="btn btn-success" onclick="openModal('paymentModal')">💰 تسجيل تسديد</button>
-        <button class="btn btn-outline" onclick="openModal('editCustomerModal')">✏️ تعديل</button>
+        <button class="btn btn-outline" onclick="openEditCustomerModal()">✏️ تعديل</button>
         <a href="?page=customers" class="btn btn-outline">← العودة</a>
     </div>
 </div>
 
 <?php if ($toastSuccess): ?>
-<script>showToast('<?= htmlspecialchars($toastSuccess) ?>', 'success');</script>
+<script>document.addEventListener('DOMContentLoaded', function() { showToast('<?= htmlspecialchars($toastSuccess) ?>', 'success'); });</script>
 <?php endif; ?>
 <?php if ($toastError): ?>
-<script>showToast('<?= htmlspecialchars($toastError) ?>', 'error');</script>
+<script>document.addEventListener('DOMContentLoaded', function() { showToast('<?= htmlspecialchars($toastError) ?>', 'error'); });</script>
 <?php endif; ?>
 
 <!-- Customer Stats -->
@@ -59,7 +54,7 @@ unset($_SESSION['toast_success'], $_SESSION['toast_error']);
                     <th>#</th>
                     <th>التاريخ</th>
                     <th>النوع</th>
-                    <th>المبلغ</ال>
+                    <th>المبلغ</th>
                     <th>الرصيد بعد</th>
                     <th>الوصف</th>
                 </tr>
@@ -100,16 +95,17 @@ unset($_SESSION['toast_success'], $_SESSION['toast_error']);
             <h3>💰 تسجيل تسديد — <?= htmlspecialchars($customer['name']) ?></h3>
             <button class="modal-close" onclick="closeModal('paymentModal')">&times;</button>
         </div>
-        <form method="POST" action="?page=customers&action=payment">
+        <form method="POST" action="?page=customers&action=payment" onsubmit="return validatePaymentForm();">
             <input type="hidden" name="customer_id" value="<?= $customer['id'] ?>">
             <div class="modal-body">
                 <div class="form-group">
                     <label>المبلغ *</label>
-                    <input type="number" name="amount" class="form-control" step="0.01" min="0.01" required placeholder="0.00">
+                    <input type="number" name="amount" class="form-control" id="paymentAmount" step="0.01" min="0.01" max="999999.99" required placeholder="0.00" dir="ltr">
+                    <small class="field-error" id="paymentAmountError" style="color:var(--danger);display:none;"></small>
                 </div>
                 <div class="form-group">
                     <label>وصف</label>
-                    <input type="text" name="description" class="form-control" placeholder="تسديد نقدي / تحويل بنكي ...">
+                    <input type="text" name="description" class="form-control" placeholder="تسديد نقدي / تحويل بنكي ..." maxlength="255">
                 </div>
             </div>
             <div class="modal-footer">
@@ -127,28 +123,30 @@ unset($_SESSION['toast_success'], $_SESSION['toast_error']);
             <h3>✏️ تعديل بيانات العميل</h3>
             <button class="modal-close" onclick="closeModal('editCustomerModal')">&times;</button>
         </div>
-        <form method="POST" action="?page=customers&action=update">
+        <form id="editCustomerForm" method="POST" action="?page=customers&action=update" onsubmit="return validateEditCustomerForm();">
             <input type="hidden" name="id" value="<?= $customer['id'] ?>">
             <div class="modal-body">
                 <div class="form-group">
                     <label>الاسم *</label>
-                    <input type="text" name="name" class="form-control" required value="<?= htmlspecialchars($customer['name']) ?>">
+                    <input type="text" name="name" class="form-control" id="editCustName" required value="<?= htmlspecialchars($customer['name']) ?>">
+                    <small class="field-error" id="editCustNameError" style="color:var(--danger);display:none;"></small>
                 </div>
                 <div class="form-group">
                     <label>الهاتف</label>
-                    <input type="text" name="phone" class="form-control" value="<?= htmlspecialchars($customer['phone']) ?>">
+                    <input type="text" name="phone" class="form-control" id="editCustPhone" maxlength="15" dir="ltr" value="<?= htmlspecialchars($customer['phone']) ?>">
+                    <small class="field-error" id="editCustPhoneError" style="color:var(--danger);display:none;"></small>
                 </div>
                 <div class="form-group">
                     <label>العنوان</label>
-                    <input type="text" name="address" class="form-control" value="<?= htmlspecialchars($customer['address']) ?>">
+                    <input type="text" name="address" class="form-control" maxlength="255" value="<?= htmlspecialchars($customer['address']) ?>">
                 </div>
                 <div class="form-group">
                     <label>الحد الائتماني</label>
-                    <input type="number" name="credit_limit" class="form-control" step="0.01" min="0" value="<?= $customer['credit_limit'] ?>">
+                    <input type="number" name="credit_limit" class="form-control" step="0.01" min="0" max="999999.99" value="<?= $customer['credit_limit'] ?>" dir="ltr">
                 </div>
                 <div class="form-group">
                     <label>ملاحظات</label>
-                    <textarea name="notes" class="form-control" rows="2"><?= htmlspecialchars($customer['notes']) ?></textarea>
+                    <textarea name="notes" class="form-control" rows="2" maxlength="500"><?= htmlspecialchars($customer['notes']) ?></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -158,3 +156,94 @@ unset($_SESSION['toast_success'], $_SESSION['toast_error']);
         </form>
     </div>
 </div>
+
+<script>
+function openEditCustomerModal() {
+    clearCustFieldError('editCustName');
+    clearCustFieldError('editCustPhone');
+    openModal('editCustomerModal');
+}
+
+function validateEditCustomerForm() {
+    var valid = true;
+    var name = document.getElementById('editCustName').value.trim();
+    var phone = document.getElementById('editCustPhone').value.trim();
+
+    clearCustFieldError('editCustName');
+    clearCustFieldError('editCustPhone');
+
+    if (!name) {
+        showCustFieldError('editCustName', 'اسم العميل مطلوب');
+        valid = false;
+    } else if (name.length < 2) {
+        showCustFieldError('editCustName', 'الاسم يجب أن يكون حرفين على الأقل');
+        valid = false;
+    } else if (name.length > 100) {
+        showCustFieldError('editCustName', 'الاسم يجب أن لا يتجاوز 100 حرف');
+        valid = false;
+    } else if (/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/.test(name)) {
+        showCustFieldError('editCustName', 'الاسم يحتوي على أحرف غير صالحة');
+        valid = false;
+    } else if (/\s{2,}/.test(name)) {
+        showCustFieldError('editCustName', 'الاسم يحتوي على مسافات متكررة');
+        valid = false;
+    }
+
+    if (phone && !/^[0-9]{7,15}$/.test(phone)) {
+        showCustFieldError('editCustPhone', 'رقم الهاتف يجب أن يحتوي على أرقام فقط (7-15 رقم)');
+        valid = false;
+    }
+
+    return valid;
+}
+
+function validatePaymentForm() {
+    var valid = true;
+    var amount = document.getElementById('paymentAmount').value;
+
+    clearCustFieldError('paymentAmount');
+
+    if (!amount || parseFloat(amount) <= 0) {
+        showCustFieldError('paymentAmount', 'أدخل مبلغ صحيح');
+        valid = false;
+    } else if (parseFloat(amount) > 999999.99) {
+        showCustFieldError('paymentAmount', 'المبلغ يتجاوز الحد المسموح');
+        valid = false;
+    }
+
+    return valid;
+}
+
+function showCustFieldError(fieldId, message) {
+    var errorEl = document.getElementById(fieldId + 'Error');
+    var inputEl = document.getElementById(fieldId);
+    if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.style.display = 'block';
+    }
+    if (inputEl) {
+        inputEl.style.borderColor = 'var(--danger)';
+    }
+}
+
+function clearCustFieldError(fieldId) {
+    var errorEl = document.getElementById(fieldId + 'Error');
+    var inputEl = document.getElementById(fieldId);
+    if (errorEl) {
+        errorEl.textContent = '';
+        errorEl.style.display = 'none';
+    }
+    if (inputEl) {
+        inputEl.style.borderColor = '';
+    }
+}
+
+// Strip non-digits from phone input
+document.getElementById('editCustPhone').addEventListener('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+    clearCustFieldError('editCustPhone');
+});
+document.getElementById('editCustName').addEventListener('input', function() {
+    clearCustFieldError('editCustName');
+});
+</script>

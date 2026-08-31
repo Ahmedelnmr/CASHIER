@@ -45,7 +45,8 @@ class EmployeeRepository {
     public function getTotalSalaryPaid($employeeId) {
         $stmt = $this->db->prepare("SELECT COALESCE(SUM(amount), 0) FROM safe_transactions 
                                    WHERE employee_id = ? 
-                                   AND type IN ('salary', 'salary_payment')");
+                                   AND type IN ('salary', 'salary_payment')
+                                   AND status != 'reversed' AND transaction_type != 'reversal'");
         $stmt->execute([$employeeId]);
         return $stmt->fetchColumn() ?: 0;
     }
@@ -53,10 +54,27 @@ class EmployeeRepository {
     public function getTotalAdvances($employeeId) {
         $stmt = $this->db->prepare("SELECT COALESCE(SUM(amount), 0) FROM safe_transactions 
                                    WHERE employee_id = ? 
-                                   AND type = 'advance'");
+                                   AND type = 'advance'
+                                   AND status != 'reversed' AND transaction_type != 'reversal'");
         $stmt->execute([$employeeId]);
         return $stmt->fetchColumn() ?: 0;
     }
+
+    public function getTotalDebtSettlements($employeeId) {
+        $stmt = $this->db->prepare("SELECT COALESCE(SUM(amount), 0) FROM safe_transactions 
+                                   WHERE employee_id = ? 
+                                   AND type = 'debt_settlement'
+                                   AND status != 'reversed' AND transaction_type != 'reversal'");
+        $stmt->execute([$employeeId]);
+        return $stmt->fetchColumn() ?: 0;
+    }
+
+    public function getOutstandingDebt($employeeId) {
+        $advances = $this->getTotalAdvances($employeeId);
+        $settlements = $this->getTotalDebtSettlements($employeeId);
+        return max(0, $advances - $settlements);
+    }
+
     public function getTransactions($employeeId) {
         // Union Accruals (Credit) and Safe Transactions (Debit)
         $sql = "
@@ -78,13 +96,15 @@ class EmployeeRepository {
                 CASE 
                     WHEN type = 'advance' THEN 'سلفة'
                     WHEN type IN ('salary', 'salary_payment') THEN 'سداد راتب'
+                    WHEN type = 'debt_settlement' THEN 'تسوية مديونية'
                     ELSE type 
                 END as type_label,
                 type, 
                 amount, 
                 description 
             FROM safe_transactions 
-            WHERE employee_id = ? AND type IN ('advance', 'salary', 'salary_payment')
+            WHERE employee_id = ? AND type IN ('advance', 'salary', 'salary_payment', 'debt_settlement')
+              AND status != 'reversed' AND transaction_type != 'reversal'
             
             ORDER BY date DESC, id DESC
         ";

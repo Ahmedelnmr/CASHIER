@@ -88,7 +88,7 @@ class AuthService {
      * Get all users (admin only)
      */
     public function getAllUsers() {
-        $stmt = $this->db->query("SELECT id, username, name, role, is_active, created_at FROM users ORDER BY id");
+        $stmt = $this->db->query("SELECT id, username, name, role, is_active, created_at FROM users WHERE is_active = 1 ORDER BY id");
         return $stmt->fetchAll();
     }
 

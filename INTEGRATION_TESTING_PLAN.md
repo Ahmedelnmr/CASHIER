@@ -610,7 +610,7 @@
 
 ---
 
-## 15. Edge Cases & Boundary Conditions
+## 15. Edge Cases & Boundary Conditions 
 
 ### 15.1 Data Integrity
 

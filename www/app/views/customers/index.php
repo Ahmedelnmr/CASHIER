@@ -1,23 +1,18 @@
 <!-- Customers List View -->
-<?php
-$toastSuccess = $_SESSION['toast_success'] ?? '';
-$toastError = $_SESSION['toast_error'] ?? '';
-unset($_SESSION['toast_success'], $_SESSION['toast_error']);
-?>
 
 <div class="page-header">
     <div>
         <h1>👥 إدارة العملاء</h1>
         <p class="subtitle">قاعدة بيانات العملاء والمبيعات الآجلة</p>
     </div>
-    <button class="btn btn-primary" onclick="openModal('addCustomerModal')">➕ إضافة عميل</button>
+    <button class="btn btn-primary" onclick="openAddCustomerModal()">➕ إضافة عميل</button>
 </div>
 
 <?php if ($toastSuccess): ?>
-<script>showToast('<?= htmlspecialchars($toastSuccess) ?>', 'success');</script>
+<script>document.addEventListener('DOMContentLoaded', function() { showToast('<?= htmlspecialchars($toastSuccess) ?>', 'success'); });</script>
 <?php endif; ?>
 <?php if ($toastError): ?>
-<script>showToast('<?= htmlspecialchars($toastError) ?>', 'error');</script>
+<script>document.addEventListener('DOMContentLoaded', function() { showToast('<?= htmlspecialchars($toastError) ?>', 'error'); });</script>
 <?php endif; ?>
 
 <!-- Search -->
@@ -85,28 +80,30 @@ unset($_SESSION['toast_success'], $_SESSION['toast_error']);
             <h3>إضافة عميل جديد</h3>
             <button class="modal-close" onclick="closeModal('addCustomerModal')">&times;</button>
         </div>
-        <form method="POST" action="?page=customers&action=store">
+        <form id="addCustomerForm" method="POST" action="?page=customers&action=store" onsubmit="return validateCustomerForm('add');">
             <div class="modal-body">
                 <div class="form-group">
                     <label>اسم العميل *</label>
-                    <input type="text" name="name" class="form-control" required>
+                    <input type="text" name="name" class="form-control" id="addCustName" required>
+                    <small class="field-error" id="addCustNameError" style="color:var(--danger);display:none;"></small>
                 </div>
                 <div class="form-group">
                     <label>رقم الهاتف</label>
-                    <input type="text" name="phone" class="form-control">
+                    <input type="text" name="phone" class="form-control" id="addCustPhone" maxlength="15" dir="ltr">
+                    <small class="field-error" id="addCustPhoneError" style="color:var(--danger);display:none;"></small>
                 </div>
                 <div class="form-group">
                     <label>العنوان</label>
-                    <input type="text" name="address" class="form-control">
+                    <input type="text" name="address" class="form-control" id="addCustAddress" maxlength="255">
                 </div>
                 <div class="form-group">
                     <label>الحد الائتماني</label>
-                    <input type="number" name="credit_limit" class="form-control" step="0.01" min="0" value="0">
+                    <input type="number" name="credit_limit" class="form-control" step="0.01" min="0" max="999999.99" value="0" dir="ltr">
                     <small class="text-muted">0 = بلا حد</small>
                 </div>
                 <div class="form-group">
                     <label>ملاحظات</label>
-                    <textarea name="notes" class="form-control" rows="2"></textarea>
+                    <textarea name="notes" class="form-control" rows="2" maxlength="500"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -116,3 +113,82 @@ unset($_SESSION['toast_success'], $_SESSION['toast_error']);
         </form>
     </div>
 </div>
+
+<script>
+function openAddCustomerModal() {
+    document.getElementById('addCustomerForm').reset();
+    clearCustFieldError('addCustName');
+    clearCustFieldError('addCustPhone');
+    openModal('addCustomerModal');
+}
+
+function validateCustomerForm(prefix) {
+    var valid = true;
+    var nameId = prefix + 'CustName';
+    var phoneId = prefix + 'CustPhone';
+    var name = document.getElementById(nameId).value.trim();
+    var phone = document.getElementById(phoneId).value.trim();
+
+    clearCustFieldError(nameId);
+    clearCustFieldError(phoneId);
+
+    // Name validation
+    if (!name) {
+        showCustFieldError(nameId, 'اسم العميل مطلوب');
+        valid = false;
+    } else if (name.length < 2) {
+        showCustFieldError(nameId, 'الاسم يجب أن يكون حرفين على الأقل');
+        valid = false;
+    } else if (name.length > 100) {
+        showCustFieldError(nameId, 'الاسم يجب أن لا يتجاوز 100 حرف');
+        valid = false;
+    } else if (/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/.test(name)) {
+        showCustFieldError(nameId, 'الاسم يحتوي على أحرف غير صالحة');
+        valid = false;
+    } else if (/\s{2,}/.test(name)) {
+        showCustFieldError(nameId, 'الاسم يحتوي على مسافات متكررة');
+        valid = false;
+    }
+
+    // Phone validation
+    if (phone && !/^[0-9]{7,15}$/.test(phone)) {
+        showCustFieldError(phoneId, 'رقم الهاتف يجب أن يحتوي على أرقام فقط (7-15 رقم)');
+        valid = false;
+    }
+
+    return valid;
+}
+
+function showCustFieldError(fieldId, message) {
+    var errorEl = document.getElementById(fieldId + 'Error');
+    var inputEl = document.getElementById(fieldId);
+    if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.style.display = 'block';
+    }
+    if (inputEl) {
+        inputEl.style.borderColor = 'var(--danger)';
+    }
+}
+
+function clearCustFieldError(fieldId) {
+    var errorEl = document.getElementById(fieldId + 'Error');
+    var inputEl = document.getElementById(fieldId);
+    if (errorEl) {
+        errorEl.textContent = '';
+        errorEl.style.display = 'none';
+    }
+    if (inputEl) {
+        inputEl.style.borderColor = '';
+    }
+}
+
+// Strip non-digits from phone inputs
+document.getElementById('addCustPhone').addEventListener('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+    clearCustFieldError('addCustPhone');
+});
+document.getElementById('addCustName').addEventListener('input', function() {
+    clearCustFieldError('addCustName');
+});
+</script>

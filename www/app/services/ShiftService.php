@@ -128,13 +128,14 @@ class ShiftService {
         $salesStmt->execute([$shiftId]);
         $salesRow = $salesStmt->fetch();
 
-        // Cash in/out from safe transactions during this shift
+        // Cash in/out from safe transactions during this shift (exclude reversed/reversal)
         $safeStmt = $this->db->prepare(
             "SELECT
-                COALESCE(SUM(CASE WHEN type IN ('sale','deposit','opening') THEN amount ELSE 0 END), 0) as cash_in,
+                COALESCE(SUM(CASE WHEN type IN ('sale','deposit','opening','funding','debt_settlement') THEN amount ELSE 0 END), 0) as cash_in,
                 COALESCE(SUM(CASE WHEN type IN ('expense','purchase','withdrawal','salary','salary_payment','advance','sale_return','sale_void') THEN amount ELSE 0 END), 0) as cash_out
              FROM safe_transactions
-             WHERE created_at >= ? AND (type != 'opening' OR description LIKE ?)"
+             WHERE created_at >= ? AND (type != 'opening' OR description LIKE ?)
+               AND status != 'reversed' AND transaction_type != 'reversal'"
         );
         $safeStmt->execute([$openedAt, '%وردية #' . $shiftId . '%']);
         $safeRow = $safeStmt->fetch();

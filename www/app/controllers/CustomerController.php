@@ -53,8 +53,15 @@ class CustomerController {
             header('Location: ?page=customers');
             exit;
         }
-        $result = $this->customerService->create($_POST);
-        $_SESSION['toast_success'] = 'تم إضافة العميل بنجاح';
+
+        $data = Validator::trimAll($_POST);
+        $result = $this->customerService->create($data);
+
+        if ($result['success']) {
+            $_SESSION['toast_success'] = 'تم إضافة العميل بنجاح';
+        } else {
+            $_SESSION['toast_error'] = $result['message'] ?? implode(', ', $result['errors'] ?? ['خطأ في الحفظ']);
+        }
         header('Location: ?page=customers');
         exit;
     }
@@ -67,9 +74,16 @@ class CustomerController {
             header('Location: ?page=customers');
             exit;
         }
+
         $id = intval($_POST['id'] ?? 0);
-        $this->customerService->update($id, $_POST);
-        $_SESSION['toast_success'] = 'تم تحديث بيانات العميل';
+        $data = Validator::trimAll($_POST);
+        $result = $this->customerService->update($id, $data);
+
+        if ($result['success']) {
+            $_SESSION['toast_success'] = 'تم تحديث بيانات العميل';
+        } else {
+            $_SESSION['toast_error'] = $result['message'] ?? implode(', ', $result['errors'] ?? ['خطأ في التحديث']);
+        }
         header('Location: ?page=customers&action=profile&id=' . $id);
         exit;
     }
@@ -79,8 +93,18 @@ class CustomerController {
      */
     public function delete() {
         $id = intval($_GET['id'] ?? 0);
-        $this->customerService->delete($id);
-        $_SESSION['toast_success'] = 'تم حذف العميل';
+        if ($id <= 0) {
+            $_SESSION['toast_error'] = 'معرف العميل غير صالح';
+            header('Location: ?page=customers');
+            exit;
+        }
+
+        $result = $this->customerService->delete($id);
+        if ($result['success']) {
+            $_SESSION['toast_success'] = 'تم حذف العميل';
+        } else {
+            $_SESSION['toast_error'] = $result['message'];
+        }
         header('Location: ?page=customers');
         exit;
     }
@@ -93,12 +117,25 @@ class CustomerController {
             header('Location: ?page=customers');
             exit;
         }
+
         $customerId = intval($_POST['customer_id'] ?? 0);
         $amount = floatval($_POST['amount'] ?? 0);
         $description = trim($_POST['description'] ?? '');
 
+        if ($customerId <= 0) {
+            $_SESSION['toast_error'] = 'معرف العميل غير صالح';
+            header('Location: ?page=customers');
+            exit;
+        }
+
         if ($amount <= 0) {
             $_SESSION['toast_error'] = 'أدخل مبلغ صحيح';
+            header('Location: ?page=customers&action=profile&id=' . $customerId);
+            exit;
+        }
+
+        if ($amount > 999999.99) {
+            $_SESSION['toast_error'] = 'المبلغ يتجاوز الحد المسموح';
             header('Location: ?page=customers&action=profile&id=' . $customerId);
             exit;
         }

@@ -43,6 +43,17 @@ function showToast(message, type) {
     }, 3000);
 }
 
+// HTML escape utility
+function escapeHtml(text) {
+    if (!text) return '';
+    return text.toString()
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 // Debounce utility
 function debounce(func, wait) {
     var timeout;
@@ -73,11 +84,24 @@ function apiRequest(url, options) {
 
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
+                // Handle HTTP errors first
+                if (xhr.status === 401) {
+                    resolve({ success: false, message: 'انتهت الجلسة - يرجى إعادة تسجيل الدخول', auth: false });
+                    return;
+                }
+                if (xhr.status === 0) {
+                    resolve({ success: false, message: 'فشل الاتصال بالخادم' });
+                    return;
+                }
+                if (xhr.status >= 500) {
+                    resolve({ success: false, message: 'خطأ في الخادم (' + xhr.status + ')' });
+                    return;
+                }
                 try {
                     var data = JSON.parse(xhr.responseText);
                     resolve(data);
                 } catch (e) {
-                    console.error('API parse error:', e, 'Response:', xhr.responseText.substring(0, 300));
+                    console.error('API parse error:', e, 'Status:', xhr.status, 'Response:', xhr.responseText.substring(0, 300));
                     resolve({ success: false, message: 'استجابة غير صالحة من الخادم' });
                 }
             }

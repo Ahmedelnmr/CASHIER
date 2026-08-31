@@ -84,14 +84,17 @@ class Database {
                 $insert = $this->pdo->prepare("INSERT INTO migrations (filename) VALUES (?)");
                 $insert->execute([$filename]);
             } catch (PDOException $e) {
-                // Record even if errors are "already exists" (first-time upgrade from unversioned)
-                if (strpos($e->getMessage(), 'already exists') !== false ||
-                    strpos($e->getMessage(), 'UNIQUE constraint') !== false ||
-                    strpos($e->getMessage(), 'duplicate column name') !== false) {
+                $msg = $e->getMessage();
+                // "Already exists" / "duplicate column" errors are expected when upgrading from unversioned schema
+                $isBenign = strpos($msg, 'already exists') !== false ||
+                            strpos($msg, 'UNIQUE constraint') !== false ||
+                            strpos($msg, 'duplicate column name') !== false;
+                if ($isBenign) {
+                    // Mark as applied so we don't retry on every request
                     $insert = $this->pdo->prepare("INSERT OR IGNORE INTO migrations (filename) VALUES (?)");
                     $insert->execute([$filename]);
                 } else {
-                    error_log('Migration error in ' . $filename . ': ' . $e->getMessage());
+                    error_log('Migration error in ' . $filename . ': ' . $msg);
                 }
             }
         }

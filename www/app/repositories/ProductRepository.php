@@ -25,7 +25,7 @@ class ProductRepository {
         }
 
         if ($category !== '') {
-            $sql .= " AND category = :category";
+            $sql .= " AND category_id = :category_id";
             $params[':category'] = $category;
         }
 
@@ -71,22 +71,33 @@ class ProductRepository {
     /**
      * Search products by name (for POS quick search)
      */
-    public function search($query, $limit = 20) {
-        $stmt = $this->db->prepare(
-            "SELECT id, name, barcode, plu_code, type, 
+    public function search($query, $limit = 20, $category = '') {
+        $sql = "SELECT id, name, barcode, plu_code, type, 
                     purchase_price, sale_price_unit,
                     pack_type, pack_unit_quantity, pack_purchase_price, pack_sale_price,
-                    stock_quantity, min_stock 
+                    stock_quantity, min_stock, category
              FROM products 
-             WHERE is_active = 1 AND (name LIKE :q OR barcode LIKE :q2 OR barcode2 LIKE :q4 OR barcode3 LIKE :q5 OR plu_code LIKE :q3)
-             ORDER BY name ASC
-             LIMIT :limit"
-        );
-        $stmt->bindValue(':q', "%$query%", PDO::PARAM_STR);
-        $stmt->bindValue(':q2', "%$query%", PDO::PARAM_STR);
-        $stmt->bindValue(':q3', "%$query%", PDO::PARAM_STR);
-        $stmt->bindValue(':q4', "%$query%", PDO::PARAM_STR);
-        $stmt->bindValue(':q5', "%$query%", PDO::PARAM_STR);
+             WHERE is_active = 1 AND (name LIKE :q OR barcode LIKE :q2 OR barcode2 LIKE :q4 OR barcode3 LIKE :q5 OR plu_code LIKE :q3)";
+        
+        $params = [
+            ':q' => "%$query%",
+            ':q2' => "%$query%",
+            ':q3' => "%$query%",
+            ':q4' => "%$query%",
+            ':q5' => "%$query%",
+        ];
+        
+        if ($category !== '' && $category !== 'all') {
+            $sql .= " AND category_id = :category_id";
+            $params[':category'] = $category;
+        }
+        
+        $sql .= " ORDER BY name ASC LIMIT :limit";
+        
+        $stmt = $this->db->prepare($sql);
+        foreach ($params as $key => $val) {
+            $stmt->bindValue($key, $val, PDO::PARAM_STR);
+        }
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll();
@@ -97,8 +108,8 @@ class ProductRepository {
      */
     public function create($data) {
         $stmt = $this->db->prepare(
-            "INSERT INTO products (name, barcode, barcode2, barcode3, plu_code, type, purchase_price, sale_price_unit, pack_type, pack_unit_quantity, pack_purchase_price, pack_sale_price, stock_quantity, min_stock, category, notes)
-             VALUES (:name, :barcode, :barcode2, :barcode3, :plu_code, :type, :purchase_price, :sale_price_unit, :pack_type, :pack_unit_quantity, :pack_purchase_price, :pack_sale_price, :stock_quantity, :min_stock, :category, :notes)"
+            "INSERT INTO products (name, barcode, barcode2, barcode3, plu_code, type, purchase_price, sale_price_unit, pack_type, pack_unit_quantity, pack_purchase_price, pack_sale_price, stock_quantity, min_stock, category_id, notes)
+             VALUES (:name, :barcode, :barcode2, :barcode3, :plu_code, :type, :purchase_price, :sale_price_unit, :pack_type, :pack_unit_quantity, :pack_purchase_price, :pack_sale_price, :stock_quantity, :min_stock, :category_id, :notes)"
         );
         $stmt->execute([
             ':name' => $data['name'],
@@ -115,7 +126,7 @@ class ProductRepository {
             ':pack_sale_price' => $data['pack_sale_price'] ?? null,
             ':stock_quantity' => $data['stock_quantity'] ?? 0,
             ':min_stock' => $data['min_stock'] ?? 0,
-            ':category' => $data['category'] ?? null,
+            ':category_id' => $data['category_id'] ?? null,
             ':notes' => $data['notes'] ?? null,
         ]);
         return $this->db->lastInsertId();
@@ -135,7 +146,7 @@ class ProductRepository {
             'pack_type', 'pack_unit_quantity',
             'pack_purchase_price', 'pack_sale_price',
             'stock_quantity', 'min_stock', 
-            'category', 'notes', 'is_active'
+            'category_id', 'notes', 'is_active'
         ];
 
         foreach ($allowed as $field) {
@@ -189,9 +200,8 @@ class ProductRepository {
      * Get all distinct categories
      */
     public function getCategories() {
-        $stmt = $this->db->prepare("SELECT DISTINCT category FROM products WHERE category IS NOT NULL AND category != '' ORDER BY category");
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+        $stmt = $this->db->query("SELECT id, name FROM categories ORDER BY name");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**

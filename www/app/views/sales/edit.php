@@ -33,7 +33,7 @@ input[type=number] {
 
 <div class="page-header">
     <div>
-        <h1>📝 تعديل فاتورة #<?= $sale['sale_number'] ?></h1>
+        <h1>📝 تعديل فاتورة <?= $sale['invoice_number'] ?? ('#' . $sale['id']) ?></h1>
         <p class="subtitle"><?= $sale['datetime'] ?></p>
     </div>
     <div>

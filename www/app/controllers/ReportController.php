@@ -15,6 +15,41 @@ class ReportController {
         $this->reportService = new ReportService();
     }
 
+    /**
+     * Validate and normalize a date string (Y-m-d format).
+     * Returns the normalized date or false if invalid.
+     */
+    private static function validateDate($dateStr) {
+        if (!is_string($dateStr) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateStr)) {
+            return false;
+        }
+        $ts = strtotime($dateStr);
+        if ($ts === false) return false;
+        // Verify it round-trips (catches Feb 30, etc.)
+        return date('Y-m-d', $ts) === $dateStr ? date('Y-m-d', $ts) : false;
+    }
+
+    /**
+     * Validate a date range. Returns [from, to] or exits with error.
+     */
+    private function requireDateRange($fromKey = 'from', $toKey = 'to') {
+        $from = $_GET[$fromKey] ?? '';
+        $to = $_GET[$toKey] ?? '';
+
+        $fromNorm = self::validateDate($from);
+        $toNorm = self::validateDate($to);
+
+        if (!$fromNorm || !$toNorm) {
+            Response::validationError(['date' => 'الرجاء اختيار تاريخ صحيح بصيغة YYYY-MM-DD']);
+            exit;
+        }
+        if ($fromNorm > $toNorm) {
+            Response::validationError(['date' => 'تاريخ البداية لا يمكن أن يكون بعد تاريخ النهاية']);
+            exit;
+        }
+        return [$fromNorm, $toNorm];
+    }
+
     public function index() {
         $summary = $this->reportService->dashboardSummary();
 
@@ -28,7 +63,11 @@ class ReportController {
      */
     public function daily() {
         $date = $_GET['date'] ?? date('Y-m-d');
-        $report = $this->reportService->dailySales($date);
+        $dateNorm = self::validateDate($date);
+        if (!$dateNorm) {
+            $dateNorm = date('Y-m-d');
+        }
+        $report = $this->reportService->dailySales($dateNorm);
         Response::success($report);
     }
 
@@ -36,8 +75,7 @@ class ReportController {
      * API: Range sales report
      */
     public function range() {
-        $from = $_GET['from'] ?? date('Y-m-d', strtotime('-7 days'));
-        $to = $_GET['to'] ?? date('Y-m-d');
+        [$from, $to] = $this->requireDateRange();
         $report = $this->reportService->salesByRange($from, $to);
         Response::success($report);
     }
@@ -75,10 +113,18 @@ class ReportController {
     }
 
     public function financial() {
-        $from = isset($_GET['from']) ? $_GET['from'] : date('Y-m-01');
-        $to = isset($_GET['to']) ? $_GET['to'] : date('Y-m-d');
+        $from = $_GET['from'] ?? date('Y-m-01');
+        $to = $_GET['to'] ?? date('Y-m-d');
 
-        $data = $this->reportService->financialReport($from, $to);
+        $fromNorm = self::validateDate($from);
+        $toNorm = self::validateDate($to);
+        if (!$fromNorm) $fromNorm = date('Y-m-01');
+        if (!$toNorm) $toNorm = date('Y-m-d');
+        if ($fromNorm > $toNorm) {
+            [$fromNorm, $toNorm] = [$toNorm, $fromNorm];
+        }
+
+        $data = $this->reportService->financialReport($fromNorm, $toNorm);
         
         Response::success($data);
     }
@@ -89,7 +135,16 @@ class ReportController {
     public function salesByCategory() {
         $from = $_GET['from'] ?? null;
         $to = $_GET['to'] ?? null;
-        $data = $this->reportService->salesByCategory($from, $to);
+        if ($from) {
+            $fromNorm = self::validateDate($from);
+            $toNorm = $to ? self::validateDate($to) : $fromNorm;
+            if (!$fromNorm) $fromNorm = null;
+            if (!$toNorm) $toNorm = $fromNorm;
+        } else {
+            $fromNorm = null;
+            $toNorm = null;
+        }
+        $data = $this->reportService->salesByCategory($fromNorm, $toNorm);
         Response::success($data);
     }
 
@@ -99,7 +154,16 @@ class ReportController {
     public function productProfit() {
         $from = $_GET['from'] ?? null;
         $to = $_GET['to'] ?? null;
-        $data = $this->reportService->productProfitMargin($from, $to);
+        if ($from) {
+            $fromNorm = self::validateDate($from);
+            $toNorm = $to ? self::validateDate($to) : $fromNorm;
+            if (!$fromNorm) $fromNorm = null;
+            if (!$toNorm) $toNorm = $fromNorm;
+        } else {
+            $fromNorm = null;
+            $toNorm = null;
+        }
+        $data = $this->reportService->productProfitMargin($fromNorm, $toNorm);
         Response::success($data);
     }
 
@@ -118,7 +182,16 @@ class ReportController {
     public function cashierPerformance() {
         $from = $_GET['from'] ?? null;
         $to = $_GET['to'] ?? null;
-        $data = $this->reportService->cashierPerformance($from, $to);
+        if ($from) {
+            $fromNorm = self::validateDate($from);
+            $toNorm = $to ? self::validateDate($to) : $fromNorm;
+            if (!$fromNorm) $fromNorm = null;
+            if (!$toNorm) $toNorm = $fromNorm;
+        } else {
+            $fromNorm = null;
+            $toNorm = null;
+        }
+        $data = $this->reportService->cashierPerformance($fromNorm, $toNorm);
         Response::success($data);
     }
 
@@ -138,38 +211,76 @@ class ReportController {
         $from = $_GET['from'] ?? date('Y-m-01');
         $to = $_GET['to'] ?? date('Y-m-d');
 
+        $fromNorm = self::validateDate($from) ?: date('Y-m-01');
+        $toNorm = self::validateDate($to) ?: date('Y-m-d');
+        if ($fromNorm > $toNorm) {
+            [$fromNorm, $toNorm] = [$toNorm, $fromNorm];
+        }
+
         $data = [];
         $filename = 'report_' . $type . '_' . date('Y-m-d') . '.csv';
 
         switch ($type) {
             case 'daily':
-                $report = $this->reportService->dailySales($from);
+                $report = $this->reportService->dailySales($fromNorm);
                 $data = $report['sales'];
                 break;
+            case 'weekly':
+                $weekFrom = date('Y-m-d', strtotime('-7 days'));
+                $weekTo = date('Y-m-d');
+                $report = $this->reportService->salesByRange($weekFrom, $weekTo);
+                $data = $report['daily'];
+                break;
+            case 'monthly':
+                $monthFrom = date('Y-m-01');
+                $monthTo = date('Y-m-d');
+                $report = $this->reportService->salesByRange($monthFrom, $monthTo);
+                $data = $report['daily'];
+                break;
             case 'topProducts':
-                $data = $this->reportService->topProducts(50, $from, $to);
+                $data = $this->reportService->topProducts(50, $fromNorm, $toNorm);
+                break;
+            case 'leastProducts':
+                $data = $this->reportService->leastProducts(50);
+                break;
+            case 'lowStock':
+                $data = $this->reportService->lowStock();
+                break;
+            case 'suppliers':
+                $data = $this->reportService->purchasesBySupplier($fromNorm, $toNorm);
+                break;
+            case 'financial':
+                $report = $this->reportService->financialReport($fromNorm, $toNorm);
+                $data = $report['daily'];
                 break;
             case 'category':
-                $data = $this->reportService->salesByCategory($from, $to);
+                $data = $this->reportService->salesByCategory($fromNorm, $toNorm);
                 break;
             case 'profit':
-                $data = $this->reportService->productProfitMargin($from, $to, 50);
+                $data = $this->reportService->productProfitMargin($fromNorm, $toNorm, 50);
                 break;
             case 'deadStock':
                 $days = intval($_GET['days'] ?? 30);
                 $data = $this->reportService->deadStock($days);
                 break;
+            case 'cashier':
+                $data = $this->reportService->cashierPerformance($fromNorm, $toNorm);
+                break;
             case 'debtors':
                 $data = $this->reportService->customerDebtors();
                 break;
             default:
-                Response::error('نوع التقرير غير معروف');
-                return;
+                http_response_code(400);
+                header('Content-Type: text/plain; charset=utf-8');
+                echo 'نوع التقرير غير معروف';
+                exit;
         }
 
         if (empty($data)) {
-            Response::error('لا توجد بيانات للتصدير');
-            return;
+            http_response_code(204);
+            header('Content-Type: text/plain; charset=utf-8');
+            echo 'لا توجد بيانات للتصدير';
+            exit;
         }
 
         header('Content-Type: text/csv; charset=utf-8');

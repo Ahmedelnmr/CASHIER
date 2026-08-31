@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header">
-        <h3>تسجيل مرتجع مبيعات (فاتورة #<?= $sale['sale_number'] ?>)</h3>
+        <h3>تسجيل مرتجع مبيعات (فاتورة <?= $sale['invoice_number'] ?? ('#' . $sale['id']) ?>)</h3>
     </div>
     <div class="card-body">
         <form action="?page=sales&action=save_return" method="post" id="returnForm">

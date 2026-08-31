@@ -46,7 +46,7 @@ class SaleService {
                          'quantity' => $item['quantity'],
                          'reference_type' => 'sale_void',
                          'reference_id' => $id,
-                         'notes' => "إلغاء فاتورة #{$sale['sale_number']} - $reason" 
+                         'notes' => "إلغاء فاتورة #{$sale['invoice_number']} - $reason" 
                      ]);
                 }
             }
@@ -59,7 +59,7 @@ class SaleService {
                      'sale_void', 
                      $sale['total'], 
                      date('Y-m-d'), 
-                     "إلغاء فاتورة مبيعات #{$sale['sale_number']}"
+                     "إلغاء فاتورة مبيعات #{$sale['invoice_number']}"
                  ]);
             } elseif ($sale['total'] < 0) {
                  // Original was a return (money went out) → reverse it (money back in)
@@ -68,7 +68,7 @@ class SaleService {
                      'sale', 
                      abs($sale['total']), 
                      date('Y-m-d'), 
-                     "إلغاء مرتجع مبيعات #{$sale['sale_number']}"
+                     "إلغاء مرتجع مبيعات #{$sale['invoice_number']}"
                  ]);
             }
 
@@ -134,7 +134,7 @@ class SaleService {
                 'discount' => 0,
                 'total' => -$returnTotal,
                 'payment_method' => 'cash',
-                'notes' => "مرتجع من فاتورة #{$originalSale['sale_number']}",
+                'notes' => "مرتجع من فاتورة #{$originalSale['invoice_number']}",
                 'type' => 'return',
                 'status' => 'completed',
                 'parent_sale_id' => $originalSaleId
@@ -153,7 +153,9 @@ class SaleService {
                 ];
             }
 
-            $returnId = $this->saleRepo->create($saleData, $formattedItems);
+            $returnResult = $this->saleRepo->create($saleData, $formattedItems);
+            $returnId = $returnResult['saleId'];
+            $returnInvoiceNumber = $returnResult['invoiceNumber'];
 
             // 2. Update Stock (Increase)
             foreach ($items as $item) {
@@ -166,7 +168,7 @@ class SaleService {
                     'quantity' => $item['quantity'],
                     'reference_type' => 'sale_return',
                     'reference_id' => $returnId,
-                    'notes' => "مرتجع مبيعات #{$returnId}"
+                    'notes' => "مرتجع مبيعات {$returnInvoiceNumber}"
                 ]);
             }
 
@@ -177,7 +179,7 @@ class SaleService {
                     'sale_return', 
                     $returnTotal, 
                     date('Y-m-d'), 
-                    "مرتجع مبيعات فاتورة #{$returnId}"
+                    "مرتجع مبيعات فاتورة {$returnInvoiceNumber}"
                 ]);
             }
 
@@ -192,6 +194,10 @@ class SaleService {
 
     public function findById($id) {
         return $this->saleRepo->findById($id);
+    }
+
+    public function findByInvoiceNumber($invoiceNumber) {
+        return $this->saleRepo->findByInvoiceNumber($invoiceNumber);
     }
 
     public function getAll($dateFrom = '', $dateTo = '') {
@@ -233,7 +239,7 @@ class SaleService {
                              'quantity' => $item['quantity'],
                              'reference_type' => 'sale_delete',
                              'reference_id' => $id,
-                             'notes' => "حذف فاتورة #{$sale['sale_number']}" 
+                             'notes' => "حذف فاتورة #{$sale['invoice_number']}" 
                          ]);
                     }
                 }
@@ -245,7 +251,7 @@ class SaleService {
                          'sale_void', 
                          $sale['total'], 
                          date('Y-m-d'), 
-                         "حذف فاتورة مبيعات #{$sale['sale_number']}"
+                         "حذف فاتورة مبيعات #{$sale['invoice_number']}"
                      ]);
                 } elseif ($sale['total'] < 0) {
                      // Was a return → reverse it
@@ -254,7 +260,7 @@ class SaleService {
                          'sale', 
                          abs($sale['total']), 
                          date('Y-m-d'), 
-                         "حذف مرتجع مبيعات #{$sale['sale_number']}"
+                         "حذف مرتجع مبيعات #{$sale['invoice_number']}"
                      ]);
                 }
             }
@@ -301,7 +307,7 @@ class SaleService {
             // 2. Financial Adjustment (Reverse Old sale income)
             if ($sale['total'] > 0) {
                  $stmt = $db->getConnection()->prepare("INSERT INTO safe_transactions (type, amount, date, description) VALUES (?, ?, ?, ?)");
-                 $stmt->execute(['sale_void', $sale['total'], date('Y-m-d'), "تعديل فاتورة #{$sale['sale_number']} (إلغاء القديم)"]);
+                 $stmt->execute(['sale_void', $sale['total'], date('Y-m-d'), "تعديل فاتورة #{$sale['invoice_number']} (إلغاء القديم)"]);
             }
 
             // 3. Delete Old Items
@@ -342,7 +348,7 @@ class SaleService {
             // 6. Financial Adjustment (Add New)
             if ($total > 0) {
                  $stmt = $db->getConnection()->prepare("INSERT INTO safe_transactions (type, amount, date, description) VALUES (?, ?, ?, ?)");
-                 $stmt->execute(['sale', $total, date('Y-m-d'), "تعديل فاتورة #{$sale['sale_number']} (إضافة الجديد)"]);
+                 $stmt->execute(['sale', $total, date('Y-m-d'), "تعديل فاتورة #{$sale['invoice_number']} (إضافة الجديد)"]);
             }
 
             $db->commit();
