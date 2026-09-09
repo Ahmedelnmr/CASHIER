@@ -138,6 +138,7 @@
     window.currentSearchQuery = '';
     window.checkoutInProgress = false;
     window.checkoutNonce = generateNonce();
+    var barcodeJustScanned = false; // Flag to suppress live search results after barcode scan
 
     // ==========================================
     // 3. INITIALIZATION
@@ -160,6 +161,12 @@
                         e.preventDefault();
                         var code = this.value.trim();
                         if (code) {
+                            // Set flag to suppress any pending live-search response
+                            barcodeJustScanned = true;
+                            clearTimeout(barcodeJustScanned._timer);
+                            barcodeJustScanned._timer = setTimeout(function () {
+                                barcodeJustScanned = false;
+                            }, 600);
                             addByCode(code);
                             this.value = '';
                             hideSearchResults('searchResults');
@@ -270,7 +277,7 @@
 
         if (reset) productPage = 1;
 
-        var url = '?page=pos&action=listProducts&page=' + productPage + '&per_page=20';
+        var url = '?page=pos&action=listProducts&p=' + productPage + '&per_page=20';
         if (currentCategory && currentCategory !== 'all') {
             url += '&category=' + encodeURIComponent(currentCategory);
         }
@@ -421,6 +428,9 @@
 
     window.liveSearchBarcode = async function (query) {
         var res = await apiRequest('?page=pos&action=search&q=' + encodeURIComponent(query));
+        // If a barcode was just scanned (Enter pressed), ignore the response to prevent
+        // the dropdown from appearing after the product was already added to cart
+        if (barcodeJustScanned) return;
         if (res.success && res.data && res.data.length > 0) {
             showSearchResults(res.data, 'searchResults');
         } else {

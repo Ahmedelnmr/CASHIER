@@ -32682,3 +32682,1211 @@ s process: "C:\Users\DELL\3D Objects\cashier_system\Alhakma.exe" --type=gpu-proc
 - 06:15:11.390 DEBUG: OnBrowserDestroyed()
 - 06:15:11.859 INFO: Ended application
 - 06:15:11.859 INFO: --------------------------------------------------------
+- 17:14:04.094 INFO: --------------------------------------------------------
+- 17:14:04.094 INFO: Started application
+- 17:14:04.094 INFO: Logging to: D:\var\New folder (2)\CASHIER\debug.log
+- 17:14:04.094 INFO: Log level = DEBUG4
+- 17:14:04.094 INFO: Starting Mongoose 3.9c web server
+- 17:14:04.094 INFO: WWW directory: D:\var\New folder (2)\CASHIER\www
+- 17:14:04.094 INFO: Index files: index.html,index.php
+- 17:14:04.094 INFO: CGI interpreter: D:\var\New folder (2)\CASHIER\php\php-cgi.exe
+- 17:14:04.094 INFO: CGI pattern: **.php$
+- 17:14:04.094 INFO: Hide files patterns: 
+- 17:14:04.094 INFO: CGI environment variables set: TMP=C:\Users\DELL\AppData\Local\Temp\,TEMP=C:\Users\DELL\AppData\Local\Temp\,TMPDIR=C:\Users\DELL\AppData\Local\Temp\,SERVER_NAME=127.0.0.1,PHPDESKTOP_VERSION=57.0
+- 17:14:04.110 INFO: Web server url: http://127.0.0.1:1355/
+- 17:14:04.125 INFO: remote_debugging_port = 61792
+- 17:14:04.125 DEBUG: Command line string for the browser process: "D:\var\New folder (2)\CASHIER\Tajer.exe" --no-sandbox --lang=en-US --log-file="D:\var\New folder (2)\CASHIER\debug.log" --remote-debugging-port=61792 --enable-media-stream --use-fake-ui-for-media-stream --kiosk-printing
+- 17:14:06.282 DEBUG: App::OnContextInitialized()
+- 17:14:06.297 INFO: DPI, window enlarged by 25% new width/height = 1000/750
+- 17:14:06.297 DEBUG: Window max width/height = 1842/984
+- 17:14:06.297 DEBUG: GetBrowserWindow(): not found, hwnd = 132950
+- 17:14:06.297 DEBUG: WindowProc(): event WM_GETMINMAXINFO: could not fetch BrowserWindow
+- 17:14:06.313 DEBUG: BrowserWindow::CreateBrowserControl()
+- 17:14:06.313 DEBUG: StoreBrowserWindow(): hwnd = 132950
+- 17:14:06.000 DEBUG: Command line string for the gpu-process process: "D:\var\New folder (2)\CASHIER\Tajer.exe" --type=gpu-process --no-sandbox --lang=en-US --log-file="D:\var\New folder (2)\CASHIER\debug.log" --disable-d3d11 --disable-direct-composition --supports-dual-gpus=false --gpu-driver-bug-workarounds=7,10,16,18,19,20,23,26,41,74 --disable-gl-extensions="GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent" --gpu-vendor-id=0x1002 --gpu-device-id=0x6606 --gpu-driver-vendor="Advanced Micro Devices, Inc." --gpu-driver-version=15.201.1101.0 --gpu-driver-date=8-6-2015 --gpu-secondary-vendor-ids=0x8086 --gpu-secondary-device-ids=0x0416 --lang=en-US --log-file="D:\var\New folder (2)\CASHIER\debug.log" --service-request-channel-token=8A3FD0909781093B2F22FC854A538AEA --mojo-platform-channel-handle=1852 /prefetch:2
+- 17:14:06.360 DEBUG: ClientHandler::OnAfterCreated()
+- 17:14:06.360 DEBUG: SetCefBrowser() called in ClientHandler::OnAfterCreated()
+- 17:14:06.375 DEBUG: OnLoadingStateChange: loading=1, url=
+- 17:14:06.000 DEBUG: Command line string for the renderer process: "D:\var\New folder (2)\CASHIER\Tajer.exe" --type=renderer --no-sandbox --use-fake-ui-for-media-stream --primordial-pipe-token=AAB8B537C1A5AC5E46FCF578B1B9D476 --lang=en-US --lang=en-US --log-file="D:\var\New folder (2)\CASHIER\debug.log" --enable-pinch --device-scale-factor=1.25 --num-raster-threads=2 --enable-main-frame-before-activation --content-image-texture-target=0,0,3553;0,1,3553;0,2,3553;0,3,3553;0,4,3553;0,5,3553;0,6,3553;0,7,3553;0,8,3553;0,9,3553;0,10,3553;0,11,3553;0,12,3553;0,13,3553;0,14,3553;0,15,3553;1,0,3553;1,1,3553;1,2,3553;1,3,3553;1,4,3553;1,5,3553;1,6,3553;1,7,3553;1,8,3553;1,9,3553;1,10,3553;1,11,3553;1,12,3553;1,13,3553;1,14,3553;1,15,3553;2,0,3553;2,1,3553;2,2,3553;2,3,3553;2,4,3553;2,5,3553;2,6,3553;2,7,3553;2,8,3553;2,9,3553;2,10,3553;2,11,3553;2,12,3553;2,13,3553;2,14,3553;2,15,3553;3,0,3553;3,1,3553;3,2,3553;3,3,3553;3,4,3553;3,5,3553;3,6,3553;3,7,3553;3,8,3553;3,9,3553;3,10,3553;3,11,3553;3,12,3553;3,13,3553;3,14,3553;3,15,3553 --service-request-channel-token=AAB8B537C1A5AC5E46FCF578B1B9D476 --renderer-client-id=3 --mojo-platform-channel-handle=2436 /prefetch:1
+- 17:14:06.063 DEBUG: OnBrowserCreated()
+[0909/171406.432:ERROR:backend_impl.cc(1033)] Critical error found -8
+[0909/171406.663:ERROR:child_thread_impl.cc(762)] Request for unknown Channel-associated interface: ui::mojom::GpuMain
+[0909/171408.394:WARNING:storage_block-inl.h(131)] Failed data load.
+- 17:14:08.610 INFO: GET 302 /
+- 17:14:08.766 INFO: GET 200 /?page=login
+- 17:14:08.782 INFO: GET 200 /public/images/logo.png
+- 17:14:09.313 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=login
+- 17:14:21.391 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=login
+- 17:14:21.532 INFO: POST 302 /?page=login&action=authenticate
+- 17:14:21.297 DEBUG: OnContextCreated()
+- 17:14:21.704 INFO: GET 200 /?page=dashboard
+- 17:14:21.704 INFO: GET 200 /public/css/main.css?v=1788963261
+- 17:14:21.719 INFO: GET 304 /public/images/logo.png
+- 17:14:21.750 INFO: GET 200 /public/js/app_core.js?v=1788963261
+- 17:14:21.000 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=dashboard
+- 17:14:27.547 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=dashboard
+- 17:14:27.375 DEBUG: OnContextCreated()
+- 17:14:27.797 INFO: GET 200 /public/css/main.css?v=1788963267
+- 17:14:27.813 INFO: GET 200 /public/css/pos_fixes.css?v=1788963267
+- 17:14:27.813 INFO: GET 200 /public/css/pos_simple.css?v=1788963267
+- 17:14:27.829 INFO: GET 200 /public/js/pos_shortcuts.js?v=1788963267
+- 17:14:27.829 INFO: GET 200 /?page=pos
+- 17:14:27.860 INFO: GET 200 /public/js/pos_core_v2.js?v=1788963267
+[0909/171427.925:INFO:CONSOLE(147)] "POS v3.0 Initializing...", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788963267 (147)
+- 17:14:28.204 INFO: GET 200 /?page=pos&action=checkShift
+- 17:14:28.204 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20
+- 17:14:28.235 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=pos
+[0909/171428.085:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788963267 (47)
+- 17:15:06.579 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=pos
+- 17:15:06.485 DEBUG: OnContextCreated()
+- 17:15:06.907 INFO: GET 200 /public/css/main.css?v=1788963306
+- 17:15:06.907 INFO: GET 304 /public/images/logo.png
+- 17:15:06.922 INFO: GET 200 /?page=dashboard
+- 17:15:06.922 INFO: GET 200 /public/js/app_core.js?v=1788963306
+- 17:15:06.125 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=dashboard
+- 17:15:12.500 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=dashboard
+- 17:15:12.250 DEBUG: OnContextCreated()
+- 17:15:12.688 INFO: GET 200 /public/css/main.css?v=1788963312
+- 17:15:12.688 INFO: GET 304 /public/images/logo.png
+- 17:15:12.688 INFO: GET 200 /?page=products
+- 17:15:12.704 INFO: GET 200 /public/js/app_core.js?v=1788963312
+- 17:15:12.954 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=products
+- 17:15:15.922 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=products
+- 17:15:15.610 DEBUG: OnContextCreated()
+- 17:15:15.047 INFO: GET 304 /public/images/logo.png
+- 17:15:15.047 INFO: GET 200 /public/css/main.css?v=1788963315
+- 17:15:15.047 INFO: GET 200 /?page=products&action=create
+- 17:15:15.047 INFO: GET 200 /public/js/app_core.js?v=1788963315
+- 17:15:16.829 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=products&action=create
+- 17:15:43.485 DEBUG: F12 pressed, opening developer tools
+- 17:15:43.500 DEBUG: ClientHandler::OnAfterCreated()
+- 17:15:43.500 DEBUG: GetBrowserWindow(): not found, hwnd = 394712
+- 17:15:43.500 DEBUG: BrowserWindow::BrowserWindow() created for Popup
+- 17:15:43.500 DEBUG: StoreBrowserWindow(): hwnd = 394712
+- 17:15:43.500 DEBUG: Centering popup window relative to its parent
+- 17:15:43.516 DEBUG: OnLoadingStateChange: loading=1, url=
+- 17:15:43.000 DEBUG: Command line string for the renderer process: "D:\var\New folder (2)\CASHIER\Tajer.exe" --type=renderer --no-sandbox --use-fake-ui-for-media-stream --primordial-pipe-token=EB296D971903F0AA7D51867F01052AD0 --lang=en-US --lang=en-US --log-file="D:\var\New folder (2)\CASHIER\debug.log" --enable-pinch --device-scale-factor=1.25 --num-raster-threads=2 --enable-main-frame-before-activation --content-image-texture-target=0,0,3553;0,1,3553;0,2,3553;0,3,3553;0,4,3553;0,5,3553;0,6,3553;0,7,3553;0,8,3553;0,9,3553;0,10,3553;0,11,3553;0,12,3553;0,13,3553;0,14,3553;0,15,3553;1,0,3553;1,1,3553;1,2,3553;1,3,3553;1,4,3553;1,5,3553;1,6,3553;1,7,3553;1,8,3553;1,9,3553;1,10,3553;1,11,3553;1,12,3553;1,13,3553;1,14,3553;1,15,3553;2,0,3553;2,1,3553;2,2,3553;2,3,3553;2,4,3553;2,5,3553;2,6,3553;2,7,3553;2,8,3553;2,9,3553;2,10,3553;2,11,3553;2,12,3553;2,13,3553;2,14,3553;2,15,3553;3,0,3553;3,1,3553;3,2,3553;3,3,3553;3,4,3553;3,5,3553;3,6,3553;3,7,3553;3,8,3553;3,9,3553;3,10,3553;3,11,3553;3,12,3553;3,13,3553;3,14,3553;3,15,3553 --service-request-channel-token=EB296D971903F0AA7D51867F01052AD0 --renderer-client-id=4 --mojo-platform-channel-handle=3752 /prefetch:1
+- 17:15:43.047 DEBUG: OnBrowserCreated()
+- 17:15:43.063 DEBUG: OnContextCreated()
+- 17:15:43.860 DEBUG: OnLoadingStateChange: loading=0, url=chrome-devtools://devtools/inspector.html
+- 17:15:43.032 INFO: GET 304 /public/css/main.css?v=1788963315
+- 17:16:02.657 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=products&action=create
+- 17:16:02.344 DEBUG: OnContextCreated()
+- 17:16:02.766 INFO: GET 200 /public/css/pos_simple.css?v=1788963362
+- 17:16:02.766 INFO: GET 200 /public/css/pos_fixes.css?v=1788963362
+- 17:16:02.766 INFO: GET 200 /public/css/main.css?v=1788963362
+- 17:16:02.766 INFO: GET 200 /public/js/pos_shortcuts.js?v=1788963362
+- 17:16:02.766 INFO: GET 200 /public/js/pos_core_v2.js?v=1788963362
+- 17:16:02.782 INFO: GET 200 /?page=pos
+[0909/171603.258:INFO:CONSOLE(147)] "POS v3.0 Initializing...", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788963362 (147)
+- 17:16:03.454 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=pos
+- 17:16:03.563 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20
+[0909/171603.400:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788963362 (47)
+- 17:16:03.579 INFO: GET 200 /?page=pos&action=checkShift
+- 17:16:08.891 INFO: GET 400 /?page=pos&action=findProduct&q=UP-862
+- 17:16:11.579 INFO: GET 400 /?page=pos&action=findProduct&q=UP-862
+- 17:16:12.047 INFO: GET 400 /?page=pos&action=findProduct&q=2728564384
+- 17:16:18.766 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=pos
+- 17:16:18.407 DEBUG: OnContextCreated()
+- 17:16:18.829 INFO: GET 200 /public/css/main.css?v=1788963378
+- 17:16:18.829 INFO: GET 304 /public/images/logo.png
+- 17:16:18.844 INFO: GET 200 /?page=dashboard
+- 17:16:18.860 INFO: GET 200 /public/js/app_core.js?v=1788963378
+- 17:16:18.079 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=dashboard
+- 17:16:23.735 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=dashboard
+- 17:16:23.563 DEBUG: OnContextCreated()
+- 17:16:23.985 INFO: GET 200 /public/css/main.css?v=1788963383
+- 17:16:23.985 INFO: GET 304 /public/images/logo.png
+- 17:16:23.000 INFO: GET 200 /?page=purchases
+- 17:16:23.000 INFO: GET 200 /public/js/app_core.js?v=1788963383
+- 17:16:24.266 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=purchases
+- 17:16:25.594 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=purchases
+- 17:16:25.313 DEBUG: OnContextCreated()
+- 17:16:25.735 INFO: GET 200 /public/css/main.css?v=1788963385
+- 17:16:25.735 INFO: GET 304 /public/images/logo.png
+- 17:16:25.750 INFO: GET 200 /?page=shifts
+- 17:16:25.750 INFO: GET 200 /public/js/app_core.js?v=1788963385
+- 17:16:25.016 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=shifts
+- 17:16:28.344 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=shifts
+- 17:16:28.110 DEBUG: OnContextCreated()
+- 17:16:28.547 INFO: GET 200 /public/css/main.css?v=1788963388
+- 17:16:28.547 INFO: GET 304 /public/images/logo.png
+- 17:16:28.547 INFO: GET 200 /?page=reports
+- 17:16:28.563 INFO: GET 200 /public/js/app_core.js?v=1788963388
+- 17:16:28.922 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=reports
+- 17:16:28.985 INFO: GET 200 /?page=reports&action=daily&date=2026-09-09
+- 17:16:33.157 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=reports
+- 17:16:34.797 DEBUG: OnContextCreated()
+- 17:16:34.219 INFO: GET 200 /public/css/main.css?v=1788963394
+- 17:16:34.235 INFO: GET 304 /public/images/logo.png
+- 17:16:34.235 INFO: GET 200 /?page=purchases
+- 17:16:34.235 INFO: GET 200 /public/js/app_core.js?v=1788963394
+- 17:16:34.485 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=purchases
+- 17:16:35.750 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=purchases
+- 17:16:35.438 DEBUG: OnContextCreated()
+- 17:16:35.860 INFO: GET 200 /public/css/main.css?v=1788963395
+- 17:16:35.860 INFO: GET 304 /public/images/logo.png
+- 17:16:35.875 INFO: GET 200 /?page=purchases&action=create
+- 17:16:35.875 INFO: GET 200 /public/js/app_core.js?v=1788963395
+- 17:16:35.125 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=purchases&action=create
+- 17:16:38.750 INFO: GET 400 /?page=pos&action=findProduct&q=UP-862
+- 17:16:39.235 INFO: GET 200 /?page=pos&action=search&q=UP-862&_=1788963398980
+- 17:17:57.297 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=purchases&action=create
+- 17:17:57.047 DEBUG: OnContextCreated()
+- 17:17:57.485 INFO: GET 200 /public/css/main.css?v=1788963477
+- 17:17:57.485 INFO: GET 200 /?page=inventory
+- 17:17:57.485 INFO: GET 304 /public/images/logo.png
+- 17:17:57.500 INFO: GET 200 /public/js/app_core.js?v=1788963477
+- 17:17:57.750 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=inventory
+- 17:18:04.641 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=inventory
+- 17:18:04.407 DEBUG: OnContextCreated()
+- 17:18:04.829 INFO: GET 200 /public/css/main.css?v=1788963484
+- 17:18:04.829 INFO: GET 304 /public/images/logo.png
+- 17:18:04.844 INFO: GET 200 /?page=sales
+- 17:18:04.844 INFO: GET 200 /public/js/app_core.js?v=1788963484
+- 17:18:04.110 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=sales
+- 17:18:10.375 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=sales
+- 17:18:10.016 DEBUG: OnContextCreated()
+- 17:18:10.454 INFO: GET 200 /public/css/main.css?v=1788963490
+- 17:18:10.454 INFO: GET 200 /?page=reports
+- 17:18:10.454 INFO: GET 304 /public/images/logo.png
+- 17:18:10.469 INFO: GET 200 /public/js/app_core.js?v=1788963490
+- 17:18:10.672 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=reports
+- 17:18:10.766 INFO: GET 200 /?page=reports&action=daily&date=2026-09-09
+- 17:18:12.204 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=reports
+- 17:18:12.938 DEBUG: OnContextCreated()
+- 17:18:12.375 INFO: GET 200 /public/css/main.css?v=1788963492
+- 17:18:12.375 INFO: GET 304 /public/images/logo.png
+- 17:18:12.375 INFO: GET 200 /?page=employees
+- 17:18:12.391 INFO: GET 200 /public/js/app_core.js?v=1788963492
+- 17:18:12.594 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=employees
+- 17:18:14.860 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=employees
+- 17:18:14.578 DEBUG: OnContextCreated()
+- 17:18:14.000 INFO: GET 200 /public/css/main.css?v=1788963494
+- 17:18:14.000 INFO: GET 304 /public/images/logo.png
+- 17:18:14.016 INFO: GET 200 /?page=backup
+- 17:18:14.016 INFO: GET 200 /public/js/app_core.js?v=1788963494
+- 17:18:15.250 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=backup
+- 17:18:18.782 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=backup
+- 17:18:18.516 DEBUG: OnContextCreated()
+- 17:18:18.938 INFO: GET 200 /public/css/main.css?v=1788963498
+- 17:18:18.938 INFO: GET 304 /public/images/logo.png
+- 17:18:18.938 INFO: GET 200 /?page=safe
+- 17:18:18.954 INFO: GET 200 /public/js/app_core.js?v=1788963498
+- 17:18:19.172 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=safe
+- 17:18:22.969 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=safe
+- 17:18:22.625 DEBUG: OnContextCreated()
+- 17:18:22.047 INFO: GET 200 /public/css/main.css?v=1788963502
+- 17:18:22.047 INFO: GET 304 /public/images/logo.png
+- 17:18:22.063 INFO: GET 200 /?page=dashboard
+- 17:18:22.063 INFO: GET 200 /public/js/app_core.js?v=1788963502
+- 17:18:23.282 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=dashboard
+- 17:18:50.735 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=dashboard
+- 17:18:50.391 DEBUG: OnContextCreated()
+- 17:18:50.813 INFO: GET 200 /public/css/main.css?v=1788963530
+- 17:18:50.813 INFO: GET 304 /public/images/logo.png
+- 17:18:50.813 INFO: GET 200 /?page=backup
+- 17:18:50.829 INFO: GET 200 /public/js/app_core.js?v=1788963530
+- 17:18:50.016 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=backup
+- 17:18:57.766 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=backup
+- 17:18:57.407 DEBUG: OnContextCreated()
+- 17:18:57.829 INFO: GET 200 /public/css/main.css?v=1788963537
+- 17:18:57.844 INFO: GET 304 /public/images/logo.png
+- 17:18:57.844 INFO: GET 200 /?page=shifts
+- 17:18:57.844 INFO: GET 200 /public/js/app_core.js?v=1788963537
+- 17:18:57.125 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=shifts
+- 17:28:17.282 DEBUG: F5 pressed, reloading page
+- 17:28:17.297 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=shifts
+- 17:28:17.750 DEBUG: F5 pressed, reloading page
+- 17:28:17.750 DEBUG: OnLoadError, errorCode=-3, failedUrl=http://127.0.0.1:1355/?page=shifts
+- 17:28:17.750 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=shifts
+- 17:28:17.750 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=shifts
+- 17:28:17.829 DEBUG: F5 pressed, reloading page
+- 17:28:17.829 DEBUG: OnLoadError, errorCode=-3, failedUrl=http://127.0.0.1:1355/?page=shifts
+- 17:28:17.829 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=shifts
+- 17:28:17.829 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=shifts
+- 17:28:17.860 INFO: GET 200 /?page=shifts
+- 17:28:17.860 INFO: GET 200 /?page=shifts
+- 17:28:17.500 DEBUG: OnContextCreated()
+- 17:28:17.922 INFO: GET 200 /public/images/logo.png
+- 17:28:17.922 INFO: GET 200 /public/css/main.css?v=1788964097
+- 17:28:17.938 INFO: GET 200 /?page=shifts
+- 17:28:17.938 INFO: GET 200 /public/js/app_core.js?v=1788964097
+- 17:28:17.969 DEBUG: F5 pressed, reloading page
+- 17:28:17.047 DEBUG: OnLoadError, errorCode=-3, failedUrl=http://127.0.0.1:1355/?page=shifts
+- 17:28:17.641 DEBUG: OnContextCreated()
+- 17:28:17.063 INFO: GET 200 /public/css/main.css?v=1788964097
+- 17:28:17.063 INFO: GET 200 /public/images/logo.png
+- 17:28:17.094 INFO: GET 200 /?page=shifts
+- 17:28:17.094 INFO: GET 200 /public/js/app_core.js?v=1788964097
+- 17:28:17.110 DEBUG: F5 pressed, reloading page
+- 17:28:18.172 DEBUG: OnLoadError, errorCode=-3, failedUrl=http://127.0.0.1:1355/?page=shifts
+- 17:28:18.750 DEBUG: OnContextCreated()
+- 17:28:18.188 INFO: GET 200 /public/css/main.css?v=1788964098
+- 17:28:18.188 INFO: GET 200 /public/images/logo.png
+- 17:28:18.188 INFO: GET 200 /?page=shifts
+- 17:28:18.204 INFO: GET 200 /public/js/app_core.js?v=1788964098
+- 17:28:18.250 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=shifts
+- 17:28:18.250 DEBUG: F5 pressed, reloading page
+- 17:28:18.266 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=shifts
+- 17:28:18.969 DEBUG: OnContextCreated()
+- 17:28:18.407 INFO: GET 200 /public/images/logo.png
+- 17:28:18.391 INFO: GET 200 /public/css/main.css?v=1788964098
+- 17:28:18.407 INFO: GET 200 /?page=shifts
+- 17:28:18.422 INFO: GET 200 /public/js/app_core.js?v=1788964098
+- 17:28:18.485 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=shifts
+- 17:28:19.204 DEBUG: F5 pressed, reloading page
+- 17:28:19.204 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=shifts
+- 17:28:19.844 DEBUG: OnContextCreated()
+- 17:28:19.266 INFO: GET 200 /public/css/main.css?v=1788964099
+- 17:28:19.266 INFO: GET 200 /?page=shifts
+- 17:28:19.282 INFO: GET 200 /public/images/logo.png
+- 17:28:19.282 INFO: GET 200 /public/js/app_core.js?v=1788964099
+- 17:28:19.360 DEBUG: F5 pressed, reloading page
+- 17:28:19.000 DEBUG: OnContextCreated()
+- 17:28:19.407 DEBUG: OnLoadError, errorCode=-3, failedUrl=http://127.0.0.1:1355/?page=shifts
+- 17:28:19.422 INFO: GET 200 /public/css/main.css?v=1788964099
+- 17:28:19.422 INFO: GET 200 /public/images/logo.png
+- 17:28:19.438 INFO: GET 200 /?page=shifts
+- 17:28:19.438 INFO: GET 200 /public/js/app_core.js?v=1788964099
+- 17:28:19.516 DEBUG: F5 pressed, reloading page
+- 17:28:19.157 DEBUG: OnContextCreated()
+- 17:28:19.579 DEBUG: OnLoadError, errorCode=-3, failedUrl=http://127.0.0.1:1355/?page=shifts
+- 17:28:19.594 INFO: GET 200 /public/css/main.css?v=1788964099
+- 17:28:19.594 INFO: GET 200 /public/images/logo.png
+- 17:28:19.610 INFO: GET 200 /?page=shifts
+- 17:28:19.625 INFO: GET 200 /public/js/app_core.js?v=1788964099
+- 17:28:19.688 DEBUG: F5 pressed, reloading page
+- 17:28:19.344 DEBUG: OnContextCreated()
+- 17:28:19.782 INFO: GET 200 /public/images/logo.png
+- 17:28:19.782 INFO: GET 200 /public/css/main.css?v=1788964099
+- 17:28:19.813 INFO: GET 200 /?page=shifts
+- 17:28:19.813 INFO: GET 200 /public/js/app_core.js?v=1788964099
+- 17:28:19.844 DEBUG: F5 pressed, reloading page
+- 17:28:19.922 DEBUG: OnLoadError, errorCode=-3, failedUrl=http://127.0.0.1:1355/?page=shifts
+- 17:28:19.516 DEBUG: OnContextCreated()
+- 17:28:19.938 INFO: GET 200 /public/css/main.css?v=1788964099
+- 17:28:19.954 INFO: GET 200 /public/images/logo.png
+- 17:28:19.969 INFO: GET 200 /?page=shifts
+- 17:28:19.969 INFO: GET 200 /public/js/app_core.js?v=1788964099
+- 17:28:19.000 DEBUG: F5 pressed, reloading page
+- 17:28:19.047 DEBUG: OnLoadError, errorCode=-3, failedUrl=http://127.0.0.1:1355/?page=shifts
+- 17:28:19.641 DEBUG: OnContextCreated()
+- 17:28:19.063 INFO: GET 200 /public/css/main.css?v=1788964099
+- 17:28:19.063 INFO: GET 200 /public/images/logo.png
+- 17:28:19.079 INFO: GET 200 /?page=shifts
+- 17:28:19.079 INFO: GET 200 /public/js/app_core.js?v=1788964099
+- 17:28:19.157 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=shifts
+- 17:28:19.157 DEBUG: F5 pressed, reloading page
+- 17:28:19.157 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=shifts
+- 17:28:20.828 DEBUG: OnContextCreated()
+- 17:28:20.250 INFO: GET 200 /public/css/main.css?v=1788964100
+- 17:28:20.250 INFO: GET 200 /public/images/logo.png
+- 17:28:20.266 INFO: GET 200 /?page=shifts
+- 17:28:20.282 INFO: GET 200 /public/js/app_core.js?v=1788964100
+- 17:28:20.329 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=shifts
+- 17:28:22.907 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=shifts
+- 17:28:22.641 DEBUG: OnContextCreated()
+- 17:28:22.063 INFO: GET 200 /?page=products
+- 17:28:22.063 INFO: GET 200 /public/css/main.css?v=1788964102
+- 17:28:22.079 INFO: GET 200 /public/js/app_core.js?v=1788964102
+- 17:28:23.297 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=products
+- 17:28:24.969 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=products
+- 17:28:24.610 DEBUG: OnContextCreated()
+- 17:28:24.032 INFO: GET 200 /public/css/main.css?v=1788964104
+- 17:28:24.047 INFO: GET 200 /?page=products&action=create
+- 17:28:24.047 INFO: GET 200 /public/js/app_core.js?v=1788964104
+- 17:28:25.282 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=products&action=create
+- 17:28:31.954 DEBUG: F12 pressed, opening developer tools
+[0909/172831.963:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:32.235 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode&value=2728564384&exclude_id=
+- 17:28:32.297 DEBUG: F12 pressed, opening developer tools
+- 17:28:32.313 INFO: GET 200 /?page=login
+[0909/172832.140:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+[0909/172832.259:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:32.516 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode2&value=%E2%80%98%D8%9B-862&exclude_id=
+- 17:28:32.579 INFO: GET 200 /?page=login
+[0909/172832.410:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:32.000 DEBUG: F12 pressed, opening developer tools
+[0909/172833.011:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:33.282 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode3&value=2728564384&exclude_id=
+- 17:28:33.329 INFO: GET 200 /?page=login
+[0909/172833.165:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:33.547 DEBUG: F12 pressed, opening developer tools
+[0909/172833.500:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:33.829 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode&value=%E2%80%98%D8%9B-862&exclude_id=
+- 17:28:33.860 INFO: GET 302 /?page=products&action=checkDuplicate&field=plu_code&value=%E2%80%98%D8%9B-862&exclude_id=
+- 17:28:33.938 INFO: GET 200 /?page=login
+[0909/172833.772:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:33.000 INFO: GET 200 /?page=login
+[0909/172833.840:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:33.063 DEBUG: F12 pressed, opening developer tools
+[0909/172834.075:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:34.329 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode2&value=%E2%80%98%D8%9B-8622728564384&exclude_id=
+- 17:28:34.422 INFO: GET 200 /?page=login
+[0909/172834.256:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:35.204 DEBUG: F12 pressed, opening developer tools
+[0909/172835.164:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:35.422 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode3&value=2728564384%E2%80%98%D8%9B-862&exclude_id=
+- 17:28:35.454 DEBUG: F12 pressed, opening developer tools
+- 17:28:35.516 INFO: GET 200 /?page=login
+[0909/172835.344:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+[0909/172835.469:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:35.782 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode&value=2728564384&exclude_id=
+- 17:28:35.782 INFO: GET 302 /?page=products&action=checkDuplicate&field=plu_code&value=%E2%80%98%D8%9B-8622728564384&exclude_id=
+- 17:28:35.860 INFO: GET 200 /?page=login
+[0909/172835.693:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:35.922 INFO: GET 200 /?page=login
+[0909/172835.761:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:35.157 DEBUG: F12 pressed, opening developer tools
+[0909/172836.115:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:36.375 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode2&value=%E2%80%98%D8%9B-8622728564384%E2%80%98%D8%9B-862&exclude_id=
+- 17:28:36.438 INFO: GET 200 /?page=login
+[0909/172836.268:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:36.516 DEBUG: F12 pressed, opening developer tools
+[0909/172836.523:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:36.797 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode3&value=2728564384%E2%80%98%D8%9B-8622728564384&exclude_id=
+- 17:28:36.875 INFO: GET 200 /?page=login
+[0909/172836.705:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:36.000 DEBUG: F12 pressed, opening developer tools
+[0909/172836.963:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:37.250 INFO: GET 302 /?page=products&action=checkDuplicate&field=plu_code&value=%E2%80%98%D8%9B-8622728564384%E2%80%98%D8%9B-862&exclude_id=
+- 17:28:37.282 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode&value=%E2%80%98%D8%9B-862&exclude_id=
+- 17:28:37.329 INFO: GET 200 /?page=login
+[0909/172837.172:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:37.407 INFO: GET 200 /?page=login
+[0909/172837.236:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:37.688 DEBUG: F12 pressed, opening developer tools
+[0909/172837.691:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:37.969 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode2&value=%E2%80%98%D8%9B-8622728564384%E2%80%98%D8%9B-8622728564384&exclude_id=
+- 17:28:37.032 DEBUG: F12 pressed, opening developer tools
+- 17:28:37.047 INFO: GET 200 /?page=login
+[0909/172837.885:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+[0909/172837.996:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:38.266 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode3&value=2728564384%E2%80%98%D8%9B-8622728564384%E2%80%98%D8%9B-862&exclude_id=
+- 17:28:38.313 DEBUG: F12 pressed, opening developer tools
+- 17:28:38.360 INFO: GET 200 /?page=login
+[0909/172838.194:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+[0909/172838.323:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:38.610 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode&value=2728564384&exclude_id=
+- 17:28:38.657 INFO: GET 302 /?page=products&action=checkDuplicate&field=plu_code&value=%E2%80%98%D8%9B-8622728564384%E2%80%98%D8%9B-8622728564384&exclude_id=
+- 17:28:38.704 INFO: GET 200 /?page=login
+[0909/172838.539:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:38.782 INFO: GET 200 /?page=login
+[0909/172838.617:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:38.125 DEBUG: F12 pressed, opening developer tools
+[0909/172839.091:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:39.375 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode2&value=%E2%80%98%D8%9B-8622728564384%E2%80%98%D8%9B-8622728564384%E2%80%98%D8%9B-862&exclude_id=
+- 17:28:39.485 INFO: GET 200 /?page=login
+[0909/172839.328:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:39.563 DEBUG: F12 pressed, opening developer tools
+[0909/172839.563:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:39.907 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode3&value=2728564384%E2%80%98%D8%9B-8622728564384%E2%80%98%D8%9B-8622728564384&exclude_id=
+- 17:28:39.985 INFO: GET 200 /?page=login
+[0909/172839.819:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:41.360 DEBUG: F12 pressed, opening developer tools
+[0909/172841.363:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:41.688 INFO: GET 302 /?page=products&action=checkDuplicate&field=plu_code&value=%E2%80%98%D8%9B-8622728564384%E2%80%98%D8%9B-86227285643842728564384&exclude_id=
+- 17:28:41.672 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode&value=2728564384&exclude_id=
+- 17:28:41.766 INFO: GET 200 /?page=login
+[0909/172841.595:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:41.829 INFO: GET 200 /?page=login
+[0909/172841.659:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:42.188 DEBUG: F12 pressed, opening developer tools
+[0909/172842.187:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:42.454 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode2&value=%E2%80%98%D8%9B-8622728564384%E2%80%98%D8%9B-8622728564384%E2%80%98%D8%9B-8622728564384&exclude_id=
+- 17:28:42.532 INFO: GET 200 /?page=login
+[0909/172842.359:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:44.579 DEBUG: F12 pressed, opening developer tools
+[0909/172844.531:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:44.813 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode3&value=2728564384%E2%80%98%D8%9B-8622728564384%E2%80%98%D8%9B-8622728564384%E2%80%98%D8%9B-862&exclude_id=
+- 17:28:44.891 INFO: GET 200 /?page=login
+[0909/172844.722:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:46.657 INFO: GET 302 /?page=products&action=checkDuplicate&field=plu_code&value=%E2%80%98%D8%9B-8622728564384%E2%80%98%D8%9B-86227285643842728564384&exclude_id=
+- 17:28:46.750 INFO: GET 200 /?page=login
+[0909/172846.591:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:28:50.922 DEBUG: F12 pressed, opening developer tools
+[0909/172850.923:INFO:CONSOLE(257)] "Scanner detected:", source: http://127.0.0.1:1355/?page=products&action=create (257)
+- 17:28:51.188 INFO: GET 302 /?page=products&action=checkDuplicate&field=barcode&value=2728564384&exclude_id=
+- 17:28:51.266 INFO: GET 200 /?page=login
+[0909/172851.100:INFO:CONSOLE(441)] "Duplicate check error:", source: http://127.0.0.1:1355/?page=products&action=create (441)
+- 17:29:38.641 DEBUG: OnBeforeClose() hwnd=394712
+- 17:29:38.641 DEBUG: RemoveBrowserWindow(): hwnd = 394712
+- 17:29:52.782 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=products&action=create
+- 17:29:52.141 INFO: POST 302 /?page=products&action=save
+- 17:29:53.766 DEBUG: OnContextCreated()
+- 17:29:53.188 INFO: GET 304 /public/images/logo.png
+- 17:29:53.188 INFO: GET 200 /public/css/main.css?v=1788964193
+- 17:29:53.204 INFO: GET 200 /?page=products
+- 17:29:53.204 INFO: GET 200 /public/js/app_core.js?v=1788964193
+- 17:29:53.485 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=products
+- 17:29:59.500 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=products
+- 17:29:59.282 DEBUG: OnContextCreated()
+- 17:29:59.719 INFO: GET 200 /public/css/main.css?v=1788964199
+- 17:29:59.719 INFO: GET 200 /?page=barcode
+- 17:29:59.719 INFO: GET 304 /public/images/logo.png
+- 17:29:59.954 INFO: GET 500 /?page=barcode&action=image&data=6221234567902&w=1&h=30
+- 17:29:59.954 INFO: GET 500 /?page=barcode&action=image&data=2000005&w=1&h=30
+- 17:29:59.954 INFO: GET 500 /?page=barcode&action=image&data=6221234567904&w=1&h=30
+- 17:29:59.954 INFO: GET 500 /?page=barcode&action=image&data=123457487985412&w=1&h=30
+- 17:29:59.969 INFO: GET 200 /public/js/app_core.js?v=1788964199
+- 17:29:59.985 INFO: GET 500 /?page=barcode&action=image&data=6221234567905&w=1&h=30
+- 17:29:59.985 INFO: GET 500 /?page=barcode&action=image&data=6221234567900&w=1&h=30
+- 17:29:59.141 INFO: GET 500 /?page=barcode&action=image&data=2728564384&w=1&h=30
+- 17:30:00.219 INFO: GET 500 /?page=barcode&action=image&data=2000004&w=1&h=30
+- 17:30:00.219 INFO: GET 500 /?page=barcode&action=image&data=6221234567903&w=1&h=30
+- 17:30:00.219 INFO: GET 500 /?page=barcode&action=image&data=6221234567899&w=1&h=30
+- 17:30:00.297 INFO: GET 500 /?page=barcode&action=image&data=58554572266&w=1&h=30
+- 17:30:00.297 INFO: GET 500 /?page=barcode&action=image&data=50584788&w=1&h=30
+- 17:30:00.454 INFO: GET 500 /?page=barcode&action=image&data=6221234567906&w=1&h=30
+- 17:30:00.485 INFO: GET 500 /?page=barcode&action=image&data=6221234567908&w=1&h=30
+- 17:30:00.500 INFO: GET 500 /?page=barcode&action=image&data=6221234567898&w=1&h=30
+- 17:30:00.500 INFO: GET 500 /?page=barcode&action=image&data=6221234567901&w=1&h=30
+- 17:30:00.500 INFO: GET 500 /?page=barcode&action=image&data=012345678905&w=1&h=30
+- 17:30:00.516 INFO: GET 500 /?page=barcode&action=image&data=240515967&w=1&h=30
+- 17:30:00.532 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=barcode
+- 17:30:12.282 DEBUG: ClientHandler::OnBeforePopup()
+- 17:30:12.282 INFO: Setting default size for a popup window 800/600
+- 17:30:12.282 INFO: DPI, window enlarged by 25% new width/height = 1000/750
+- 17:30:12.282 DEBUG: Window max width/height = 1842/984
+- 17:30:12.891 DEBUG: OnBrowserCreated()
+- 17:30:12.329 DEBUG: ClientHandler::OnAfterCreated()
+- 17:30:12.329 DEBUG: GetBrowserWindow(): not found, hwnd = 787804
+- 17:30:12.329 DEBUG: BrowserWindow::BrowserWindow() created for Popup
+- 17:30:12.329 DEBUG: StoreBrowserWindow(): hwnd = 787804
+- 17:30:12.344 DEBUG: Centering popup window relative to its parent
+- 17:30:12.344 DEBUG: OnLoadingStateChange: loading=1, url=
+- 17:30:12.516 INFO: GET 500 /?page=barcode&action=labels&ids=5
+- 17:30:12.532 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=barcode&action=labels&ids=5
+- 17:30:16.985 DEBUG: OnBeforeClose() hwnd=787804
+- 17:30:16.985 DEBUG: RemoveBrowserWindow(): hwnd = 787804
+- 17:30:16.610 DEBUG: OnBrowserDestroyed()
+- 17:30:20.500 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=barcode
+- 17:30:20.141 DEBUG: OnContextCreated()
+- 17:30:20.579 INFO: GET 200 /public/css/main.css?v=1788964220
+- 17:30:20.579 INFO: GET 304 /public/images/logo.png
+- 17:30:20.579 INFO: GET 200 /?page=products
+- 17:30:20.579 INFO: GET 200 /public/js/app_core.js?v=1788964220
+- 17:30:20.797 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=products
+- 17:30:25.782 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=products
+- 17:30:25.516 DEBUG: OnContextCreated()
+- 17:30:25.938 INFO: GET 200 /public/css/pos_simple.css?v=1788964225
+- 17:30:25.938 INFO: GET 200 /public/css/main.css?v=1788964225
+- 17:30:25.938 INFO: GET 200 /public/css/pos_fixes.css?v=1788964225
+- 17:30:25.954 INFO: GET 200 /?page=pos
+- 17:30:25.954 INFO: GET 200 /public/js/pos_shortcuts.js?v=1788964225
+- 17:30:25.954 INFO: GET 200 /public/js/pos_core_v2.js?v=1788964225
+[0909/173025.995:INFO:CONSOLE(148)] "POS v3.0 Initializing...", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964225 (148)
+- 17:30:26.188 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=pos
+- 17:30:26.297 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20
+[0909/173026.129:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964225 (47)
+- 17:30:26.297 INFO: GET 200 /?page=pos&action=checkShift
+- 17:30:27.469 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:30:29.297 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:30:29.125 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:30:30.797 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:30:31.454 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:30:31.032 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:30:32.516 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:30:34.204 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:30:35.329 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:30:36.579 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:30:37.016 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:30:38.375 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:30:40.532 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:30:42.125 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:30:43.829 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:30:45.454 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:30:46.016 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:30:47.875 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:30:49.766 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:30:50.860 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:30:53.704 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:30:53.063 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:30:54.407 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:30:55.704 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:30:57.250 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:30:59.610 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:31:01.735 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:31:01.016 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:31:02.344 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:31:04.532 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:31:07.000 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:31:11.829 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:31:12.235 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:31:12.000 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:31:13.500 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:31:13.813 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:31:14.657 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:31:15.344 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:31:16.375 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:31:18.938 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:31:25.235 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=pos
+- 17:31:25.875 DEBUG: OnContextCreated()
+- 17:31:25.297 INFO: GET 200 /public/css/main.css?v=1788964285
+- 17:31:25.297 INFO: GET 304 /public/images/logo.png
+- 17:31:25.313 INFO: GET 200 /?page=dashboard
+- 17:31:25.313 INFO: GET 200 /public/js/app_core.js?v=1788964285
+- 17:31:25.516 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=dashboard
+- 17:31:29.266 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=dashboard
+- 17:31:29.938 DEBUG: OnContextCreated()
+- 17:31:29.360 INFO: GET 304 /public/images/logo.png
+- 17:31:29.360 INFO: GET 200 /public/css/main.css?v=1788964289
+- 17:31:29.375 INFO: GET 200 /?page=purchases
+- 17:31:29.375 INFO: GET 200 /public/js/app_core.js?v=1788964289
+- 17:31:29.625 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=purchases
+- 17:31:32.672 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=purchases
+- 17:31:32.578 DEBUG: OnContextCreated()
+- 17:31:32.000 INFO: GET 200 /public/css/main.css?v=1788964292
+- 17:31:32.000 INFO: GET 304 /public/images/logo.png
+- 17:31:32.032 INFO: GET 200 /?page=purchases&action=create
+- 17:31:32.032 INFO: GET 200 /public/js/app_core.js?v=1788964292
+- 17:31:33.313 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=purchases&action=create
+- 17:31:38.079 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:31:39.360 INFO: GET 404 /public/audio/beep.mp3
+- 17:31:39.469 INFO: GET 200 /?page=pos&action=search&q=2728564384&_=1788964299201
+- 17:31:43.610 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:31:43.610 INFO: GET 404 /public/audio/beep.mp3
+- 17:31:43.907 INFO: GET 200 /?page=pos&action=search&q=2728564384&_=1788964303665
+- 17:31:43.079 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:31:45.594 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:31:46.266 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:31:47.297 INFO: GET 200 /?page=pos&action=search&q=%E2%80%98%D8%9B-862&_=1788964307047
+- 17:31:48.094 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:31:49.797 INFO: GET 200 /?page=pos&action=search&q=%E2%80%98%D8%9B-862&_=1788964309529
+- 17:31:49.938 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:31:50.422 INFO: GET 200 /?page=pos&action=search&q=%E2%80%98%D8%9B-862&_=1788964310189
+- 17:31:51.485 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:31:51.500 INFO: GET 404 /public/audio/beep.mp3
+- 17:31:51.782 INFO: GET 200 /?page=pos&action=search&q=2728564384&_=1788964311540
+- 17:31:53.266 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:31:53.266 INFO: GET 404 /public/audio/beep.mp3
+- 17:31:53.485 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:31:53.094 INFO: GET 200 /?page=pos&action=search&q=%E2%80%98%D8%9B-862&_=1788964313849
+- 17:31:54.438 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:31:55.282 INFO: GET 200 /?page=pos&action=search&q=%E2%80%98%D8%9B-862&_=1788964315029
+- 17:31:56.954 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:31:56.969 INFO: GET 404 /public/audio/beep.mp3
+- 17:31:57.250 INFO: GET 200 /?page=pos&action=search&q=2728564384&_=1788964317021
+- 17:31:58.407 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:31:58.407 INFO: GET 404 /public/audio/beep.mp3
+- 17:31:58.704 INFO: GET 200 /?page=pos&action=search&q=2728564384&_=1788964318471
+- 17:32:00.844 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:32:00.860 INFO: GET 404 /public/audio/beep.mp3
+- 17:32:00.157 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:32:06.907 INFO: GET 200 /?page=pos&action=search&q=%E2%80%98%D8%9B-862&_=1788964326661
+- 17:33:18.344 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=purchases&action=create
+- 17:33:18.407 INFO: GET 200 /?page=dashboard
+- 17:33:18.313 DEBUG: OnContextCreated()
+- 17:33:18.735 INFO: GET 200 /public/css/main.css?v=1788964398
+- 17:33:18.735 INFO: GET 304 /public/images/logo.png
+- 17:33:18.735 INFO: GET 200 /public/js/app_core.js?v=1788964398
+- 17:33:18.954 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=dashboard
+- 17:33:19.860 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=dashboard
+- 17:33:19.532 DEBUG: OnContextCreated()
+- 17:33:19.969 INFO: GET 304 /public/images/logo.png
+- 17:33:19.969 INFO: GET 200 /public/css/main.css?v=1788964399
+- 17:33:19.000 INFO: GET 200 /?page=dashboard
+- 17:33:19.094 INFO: GET 200 /public/js/app_core.js?v=1788964399
+- 17:33:20.344 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=dashboard
+- 17:33:20.532 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=dashboard
+- 17:33:20.188 DEBUG: OnContextCreated()
+- 17:33:20.625 INFO: GET 304 /public/images/logo.png
+- 17:33:20.610 INFO: GET 200 /public/css/main.css?v=1788964400
+- 17:33:20.657 INFO: GET 200 /?page=shifts
+- 17:33:20.657 INFO: GET 200 /public/js/app_core.js?v=1788964400
+- 17:33:20.844 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=shifts
+- 17:33:21.250 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=shifts
+- 17:33:21.078 DEBUG: OnContextCreated()
+- 17:33:21.516 INFO: GET 200 /public/css/pos_fixes.css?v=1788964401
+- 17:33:21.516 INFO: GET 200 /public/css/main.css?v=1788964401
+- 17:33:21.516 INFO: GET 200 /public/js/pos_core_v2.js?v=1788964401
+- 17:33:21.500 INFO: GET 200 /public/css/pos_simple.css?v=1788964401
+- 17:33:21.516 INFO: GET 200 /public/js/pos_shortcuts.js?v=1788964401
+- 17:33:21.516 INFO: GET 200 /?page=pos
+[0909/173322.058:INFO:CONSOLE(148)] "POS v3.0 Initializing...", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964401 (148)
+- 17:33:22.250 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=pos
+- 17:33:22.360 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20
+- 17:33:22.360 INFO: GET 200 /?page=pos&action=checkShift
+[0909/173322.192:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964401 (47)
+- 17:33:31.938 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20&category=7
+[0909/173331.777:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964401 (47)
+- 17:33:33.797 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20
+[0909/173333.631:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964401 (47)
+- 17:33:34.844 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20
+[0909/173334.681:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964401 (47)
+- 17:33:35.297 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20
+[0909/173335.132:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964401 (47)
+- 17:33:36.313 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20
+[0909/173336.144:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964401 (47)
+- 17:33:37.282 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20
+[0909/173337.108:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964401 (47)
+- 17:33:37.625 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20
+[0909/173337.459:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964401 (47)
+- 17:33:37.954 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20
+[0909/173337.786:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964401 (47)
+- 17:33:44.344 INFO: GET 200 /?page=pos&action=search&q=%D8%B9%D9%84
+- 17:33:45.969 INFO: GET 200 /?page=pos&action=findProduct&q=4
+- 17:33:48.125 INFO: GET 200 /?page=pos&action=search&q=%D8%A7%D9%8A
+- 17:33:49.547 INFO: GET 200 /?page=pos&action=search&q=%D8%A7%D9%8A%D8%B1
+- 17:33:49.047 INFO: GET 200 /?page=pos&action=search&q=%D8%A7%D9%8A%D8%B1%D8%B2
+- 17:33:51.375 INFO: GET 200 /?page=pos&action=search&q=%D8%A7%D9%8A%D8%B1
+- 17:33:51.782 INFO: GET 200 /?page=pos&action=search&q=%D8%A7%D9%8A%D8%B1%D9%88%D8%B1
+- 17:33:51.079 INFO: GET 400 /?page=pos&action=findProduct&q=%D8%A7%D9%8A%D8%B1%D9%88%D8%B1
+- 17:34:06.125 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:34:09.735 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:34:10.782 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:34:11.594 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:34:14.094 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:35:13.485 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20&category=10
+[0909/173513.311:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964401 (47)
+- 17:35:14.188 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20&category=9
+[0909/173514.028:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964401 (47)
+- 17:35:14.782 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20&category=7
+[0909/173514.620:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964401 (47)
+- 17:35:19.516 INFO: GET 200 /?page=pos&action=search&q=%D8%A7%D8%B1
+- 17:35:20.875 INFO: GET 200 /?page=pos&action=findProduct&q=16
+- 17:35:22.641 INFO: GET 200 /?page=pos&action=search&q=%D8%A7%D8%A9
+- 17:35:24.829 INFO: GET 200 /?page=pos&action=search&q=%D8%A8%D8%A8
+- 17:35:28.907 INFO: GET 500 /?page=pos&action=search&q=%D8%A8%D8%A8&category=7
+[0909/173528.741:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964401 (47)
+- 17:35:29.047 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20&category=7
+[0909/173529.875:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964401 (47)
+- 17:35:31.547 INFO: GET 500 /?page=pos&action=search&q=%D8%A7%D9%85&category=7
+[0909/173531.375:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964401 (47)
+- 17:35:32.500 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20&category=7
+[0909/173532.330:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964401 (47)
+- 17:35:55.844 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=pos
+- 17:35:55.485 DEBUG: OnContextCreated()
+- 17:35:55.907 INFO: GET 200 /public/css/main.css?v=1788964555
+- 17:35:55.907 INFO: GET 304 /public/images/logo.png
+- 17:35:55.907 INFO: GET 200 /?page=shifts
+- 17:35:55.922 INFO: GET 200 /public/js/app_core.js?v=1788964555
+- 17:35:56.250 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=shifts
+- 17:36:00.735 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=shifts
+- 17:36:00.578 DEBUG: OnContextCreated()
+- 17:36:00.000 INFO: GET 200 /public/css/main.css?v=1788964560
+- 17:36:00.000 INFO: GET 304 /public/images/logo.png
+- 17:36:00.000 INFO: GET 200 /?page=customers
+- 17:36:00.000 INFO: GET 200 /public/js/app_core.js?v=1788964560
+- 17:36:01.250 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=customers
+- 17:36:01.063 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=customers
+- 17:36:01.719 DEBUG: OnContextCreated()
+- 17:36:01.141 INFO: GET 200 /public/css/main.css?v=1788964561
+- 17:36:01.157 INFO: GET 304 /public/images/logo.png
+- 17:36:01.157 INFO: GET 200 /?page=products
+- 17:36:01.157 INFO: GET 200 /public/js/app_core.js?v=1788964561
+- 17:36:02.391 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=products
+- 17:36:13.516 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=products
+- 17:36:13.157 DEBUG: OnContextCreated()
+- 17:36:13.579 INFO: GET 200 /public/css/main.css?v=1788964573
+- 17:36:13.579 INFO: GET 304 /public/images/logo.png
+- 17:36:13.594 INFO: GET 200 /?page=dashboard
+- 17:36:13.641 INFO: GET 200 /public/js/app_core.js?v=1788964573
+- 17:36:13.907 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=dashboard
+- 17:36:15.500 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=dashboard
+- 17:36:15.188 DEBUG: OnContextCreated()
+- 17:36:15.625 INFO: GET 200 /public/css/main.css?v=1788964575
+- 17:36:15.625 INFO: GET 304 /public/images/logo.png
+- 17:36:15.625 INFO: GET 200 /?page=shifts
+- 17:36:15.625 INFO: GET 200 /public/js/app_core.js?v=1788964575
+- 17:36:15.954 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=shifts
+- 17:36:16.469 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=shifts
+- 17:36:16.110 DEBUG: OnContextCreated()
+- 17:36:16.532 INFO: GET 200 /public/css/main.css?v=1788964576
+- 17:36:16.532 INFO: GET 304 /public/images/logo.png
+- 17:36:16.625 INFO: GET 200 /?page=barcode
+- 17:36:16.657 INFO: GET 200 /public/js/app_core.js?v=1788964576
+- 17:36:16.735 INFO: GET 500 /?page=barcode&action=image&data=6221234567902&w=1&h=30
+- 17:36:16.735 INFO: GET 500 /?page=barcode&action=image&data=123457487985412&w=1&h=30
+- 17:36:16.735 INFO: GET 500 /?page=barcode&action=image&data=6221234567904&w=1&h=30
+- 17:36:16.735 INFO: GET 500 /?page=barcode&action=image&data=2000005&w=1&h=30
+- 17:36:16.750 INFO: GET 500 /?page=barcode&action=image&data=6221234567900&w=1&h=30
+- 17:36:16.891 INFO: GET 500 /?page=barcode&action=image&data=6221234567905&w=1&h=30
+- 17:36:16.922 INFO: GET 500 /?page=barcode&action=image&data=2728564384&w=1&h=30
+- 17:36:16.922 INFO: GET 500 /?page=barcode&action=image&data=6221234567903&w=1&h=30
+- 17:36:16.938 INFO: GET 500 /?page=barcode&action=image&data=2000004&w=1&h=30
+- 17:36:16.954 INFO: GET 500 /?page=barcode&action=image&data=50584788&w=1&h=30
+- 17:36:16.954 INFO: GET 500 /?page=barcode&action=image&data=58554572266&w=1&h=30
+- 17:36:17.219 INFO: GET 500 /?page=barcode&action=image&data=6221234567898&w=1&h=30
+- 17:36:17.219 INFO: GET 500 /?page=barcode&action=image&data=6221234567899&w=1&h=30
+- 17:36:17.219 INFO: GET 500 /?page=barcode&action=image&data=012345678905&w=1&h=30
+- 17:36:17.219 INFO: GET 500 /?page=barcode&action=image&data=6221234567901&w=1&h=30
+- 17:36:17.219 INFO: GET 500 /?page=barcode&action=image&data=240515967&w=1&h=30
+- 17:36:17.235 INFO: GET 500 /?page=barcode&action=image&data=6221234567906&w=1&h=30
+- 17:36:17.329 INFO: GET 500 /?page=barcode&action=image&data=6221234567908&w=1&h=30
+- 17:36:17.344 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=barcode
+- 17:36:18.204 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=barcode
+- 17:36:18.907 DEBUG: OnContextCreated()
+- 17:36:18.329 INFO: GET 200 /public/css/main.css?v=1788964578
+- 17:36:18.344 INFO: GET 200 /?page=suppliers
+- 17:36:18.375 INFO: GET 304 /public/images/logo.png
+- 17:36:18.375 INFO: GET 200 /public/js/app_core.js?v=1788964578
+- 17:36:18.047 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=suppliers
+- 17:36:19.719 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=suppliers
+- 17:36:19.360 DEBUG: OnContextCreated()
+- 17:36:19.797 INFO: GET 200 /public/css/main.css?v=1788964579
+- 17:36:19.797 INFO: GET 200 /?page=purchases
+- 17:36:19.797 INFO: GET 304 /public/images/logo.png
+- 17:36:19.797 INFO: GET 200 /public/js/app_core.js?v=1788964579
+- 17:36:19.094 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=purchases
+- 17:36:21.625 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=purchases
+- 17:36:21.282 DEBUG: OnContextCreated()
+- 17:36:21.719 INFO: GET 200 /public/css/main.css?v=1788964581
+- 17:36:21.719 INFO: GET 200 /?page=sales
+- 17:36:21.719 INFO: GET 304 /public/images/logo.png
+- 17:36:21.719 INFO: GET 200 /public/js/app_core.js?v=1788964581
+- 17:36:21.985 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=sales
+- 17:36:22.829 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=sales
+- 17:36:22.453 DEBUG: OnContextCreated()
+- 17:36:22.891 INFO: GET 200 /public/css/main.css?v=1788964582
+- 17:36:22.891 INFO: GET 304 /public/images/logo.png
+- 17:36:22.907 INFO: GET 200 /?page=reports
+- 17:36:22.907 INFO: GET 200 /public/js/app_core.js?v=1788964582
+- 17:36:22.125 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=reports
+- 17:36:23.204 INFO: GET 200 /?page=reports&action=daily&date=2026-09-09
+- 17:36:24.250 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=reports
+- 17:36:24.985 DEBUG: OnContextCreated()
+- 17:36:24.407 INFO: GET 200 /public/css/main.css?v=1788964584
+- 17:36:24.407 INFO: GET 304 /public/images/logo.png
+- 17:36:24.422 INFO: GET 200 /?page=users
+- 17:36:24.422 INFO: GET 200 /public/js/app_core.js?v=1788964584
+- 17:36:25.266 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=users
+- 17:36:25.438 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=users
+- 17:36:25.078 DEBUG: OnContextCreated()
+- 17:36:25.500 INFO: GET 200 /public/css/main.css?v=1788964585
+- 17:36:25.500 INFO: GET 304 /public/images/logo.png
+- 17:36:25.516 INFO: GET 200 /?page=users
+- 17:36:25.516 INFO: GET 200 /public/js/app_core.js?v=1788964585
+- 17:36:26.454 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=users
+- 17:36:29.766 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=users
+- 17:36:29.407 DEBUG: OnContextCreated()
+- 17:36:29.829 INFO: GET 200 /public/css/main.css?v=1788964589
+- 17:36:29.844 INFO: GET 304 /public/images/logo.png
+- 17:36:29.844 INFO: GET 200 /?page=shifts
+- 17:36:29.907 INFO: GET 200 /public/js/app_core.js?v=1788964589
+- 17:36:29.047 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=shifts
+- 17:36:41.297 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=shifts
+- 17:36:41.938 DEBUG: OnContextCreated()
+- 17:36:41.360 INFO: GET 200 /public/css/main.css?v=1788964601
+- 17:36:41.360 INFO: GET 304 /public/images/logo.png
+- 17:36:41.375 INFO: GET 200 /?page=shifts
+- 17:36:41.375 INFO: GET 200 /public/js/app_core.js?v=1788964601
+- 17:36:41.969 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=shifts
+- 17:36:42.532 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:1355/?page=shifts
+- 17:36:42.219 DEBUG: OnContextCreated()
+- 17:36:42.657 INFO: GET 200 /public/css/main.css?v=1788964602
+- 17:36:42.657 INFO: GET 200 /public/css/pos_fixes.css?v=1788964602
+- 17:36:42.657 INFO: GET 200 /public/js/pos_shortcuts.js?v=1788964602
+- 17:36:42.657 INFO: GET 200 /public/js/pos_core_v2.js?v=1788964602
+- 17:36:42.657 INFO: GET 200 /public/css/pos_simple.css?v=1788964602
+- 17:36:42.672 INFO: GET 200 /?page=pos
+[0909/173642.743:INFO:CONSOLE(148)] "POS v3.0 Initializing...", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964602 (148)
+- 17:36:42.922 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:1355/?page=pos
+- 17:36:42.047 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20
+[0909/173642.887:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:1355/public/js/pos_core_v2.js?v=1788964602 (47)
+- 17:36:42.063 INFO: GET 200 /?page=pos&action=checkShift
+- 17:39:42.985 DEBUG: ClientHandler::OnAfterCreated()
+- 17:39:42.985 DEBUG: GetBrowserWindow(): not found, hwnd = 1050672
+- 17:39:42.985 DEBUG: BrowserWindow::BrowserWindow() created for Popup
+- 17:39:42.985 DEBUG: StoreBrowserWindow(): hwnd = 1050672
+- 17:39:42.985 DEBUG: Centering popup window relative to its parent
+- 17:39:42.985 DEBUG: OnLoadingStateChange: loading=1, url=
+- 17:39:43.000 DEBUG: Command line string for the renderer process: "D:\var\New folder (2)\CASHIER\Tajer.exe" --type=renderer --no-sandbox --use-fake-ui-for-media-stream --primordial-pipe-token=500A3EE41761E166CD8D66BA31B589AA --lang=en-US --lang=en-US --log-file="D:\var\New folder (2)\CASHIER\debug.log" --enable-pinch --device-scale-factor=1.25 --num-raster-threads=2 --enable-main-frame-before-activation --content-image-texture-target=0,0,3553;0,1,3553;0,2,3553;0,3,3553;0,4,3553;0,5,3553;0,6,3553;0,7,3553;0,8,3553;0,9,3553;0,10,3553;0,11,3553;0,12,3553;0,13,3553;0,14,3553;0,15,3553;1,0,3553;1,1,3553;1,2,3553;1,3,3553;1,4,3553;1,5,3553;1,6,3553;1,7,3553;1,8,3553;1,9,3553;1,10,3553;1,11,3553;1,12,3553;1,13,3553;1,14,3553;1,15,3553;2,0,3553;2,1,3553;2,2,3553;2,3,3553;2,4,3553;2,5,3553;2,6,3553;2,7,3553;2,8,3553;2,9,3553;2,10,3553;2,11,3553;2,12,3553;2,13,3553;2,14,3553;2,15,3553;3,0,3553;3,1,3553;3,2,3553;3,3,3553;3,4,3553;3,5,3553;3,6,3553;3,7,3553;3,8,3553;3,9,3553;3,10,3553;3,11,3553;3,12,3553;3,13,3553;3,14,3553;3,15,3553 --service-request-channel-token=500A3EE41761E166CD8D66BA31B589AA --renderer-client-id=5 --mojo-platform-channel-handle=4660 /prefetch:1
+- 17:39:43.032 DEBUG: OnBrowserCreated()
+- 17:39:43.047 DEBUG: OnContextCreated()
+- 17:39:43.610 DEBUG: OnLoadingStateChange: loading=0, url=chrome-devtools://devtools/inspector.html
+- 17:39:43.782 INFO: GET 304 /public/css/pos_simple.css?v=1788964602
+- 17:39:43.782 INFO: GET 304 /public/css/pos_fixes.css?v=1788964602
+- 17:39:43.782 INFO: GET 304 /public/css/main.css?v=1788964602
+- 17:40:00.657 DEBUG: OnBeforeClose() hwnd=1050672
+- 17:40:00.657 DEBUG: RemoveBrowserWindow(): hwnd = 1050672
+- 17:40:00.250 DEBUG: OnBrowserDestroyed()
+- 17:43:30.109 INFO: --------------------------------------------------------
+- 17:43:30.109 INFO: Started application
+- 17:43:30.109 INFO: Logging to: D:\var\New folder (2)\CASHIER\debug.log
+- 17:43:30.109 INFO: Log level = DEBUG4
+- 17:43:30.125 INFO: Starting Mongoose 3.9c web server
+- 17:43:30.125 INFO: WWW directory: D:\var\New folder (2)\CASHIER\www
+- 17:43:30.125 INFO: Index files: index.html,index.php
+- 17:43:30.125 INFO: CGI interpreter: D:\var\New folder (2)\CASHIER\php\php-cgi.exe
+- 17:43:30.125 INFO: CGI pattern: **.php$
+- 17:43:30.125 INFO: Hide files patterns: 
+- 17:43:30.125 INFO: CGI environment variables set: TMP=C:\Users\DELL\AppData\Local\Temp\,TEMP=C:\Users\DELL\AppData\Local\Temp\,TMPDIR=C:\Users\DELL\AppData\Local\Temp\,SERVER_NAME=127.0.0.1,PHPDESKTOP_VERSION=57.0
+- 17:43:30.125 INFO: Web server url: http://127.0.0.1:2489/
+- 17:43:30.125 INFO: remote_debugging_port = 63550
+- 17:43:30.125 DEBUG: Command line string for the browser process: "D:\var\New folder (2)\CASHIER\Tajer.exe" --no-sandbox --lang=en-US --log-file="D:\var\New folder (2)\CASHIER\debug.log" --remote-debugging-port=63550 --enable-media-stream --use-fake-ui-for-media-stream --kiosk-printing
+- 17:43:30.188 DEBUG: App::OnContextInitialized()
+- 17:43:30.188 INFO: DPI, window enlarged by 25% new width/height = 1000/750
+- 17:43:30.188 DEBUG: Window max width/height = 1842/984
+- 17:43:30.188 DEBUG: GetBrowserWindow(): not found, hwnd = 264066
+- 17:43:30.188 DEBUG: WindowProc(): event WM_GETMINMAXINFO: could not fetch BrowserWindow
+- 17:43:30.188 DEBUG: BrowserWindow::CreateBrowserControl()
+- 17:43:30.188 DEBUG: StoreBrowserWindow(): hwnd = 264066
+- 17:43:30.266 DEBUG: ClientHandler::OnAfterCreated()
+- 17:43:30.266 DEBUG: SetCefBrowser() called in ClientHandler::OnAfterCreated()
+- 17:43:30.281 DEBUG: OnLoadingStateChange: loading=1, url=
+- 17:43:30.000 DEBUG: Command line string for the renderer process: "D:\var\New folder (2)\CASHIER\Tajer.exe" --type=renderer --no-sandbox --use-fake-ui-for-media-stream --primordial-pipe-token=28F0342054632BD4ACC0B7BAEC78C362 --lang=en-US --lang=en-US --log-file="D:\var\New folder (2)\CASHIER\debug.log" --enable-pinch --device-scale-factor=1.25 --num-raster-threads=2 --enable-main-frame-before-activation --content-image-texture-target=0,0,3553;0,1,3553;0,2,3553;0,3,3553;0,4,3553;0,5,3553;0,6,3553;0,7,3553;0,8,3553;0,9,3553;0,10,3553;0,11,3553;0,12,3553;0,13,3553;0,14,3553;0,15,3553;1,0,3553;1,1,3553;1,2,3553;1,3,3553;1,4,3553;1,5,3553;1,6,3553;1,7,3553;1,8,3553;1,9,3553;1,10,3553;1,11,3553;1,12,3553;1,13,3553;1,14,3553;1,15,3553;2,0,3553;2,1,3553;2,2,3553;2,3,3553;2,4,3553;2,5,3553;2,6,3553;2,7,3553;2,8,3553;2,9,3553;2,10,3553;2,11,3553;2,12,3553;2,13,3553;2,14,3553;2,15,3553;3,0,3553;3,1,3553;3,2,3553;3,3,3553;3,4,3553;3,5,3553;3,6,3553;3,7,3553;3,8,3553;3,9,3553;3,10,3553;3,11,3553;3,12,3553;3,13,3553;3,14,3553;3,15,3553 --service-request-channel-token=28F0342054632BD4ACC0B7BAEC78C362 --renderer-client-id=3 --mojo-platform-channel-handle=2412 /prefetch:1
+- 17:43:30.000 DEBUG: Command line string for the gpu-process process: "D:\var\New folder (2)\CASHIER\Tajer.exe" --type=gpu-process --no-sandbox --lang=en-US --log-file="D:\var\New folder (2)\CASHIER\debug.log" --disable-d3d11 --disable-direct-composition --supports-dual-gpus=false --gpu-driver-bug-workarounds=7,10,16,18,19,20,23,26,41,74 --disable-gl-extensions="GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent" --gpu-vendor-id=0x1002 --gpu-device-id=0x6606 --gpu-driver-vendor="Advanced Micro Devices, Inc." --gpu-driver-version=15.201.1101.0 --gpu-driver-date=8-6-2015 --gpu-secondary-vendor-ids=0x8086 --gpu-secondary-device-ids=0x0416 --lang=en-US --log-file="D:\var\New folder (2)\CASHIER\debug.log" --service-request-channel-token=F05DCF8AC3BE7206A45950ACE5E3947D --mojo-platform-channel-handle=1808 /prefetch:2
+- 17:43:30.047 DEBUG: OnBrowserCreated()
+[0909/174330.687:ERROR:child_thread_impl.cc(762)] Request for unknown Channel-associated interface: ui::mojom::GpuMain
+- 17:43:31.594 INFO: GET 302 /
+- 17:43:31.672 INFO: GET 200 /?page=login
+- 17:43:31.672 INFO: GET 200 /public/images/logo.png
+- 17:43:32.234 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=login
+- 17:43:43.688 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=login
+- 17:43:44.844 INFO: POST 302 /?page=login&action=authenticate
+- 17:43:44.906 INFO: GET 200 /?page=login
+- 17:43:44.375 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=login
+- 17:43:53.531 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=login
+- 17:43:53.656 INFO: POST 302 /?page=login&action=authenticate
+- 17:43:53.719 INFO: GET 200 /public/css/main.css?v=1788965033
+- 17:43:53.719 INFO: GET 200 /?page=dashboard
+- 17:43:53.375 DEBUG: OnContextCreated()
+- 17:43:54.781 INFO: GET 200 /public/js/app_core.js?v=1788965033
+- 17:43:55.297 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=dashboard
+- 17:43:57.531 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=dashboard
+- 17:43:57.266 DEBUG: OnContextCreated()
+- 17:43:57.625 INFO: GET 200 /public/css/pos_simple.css?v=1788965037
+- 17:43:57.625 INFO: GET 200 /public/css/pos_fixes.css?v=1788965037
+- 17:43:57.625 INFO: GET 200 /public/css/main.css?v=1788965037
+- 17:43:57.625 INFO: GET 200 /public/js/pos_shortcuts.js?v=1788965037
+- 17:43:57.625 INFO: GET 200 /public/js/pos_core_v2.js?v=1788965037
+- 17:43:57.656 INFO: GET 200 /?page=pos
+[0909/174358.058:INFO:CONSOLE(148)] "POS v3.0 Initializing...", source: http://127.0.0.1:2489/public/js/pos_core_v2.js?v=1788965037 (148)
+- 17:43:58.938 INFO: GET 404 /?page=pos&action=listProducts&page=1&per_page=20
+- 17:43:58.953 INFO: GET 200 /?page=pos&action=checkShift
+- 17:43:58.984 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=pos
+[0909/174358.203:INFO:CONSOLE(47)] "JSON parse error. Response:", source: http://127.0.0.1:2489/public/js/pos_core_v2.js?v=1788965037 (47)
+- 17:49:00.188 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=pos
+- 17:49:00.969 DEBUG: OnContextCreated()
+- 17:49:00.328 INFO: GET 200 /public/css/main.css?v=1788965340
+- 17:49:00.328 INFO: GET 304 /public/images/logo.png
+- 17:49:00.344 INFO: GET 200 /?page=dashboard
+- 17:49:00.344 INFO: GET 200 /public/js/app_core.js?v=1788965340
+- 17:49:00.609 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=dashboard
+- 17:49:01.000 DEBUG: F5 pressed, reloading page
+- 17:49:01.000 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=dashboard
+- 17:49:01.688 DEBUG: OnContextCreated()
+- 17:49:01.063 INFO: GET 200 /public/images/logo.png
+- 17:49:01.047 INFO: GET 200 /public/css/main.css?v=1788965341
+- 17:49:01.078 INFO: GET 200 /?page=dashboard
+- 17:49:01.078 INFO: GET 200 /public/js/app_core.js?v=1788965341
+- 17:49:01.156 DEBUG: F5 pressed, reloading page
+- 17:49:01.219 DEBUG: OnLoadError, errorCode=-3, failedUrl=http://127.0.0.1:2489/?page=dashboard
+- 17:49:01.860 DEBUG: OnContextCreated()
+- 17:49:01.234 INFO: GET 200 /public/css/main.css?v=1788965341
+- 17:49:01.234 INFO: GET 200 /public/images/logo.png
+- 17:49:01.250 INFO: GET 200 /?page=dashboard
+- 17:49:01.250 INFO: GET 200 /public/js/app_core.js?v=1788965341
+- 17:49:01.313 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=dashboard
+- 17:49:01.328 DEBUG: F5 pressed, reloading page
+- 17:49:01.328 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=dashboard
+- 17:49:01.047 DEBUG: OnContextCreated()
+- 17:49:01.422 INFO: GET 200 /public/css/main.css?v=1788965341
+- 17:49:01.422 INFO: GET 200 /public/images/logo.png
+- 17:49:01.438 INFO: GET 200 /?page=dashboard
+- 17:49:01.438 INFO: GET 200 /public/js/app_core.js?v=1788965341
+- 17:49:01.469 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=dashboard
+- 17:49:03.000 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=dashboard
+- 17:49:03.735 DEBUG: OnContextCreated()
+- 17:49:03.094 INFO: GET 200 /public/js/pos_core_v2.js?v=1788965343
+- 17:49:03.094 INFO: GET 200 /public/js/pos_shortcuts.js?v=1788965343
+- 17:49:03.094 INFO: GET 200 /public/css/pos_simple.css?v=1788965343
+- 17:49:03.094 INFO: GET 200 /public/css/pos_fixes.css?v=1788965343
+- 17:49:03.094 INFO: GET 200 /public/css/main.css?v=1788965343
+- 17:49:03.125 INFO: GET 200 /?page=pos
+[0909/174903.538:INFO:CONSOLE(148)] "POS v3.0 Initializing...", source: http://127.0.0.1:2489/public/js/pos_core_v2.js?v=1788965343 (148)
+- 17:49:03.328 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=pos
+- 17:49:03.484 INFO: GET 200 /?page=pos&action=checkShift
+- 17:49:03.484 INFO: GET 200 /?page=pos&action=listProducts&p=1&per_page=20
+- 17:49:05.688 INFO: GET 200 /?page=pos&action=findProduct&q=18
+- 17:49:06.391 INFO: GET 200 /?page=pos&action=findProduct&q=12
+- 17:49:07.047 INFO: GET 200 /?page=pos&action=findProduct&q=10
+- 17:49:07.625 INFO: GET 200 /?page=pos&action=findProduct&q=8
+- 17:49:08.188 INFO: GET 200 /?page=pos&action=findProduct&q=13
+- 17:49:09.797 INFO: GET 200 /?page=pos&action=findProduct&q=20
+- 17:49:09.391 INFO: GET 200 /?page=pos&action=findProduct&q=6
+- 17:49:10.266 INFO: GET 200 /?page=pos&action=findProduct&q=14
+- 17:49:11.891 INFO: GET 200 /?page=pos&action=findProduct&q=19
+- 17:49:11.703 INFO: GET 200 /?page=pos&action=findProduct&q=19
+- 17:49:14.109 INFO: GET 200 /?page=pos&action=findProduct&q=8
+- 17:49:15.828 INFO: GET 200 /?page=pos&action=findProduct&q=4
+- 17:49:15.500 INFO: GET 200 /?page=pos&action=findProduct&q=16
+- 17:49:16.109 INFO: GET 200 /?page=pos&action=findProduct&q=11
+- 17:49:16.734 INFO: GET 200 /?page=pos&action=findProduct&q=19
+- 17:49:17.359 INFO: GET 200 /?page=pos&action=findProduct&q=17
+- 17:49:18.063 INFO: GET 200 /?page=pos&action=findProduct&q=21
+- 17:49:18.141 INFO: GET 200 /?page=pos&action=findProduct&q=21
+- 17:49:37.859 DEBUG: ClientHandler::OnBeforePopup()
+- 17:49:37.859 INFO: Setting default size for a popup window 800/600
+- 17:49:37.859 INFO: DPI, window enlarged by 25% new width/height = 1000/750
+- 17:49:37.859 DEBUG: Window max width/height = 1842/984
+- 17:49:37.891 DEBUG: ClientHandler::OnAfterCreated()
+- 17:49:37.891 DEBUG: GetBrowserWindow(): not found, hwnd = 592058
+- 17:49:37.891 DEBUG: BrowserWindow::BrowserWindow() created for Popup
+- 17:49:37.891 DEBUG: StoreBrowserWindow(): hwnd = 592058
+- 17:49:37.891 DEBUG: Centering popup window relative to its parent
+- 17:49:37.547 DEBUG: OnBrowserCreated()
+- 17:49:37.547 DEBUG: OnContextCreated()
+- 17:49:37.906 DEBUG: OnLoadingStateChange: loading=1, url=
+- 17:49:37.016 INFO: GET 200 /public/css/main.css?v=1788965377
+- 17:49:37.047 INFO: GET 200 /?page=products&action=edit&id=18
+- 17:49:37.047 INFO: GET 200 /public/js/app_core.js?v=1788965377
+- 17:49:37.297 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=products&action=edit&id=18
+- 17:49:42.266 DEBUG: OnBeforeClose() hwnd=592058
+- 17:49:42.266 DEBUG: RemoveBrowserWindow(): hwnd = 592058
+- 17:49:42.922 DEBUG: OnBrowserDestroyed()
+- 17:49:47.047 DEBUG: ClientHandler::OnBeforePopup()
+- 17:49:47.047 INFO: Setting default size for a popup window 800/600
+- 17:49:47.047 INFO: DPI, window enlarged by 25% new width/height = 1000/750
+- 17:49:47.063 DEBUG: Window max width/height = 1842/984
+- 17:49:47.078 DEBUG: ClientHandler::OnAfterCreated()
+- 17:49:47.078 DEBUG: GetBrowserWindow(): not found, hwnd = 526620
+- 17:49:47.078 DEBUG: BrowserWindow::BrowserWindow() created for Popup
+- 17:49:47.078 DEBUG: StoreBrowserWindow(): hwnd = 526620
+- 17:49:47.094 DEBUG: Centering popup window relative to its parent
+- 17:49:47.735 DEBUG: OnBrowserCreated()
+- 17:49:47.109 DEBUG: OnLoadingStateChange: loading=1, url=
+- 17:49:47.750 DEBUG: OnContextCreated()
+- 17:49:47.219 INFO: GET 200 /public/css/main.css?v=1788965387
+- 17:49:47.219 INFO: GET 200 /?page=products&action=edit&id=13
+- 17:49:47.234 INFO: GET 200 /public/js/app_core.js?v=1788965387
+- 17:49:47.469 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=products&action=edit&id=13
+- 17:50:45.484 DEBUG: OnBeforeClose() hwnd=526620
+- 17:50:45.500 DEBUG: RemoveBrowserWindow(): hwnd = 526620
+- 17:50:45.157 DEBUG: OnBrowserDestroyed()
+- 17:50:50.828 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=pos
+- 17:50:50.547 DEBUG: OnContextCreated()
+- 17:50:50.906 INFO: GET 200 /public/css/main.css?v=1788965450
+- 17:50:50.922 INFO: GET 200 /?page=dashboard
+- 17:50:50.922 INFO: GET 200 /public/js/app_core.js?v=1788965450
+- 17:50:50.125 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=dashboard
+- 17:50:55.156 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=dashboard
+- 17:50:55.860 DEBUG: OnContextCreated()
+- 17:50:55.219 INFO: GET 200 /public/css/main.css?v=1788965455
+- 17:50:55.234 INFO: GET 200 /?page=purchases
+- 17:50:55.234 INFO: GET 200 /public/js/app_core.js?v=1788965455
+- 17:50:55.453 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=purchases
+- 17:51:02.484 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=purchases
+- 17:51:02.188 DEBUG: OnContextCreated()
+- 17:51:02.547 INFO: GET 200 /public/css/main.css?v=1788965462
+- 17:51:02.563 INFO: GET 200 /?page=purchases&action=create
+- 17:51:02.563 INFO: GET 200 /public/js/app_core.js?v=1788965462
+- 17:51:03.797 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=purchases&action=create
+- 17:51:24.516 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=purchases&action=create
+- 17:51:25.516 DEBUG: OnContextCreated()
+- 17:51:25.875 INFO: GET 200 /public/css/main.css?v=1788965485
+- 17:51:25.891 INFO: GET 200 /?page=products
+- 17:51:25.906 INFO: GET 200 /public/js/app_core.js?v=1788965485
+- 17:51:25.188 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=products
+- 17:52:12.453 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=products
+- 17:52:12.172 DEBUG: OnContextCreated()
+- 17:52:12.531 INFO: GET 200 /public/css/pos_simple.css?v=1788965532
+- 17:52:12.531 INFO: GET 200 /public/css/main.css?v=1788965532
+- 17:52:12.531 INFO: GET 200 /public/js/pos_shortcuts.js?v=1788965532
+- 17:52:12.531 INFO: GET 200 /public/js/pos_core_v2.js?v=1788965532
+- 17:52:12.531 INFO: GET 200 /public/css/pos_fixes.css?v=1788965532
+- 17:52:12.547 INFO: GET 200 /?page=pos
+[0909/175213.263:INFO:CONSOLE(148)] "POS v3.0 Initializing...", source: http://127.0.0.1:2489/public/js/pos_core_v2.js?v=1788965532 (148)
+- 17:52:13.063 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=pos
+- 17:52:13.172 INFO: GET 200 /?page=pos&action=listProducts&p=1&per_page=20
+- 17:52:13.172 INFO: GET 200 /?page=pos&action=checkShift
+- 17:52:14.516 INFO: GET 200 /?page=pos&action=findProduct&q=12
+- 17:52:15.203 INFO: GET 200 /?page=pos&action=findProduct&q=16
+- 17:52:16.172 INFO: GET 200 /?page=pos&action=findProduct&q=9
+- 17:52:17.984 INFO: GET 200 /?page=pos&action=findProduct&q=17
+- 17:52:34.984 INFO: GET 200 /?page=pos&action=findProduct&q=14
+- 17:52:34.547 INFO: GET 200 /?page=pos&action=findProduct&q=7
+- 17:52:35.188 INFO: GET 200 /?page=pos&action=findProduct&q=4
+- 17:52:36.781 INFO: GET 200 /?page=pos&action=findProduct&q=10
+- 17:52:36.328 INFO: GET 200 /?page=pos&action=findProduct&q=18
+- 17:52:37.938 INFO: GET 200 /?page=pos&action=listProducts&p=1&per_page=20&category=3
+- 17:52:37.547 INFO: GET 200 /?page=pos&action=listProducts&p=1&per_page=20&category=5
+- 17:52:38.594 INFO: GET 200 /?page=pos&action=listProducts&p=1&per_page=20&category=9
+- 17:52:42.578 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=pos
+- 17:52:42.282 DEBUG: OnContextCreated()
+- 17:52:42.656 INFO: GET 200 /public/css/main.css?v=1788965562
+- 17:52:42.656 INFO: GET 304 /public/images/logo.png
+- 17:52:42.672 INFO: GET 200 /?page=dashboard
+- 17:52:42.672 INFO: GET 200 /public/js/app_core.js?v=1788965562
+- 17:52:43.875 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=dashboard
+- 17:52:44.500 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=dashboard
+- 17:52:44.219 DEBUG: OnContextCreated()
+- 17:52:44.578 INFO: GET 200 /public/css/main.css?v=1788965564
+- 17:52:44.578 INFO: GET 200 /public/js/pos_shortcuts.js?v=1788965564
+- 17:52:44.578 INFO: GET 200 /public/js/pos_core_v2.js?v=1788965564
+- 17:52:44.578 INFO: GET 200 /public/css/pos_fixes.css?v=1788965564
+- 17:52:44.578 INFO: GET 200 /public/css/pos_simple.css?v=1788965564
+- 17:52:44.594 INFO: GET 200 /?page=pos
+[0909/175245.372:INFO:CONSOLE(148)] "POS v3.0 Initializing...", source: http://127.0.0.1:2489/public/js/pos_core_v2.js?v=1788965564 (148)
+- 17:52:45.172 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=pos
+- 17:52:45.266 INFO: GET 200 /?page=pos&action=checkShift
+- 17:52:45.266 INFO: GET 200 /?page=pos&action=listProducts&p=1&per_page=20
+- 17:52:47.031 INFO: GET 200 /?page=pos&action=findProduct&q=20
+- 17:52:47.625 INFO: GET 200 /?page=pos&action=findProduct&q=13
+- 17:52:58.969 INFO: POST 200 /?page=pos&action=checkout
+- 17:52:58.984 INFO: GET 304 /public/images/logo.png
+- 17:52:58.141 INFO: GET 200 /?page=pos&action=listProducts&p=1&per_page=20
+- 17:53:16.844 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=pos
+- 17:53:16.547 DEBUG: OnContextCreated()
+- 17:53:16.906 INFO: GET 304 /public/images/logo.png
+- 17:53:16.906 INFO: GET 200 /public/css/main.css?v=1788965596
+- 17:53:16.922 INFO: GET 200 /?page=dashboard
+- 17:53:16.984 INFO: GET 200 /public/js/app_core.js?v=1788965596
+- 17:53:16.141 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=dashboard
+- 17:53:20.609 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=dashboard
+- 17:53:20.360 DEBUG: OnContextCreated()
+- 17:53:20.734 INFO: GET 200 /public/css/main.css?v=1788965600
+- 17:53:20.734 INFO: GET 304 /public/images/logo.png
+- 17:53:20.734 INFO: GET 200 /?page=safe
+- 17:53:20.734 INFO: GET 200 /public/js/app_core.js?v=1788965600
+- 17:53:21.109 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=safe
+- 17:53:23.031 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=safe
+- 17:53:23.750 DEBUG: OnContextCreated()
+- 17:53:23.109 INFO: GET 200 /public/css/main.css?v=1788965603
+- 17:53:23.125 INFO: GET 200 /?page=safe
+- 17:53:23.156 INFO: GET 304 /public/images/logo.png
+- 17:53:23.156 INFO: GET 200 /public/js/app_core.js?v=1788965603
+- 17:53:23.516 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=safe
+- 17:53:23.563 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=safe
+- 17:53:23.282 DEBUG: OnContextCreated()
+- 17:53:23.656 INFO: GET 304 /public/images/logo.png
+- 17:53:23.656 INFO: GET 200 /?page=inventory
+- 17:53:24.938 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=inventory
+- 17:53:25.406 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=inventory
+- 17:53:25.125 DEBUG: OnContextCreated()
+- 17:53:25.484 INFO: GET 200 /public/css/main.css?v=1788965605
+- 17:53:25.484 INFO: GET 304 /public/images/logo.png
+- 17:53:25.500 INFO: GET 200 /?page=settings
+- 17:53:25.500 INFO: GET 200 /public/js/app_core.js?v=1788965605
+- 17:53:26.609 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=settings
+- 17:53:44.703 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=settings
+- 17:53:45.984 INFO: POST 302 /?page=settings&action=save
+- 17:53:45.657 DEBUG: OnContextCreated()
+- 17:53:45.031 INFO: GET 200 /public/css/main.css?v=1788965625
+- 17:53:45.031 INFO: GET 304 /public/images/logo.png
+- 17:53:45.047 INFO: GET 200 /?page=settings
+- 17:53:45.047 INFO: GET 200 /public/js/app_core.js?v=1788965625
+[0909/175345.722:INFO:CONSOLE(92)] "Uncaught ReferenceError: showToast is not defined", source: http://127.0.0.1:2489/?page=settings (92)
+- 17:53:45.516 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=settings
+- 17:53:47.109 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=settings
+- 17:53:47.891 DEBUG: OnContextCreated()
+- 17:53:47.250 INFO: GET 200 /public/css/pos_simple.css?v=1788965627
+- 17:53:47.250 INFO: GET 200 /public/css/main.css?v=1788965627
+- 17:53:47.250 INFO: GET 200 /public/js/pos_core_v2.js?v=1788965627
+- 17:53:47.250 INFO: GET 200 /public/css/pos_fixes.css?v=1788965627
+- 17:53:47.250 INFO: GET 200 /public/js/pos_shortcuts.js?v=1788965627
+- 17:53:47.266 INFO: GET 200 /?page=pos
+[0909/175347.724:INFO:CONSOLE(148)] "POS v3.0 Initializing...", source: http://127.0.0.1:2489/public/js/pos_core_v2.js?v=1788965627 (148)
+- 17:53:47.531 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=pos
+- 17:53:47.625 INFO: GET 200 /?page=pos&action=checkShift
+- 17:53:47.625 INFO: GET 200 /?page=pos&action=listProducts&p=1&per_page=20
+- 17:53:50.953 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=pos
+- 17:53:50.657 DEBUG: OnContextCreated()
+- 17:53:50.016 INFO: GET 200 /public/css/main.css?v=1788965630
+- 17:53:50.016 INFO: GET 304 /public/images/logo.png
+- 17:53:50.031 INFO: GET 200 /?page=dashboard
+- 17:53:50.031 INFO: GET 200 /public/js/app_core.js?v=1788965630
+- 17:53:51.797 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=dashboard
+- 17:53:52.328 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=dashboard
+- 17:53:52.047 DEBUG: OnContextCreated()
+- 17:53:52.406 INFO: GET 200 /public/js/pos_core_v2.js?v=1788965632
+- 17:53:52.406 INFO: GET 200 /public/js/pos_shortcuts.js?v=1788965632
+- 17:53:52.406 INFO: GET 200 /public/css/main.css?v=1788965632
+- 17:53:52.406 INFO: GET 200 /public/css/pos_simple.css?v=1788965632
+- 17:53:52.406 INFO: GET 200 /public/css/pos_fixes.css?v=1788965632
+- 17:53:52.438 INFO: GET 200 /?page=pos
+[0909/175352.864:INFO:CONSOLE(148)] "POS v3.0 Initializing...", source: http://127.0.0.1:2489/public/js/pos_core_v2.js?v=1788965632 (148)
+- 17:53:52.656 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=pos
+- 17:53:52.750 INFO: GET 200 /?page=pos&action=listProducts&p=1&per_page=20
+- 17:53:52.766 INFO: GET 200 /?page=pos&action=checkShift
+- 17:53:54.047 INFO: GET 200 /?page=pos&action=findProduct&q=10
+- 17:53:54.781 INFO: GET 200 /?page=pos&action=findProduct&q=8
+- 17:54:01.625 INFO: POST 200 /?page=pos&action=checkout
+- 17:54:01.641 INFO: GET 304 /public/images/logo.png
+- 17:54:01.734 INFO: GET 200 /?page=pos&action=listProducts&p=1&per_page=20
+- 17:55:48.266 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=pos
+- 17:55:48.969 DEBUG: OnContextCreated()
+- 17:55:48.344 INFO: GET 304 /public/images/logo.png
+- 17:55:48.344 INFO: GET 200 /public/css/main.css?v=1788965748
+- 17:55:48.359 INFO: GET 200 /?page=dashboard
+- 17:55:48.359 INFO: GET 200 /public/js/app_core.js?v=1788965748
+- 17:55:48.563 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=dashboard
+- 17:55:53.078 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=dashboard
+- 17:55:53.797 DEBUG: OnContextCreated()
+- 17:55:53.156 INFO: GET 304 /public/images/logo.png
+- 17:55:53.156 INFO: GET 200 /public/css/main.css?v=1788965753
+- 17:55:53.156 INFO: GET 200 /?page=employees
+- 17:55:53.172 INFO: GET 200 /public/js/app_core.js?v=1788965753
+- 17:55:53.391 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=employees
+- 17:55:55.250 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=employees
+- 17:55:55.985 DEBUG: OnContextCreated()
+- 17:55:55.359 INFO: GET 200 /public/css/main.css?v=1788965755
+- 17:55:55.359 INFO: GET 304 /public/images/logo.png
+- 17:55:55.375 INFO: GET 200 /?page=purchases
+- 17:55:55.375 INFO: GET 200 /public/js/app_core.js?v=1788965755
+- 17:55:55.719 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=purchases
+- 17:56:03.281 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=purchases
+- 17:56:03.985 DEBUG: OnContextCreated()
+- 17:56:03.344 INFO: GET 200 /public/css/main.css?v=1788965763
+- 17:56:03.344 INFO: GET 304 /public/images/logo.png
+- 17:56:03.344 INFO: GET 200 /?page=purchases&action=create
+- 17:56:03.359 INFO: GET 200 /public/js/app_core.js?v=1788965763
+- 17:56:03.688 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=purchases&action=create
+- 17:56:14.781 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:56:15.813 INFO: GET 404 /public/audio/beep.mp3
+- 17:56:15.031 INFO: GET 200 /?page=pos&action=search&q=2728564384&_=1788965775164
+- 17:56:18.984 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:56:18.000 INFO: GET 404 /public/audio/beep.mp3
+- 17:56:18.203 INFO: GET 200 /?page=pos&action=search&q=2728564384&_=1788965778354
+- 17:56:19.359 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:56:19.359 INFO: GET 404 /public/audio/beep.mp3
+- 17:56:19.578 INFO: GET 200 /?page=pos&action=search&q=2728564384&_=1788965779732
+- 17:56:20.297 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:56:20.297 INFO: GET 404 /public/audio/beep.mp3
+- 17:56:20.531 INFO: GET 200 /?page=pos&action=search&q=2728564384&_=1788965780680
+- 17:56:21.109 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:56:21.109 INFO: GET 404 /public/audio/beep.mp3
+- 17:56:21.344 INFO: GET 200 /?page=pos&action=search&q=2728564384&_=1788965781484
+- 17:56:22.797 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:56:22.797 INFO: GET 404 /public/audio/beep.mp3
+- 17:56:22.063 INFO: GET 200 /?page=pos&action=search&q=2728564384&_=1788965782189
+- 17:56:22.609 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:56:22.625 INFO: GET 404 /public/audio/beep.mp3
+- 17:56:23.859 INFO: GET 200 /?page=pos&action=search&q=2728564384&_=1788965783008
+- 17:56:23.469 INFO: GET 200 /?page=pos&action=findProduct&q=2728564384
+- 17:56:23.484 INFO: GET 404 /public/audio/beep.mp3
+- 17:56:23.703 INFO: GET 200 /?page=pos&action=search&q=2728564384&_=1788965783855
+- 17:56:26.844 INFO: GET 400 /?page=pos&action=findProduct&q=%E2%80%98%D8%9B-862
+- 17:56:26.281 INFO: GET 200 /?page=pos&action=search&q=2728564&_=1788965786417
+- 17:56:27.469 INFO: GET 400 /?page=pos&action=findProduct&q=2728564%E2%80%98%D8%9B-862
+- 17:56:31.391 INFO: GET 200 /?page=pos&action=search&q=2728564%E2%80%98%D8%9B-862&_=1788965791528
+- 17:56:52.125 INFO: GET 200 /?page=purchases&action=next_invoice_number&supplier_id=1
+- 17:57:01.406 INFO: POST 200 /?page=purchases&action=save
+- 17:57:02.500 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=purchases&action=create
+- 17:57:02.235 DEBUG: OnContextCreated()
+- 17:57:02.609 INFO: GET 200 /public/css/main.css?v=1788965822
+- 17:57:02.609 INFO: GET 304 /public/images/logo.png
+- 17:57:02.625 INFO: GET 200 /?page=purchases
+- 17:57:02.625 INFO: GET 200 /public/js/app_core.js?v=1788965822
+- 17:57:03.938 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=purchases
+- 17:57:04.281 DEBUG: OnLoadingStateChange: loading=1, url=http://127.0.0.1:2489/?page=purchases
+- 17:57:04.000 DEBUG: OnContextCreated()
+- 17:57:04.375 INFO: GET 200 /public/css/main.css?v=1788965824
+- 17:57:04.375 INFO: GET 304 /public/images/logo.png
+- 17:57:04.391 INFO: GET 200 /?page=dashboard
+- 17:57:04.391 INFO: GET 200 /public/js/app_core.js?v=1788965824
+- 17:57:04.672 DEBUG: OnLoadingStateChange: loading=0, url=http://127.0.0.1:2489/?page=dashboard
+- 17:57:30.094 DEBUG: WM_DESTROY
+- 17:57:30.094 DEBUG: RemoveBrowserWindow(): hwnd = 264066
+- 17:57:30.109 INFO: Stopping Mongoose web server
+- 17:57:30.109 DEBUG: Mongoose webserver stopped immediately
+- 17:57:30.156 DEBUG: OnBeforeClose() hwnd=264074
+- 17:57:30.156 DEBUG: RemoveBrowserWindow(): hwnd = 264074
+- 17:57:30.156 DEBUG: GetBrowserWindow(): not found, hwnd = 264074
+- 17:57:30.156 WARNING: RemoveBrowserWindow() failed: GetBrowserWindow() failed
+- 17:57:30.156 DEBUG: Calling CefQuitMessageLoop()
+- 17:57:30.829 DEBUG: OnBrowserDestroyed()
+- 17:57:30.594 INFO: Ended application
+- 17:57:30.594 INFO: --------------------------------------------------------

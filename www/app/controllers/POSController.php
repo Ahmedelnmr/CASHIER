@@ -61,7 +61,7 @@ class POSController {
      */
     public function listProducts() {
         $category = $_GET['category'] ?? '';
-        $page = max(1, intval($_GET['page'] ?? 1));
+        $page = max(1, intval($_GET['p'] ?? $_GET['page_num'] ?? (is_numeric($_GET['page'] ?? null) ? $_GET['page'] : 1)));
         $perPage = min(50, max(10, intval($_GET['per_page'] ?? 20)));
         
         $result = $this->posEngine->getProductsForGrid($category, $page, $perPage);

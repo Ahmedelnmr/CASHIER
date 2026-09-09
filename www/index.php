@@ -53,6 +53,13 @@ try {
 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
 $action = isset($_GET['action']) ? $_GET['action'] : 'index';
 
+// Safeguard: If $page was overwritten by a numeric query param (e.g. pagination ?page=pos&...&page=1)
+if (is_numeric($page) && !empty($_SERVER['QUERY_STRING'])) {
+    if (preg_match('/(?:^|&)page=([a-zA-Z_]+)/', $_SERVER['QUERY_STRING'], $m)) {
+        $page = $m[1];
+    }
+}
+
 // =====================================================
 // AUTHENTICATION CHECK
 // =====================================================

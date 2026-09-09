@@ -7510,3 +7510,176 @@ Stack trace:
 [31-Aug-2026 05:12:36 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\Tajer\Tajer\www\app\helpers\BarcodeGenerator.php on line 27
 [31-Aug-2026 05:12:36 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\Tajer\Tajer\www\app\helpers\BarcodeGenerator.php on line 27
 [31-Aug-2026 05:12:36 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\Tajer\Tajer\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:15:12 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:28:22 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:53 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:29:59 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:29:59 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:29:59 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:29:59 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:29:59 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:29:59 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:29:59 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:29:59 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:29:59 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:29:59 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:29:59 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:29:59 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:30:00 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:30:00 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:30:00 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:30:00 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:30:00 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:30:00 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:30:12 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:30:20 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:35:28 Africa/Cairo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 25 bind or column index out of range in D:\var\New folder (2)\CASHIER\www\app\repositories\ProductRepository.php:102
+Stack trace:
+#0 D:\var\New folder (2)\CASHIER\www\app\repositories\ProductRepository.php(102): PDOStatement->execute()
+#1 D:\var\New folder (2)\CASHIER\www\app\pos_engine\POSEngine.php(63): ProductRepository->search('\xD8\xA8\xD8\xA8', 20, '7')
+#2 D:\var\New folder (2)\CASHIER\www\app\controllers\POSController.php(55): POSEngine->searchProducts('\xD8\xA8\xD8\xA8', 20, '7')
+#3 D:\var\New folder (2)\CASHIER\www\index.php(129): POSController->search()
+#4 {main}
+  thrown in D:\var\New folder (2)\CASHIER\www\app\repositories\ProductRepository.php on line 102
+[09-Sep-2026 16:35:31 Africa/Cairo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 25 bind or column index out of range in D:\var\New folder (2)\CASHIER\www\app\repositories\ProductRepository.php:102
+Stack trace:
+#0 D:\var\New folder (2)\CASHIER\www\app\repositories\ProductRepository.php(102): PDOStatement->execute()
+#1 D:\var\New folder (2)\CASHIER\www\app\pos_engine\POSEngine.php(63): ProductRepository->search('\xD8\xA7\xD9\x85', 20, '7')
+#2 D:\var\New folder (2)\CASHIER\www\app\controllers\POSController.php(55): POSEngine->searchProducts('\xD8\xA7\xD9\x85', 20, '7')
+#3 D:\var\New folder (2)\CASHIER\www\index.php(129): POSController->search()
+#4 {main}
+  thrown in D:\var\New folder (2)\CASHIER\www\app\repositories\ProductRepository.php on line 102
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:01 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:36:16 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:36:16 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:36:16 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:36:16 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:36:16 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:36:16 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:36:16 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:36:16 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:36:16 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:36:16 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:36:16 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:36:16 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:36:16 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:36:16 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:36:16 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:36:16 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:36:17 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:36:17 Africa/Cairo] PHP Fatal error:  Constant expression contains invalid operations in D:\var\New folder (2)\CASHIER\www\app\helpers\BarcodeGenerator.php on line 27
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23
+[09-Sep-2026 16:51:25 Africa/Cairo] PHP Warning:  htmlspecialchars() expects parameter 1 to be string, array given in D:\var\New folder (2)\CASHIER\www\app\views\products\index.php on line 23

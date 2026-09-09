@@ -80,7 +80,7 @@ class POSEngine {
         
         if ($category !== '' && $category !== 'all') {
             $sql .= " AND category_id = :category_id";
-            $params[':category'] = $category;
+            $params[':category_id'] = $category;
         }
         
         $sql .= " ORDER BY name ASC LIMIT :limit OFFSET :offset";
@@ -101,7 +101,7 @@ class POSEngine {
         }
         $countStmt = $db->prepare($countSql);
         if ($category !== '' && $category !== 'all') {
-            $countStmt->bindValue(':category', $category);
+            $countStmt->bindValue(':category_id', $category);
         }
         $countStmt->execute();
         $totalCount = $countStmt->fetchColumn();
