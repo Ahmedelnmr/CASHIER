@@ -9,6 +9,46 @@
 // القيمة السرية المطابقة تماماً لـ LicenseService
 $SECRET_SALT = 'TAJER-SECRET-2026-XK9#mN@qw!';
 
+// تحميل ملف license.dat مباشرة من المتصفح
+if (isset($_GET['download']) && !empty($_GET['hid']) && !empty($_GET['code'])) {
+    $dHid = strtoupper(trim($_GET['hid']));
+    $dCode = strtoupper(trim($_GET['code']));
+    $dExpiry = trim($_GET['expiry'] ?? 'LIFETIME');
+    $licenseData = [
+        'hid'        => $dHid,
+        'code'       => $dCode,
+        'expiry'     => $dExpiry,
+        'activated'  => date('Y-m-d H:i:s'),
+        'checksum'   => hash('sha256', $dHid . $dExpiry . $SECRET_SALT)
+    ];
+    $encoded = base64_encode(json_encode($licenseData, JSON_UNESCAPED_UNICODE));
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename="license.dat"');
+    header('Content-Length: ' . strlen($encoded));
+    echo $encoded;
+    exit;
+}
+
+// حفظ ملف license.dat في مجلد البرنامج مباشرة (لتفعيل جهازك فوراً)
+if (isset($_POST['save_direct']) && !empty($_POST['hid']) && !empty($_POST['code'])) {
+    $dHid = strtoupper(trim($_POST['hid']));
+    $dCode = strtoupper(trim($_POST['code']));
+    $dExpiry = trim($_POST['expiry'] ?? 'LIFETIME');
+    $licenseData = [
+        'hid'        => $dHid,
+        'code'       => $dCode,
+        'expiry'     => $dExpiry,
+        'activated'  => date('Y-m-d H:i:s'),
+        'checksum'   => hash('sha256', $dHid . $dExpiry . $SECRET_SALT)
+    ];
+    $encoded = base64_encode(json_encode($licenseData, JSON_UNESCAPED_UNICODE));
+    $rootTarget = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'license.dat';
+    $saved = @file_put_contents($rootTarget, $encoded);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['success' => ($saved !== false), 'path' => $rootTarget]);
+    exit;
+}
+
 function generateCode($hardwareId, $type = 'lifetime', $secret = '') {
     $hardwareId = strtoupper(trim($hardwareId));
     if (empty($hardwareId)) return '';
@@ -78,22 +118,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $customDate = trim($_POST['custom_date'] ?? date('Y-m-d', strtotime('+1 year')));
 
     if ($hidInput) {
+        $expiryVal = 'LIFETIME';
         if ($licType === 'lifetime') {
             $generatedKey = generateCode($hidInput, 'lifetime', $SECRET_SALT);
             $typeLabel = 'دائم مدى الحياة ♾️';
+            $expiryVal = 'LIFETIME';
         } elseif ($licType === 'minutes') {
             $generatedKey = generateCode($hidInput, "{$customMinutes}m", $SECRET_SALT);
             $typeLabel = "مدة تجريبية {$customMinutes} دقيقة من وقت التفعيل ⏱️";
+            $expiryVal = date('Y-m-d H:i:00', strtotime("+{$customMinutes} minutes"));
         } elseif ($licType === 'datetime') {
             $dtFormatted = str_replace('T', ' ', $customDatetime);
             $generatedKey = generateCode($hidInput, $dtFormatted, $SECRET_SALT);
             $typeLabel = "ينتهي في دقيقة محددة: {$dtFormatted} 🕒";
+            $expiryVal = $dtFormatted . ':00';
         } elseif ($licType === 'days') {
             $generatedKey = generateCode($hidInput, $customDays, $SECRET_SALT);
             $typeLabel = "صالح لمدة {$customDays} يوم";
+            $expiryVal = date('Y-m-d', strtotime("+{$customDays} days"));
         } elseif ($licType === 'fixed_date') {
             $generatedKey = generateCode($hidInput, $customDate, $SECRET_SALT);
             $typeLabel = "صالح حتى {$customDate} (نهاية اليوم)";
+            $expiryVal = $customDate;
         }
 
         // حفظ في سجل التراخيص الصادرة
@@ -417,12 +463,18 @@ if (!is_array($history)) $history = [];
                        "📌 نوع الترخيص: {$typeLabel}\n\n" .
                        "قم بلصق الكود في خانة التفعيل بالبرنامج واضغط تفعيل.";
                 ?>
-                <div class="btn-copy-box">
+                <div class="btn-copy-box" style="flex-wrap: wrap; gap: 8px;">
                     <button type="button" class="btn-sm btn-copy" onclick="copyKey()">📋 نسخ الكود فقط</button>
                     <button type="button" class="btn-sm btn-copy" style="background:#6366f1; color:#fff;" onclick="copyMsg()">📝 نسخ رسالة كاملة للعميل</button>
                     <a href="https://wa.me/?text=<?= urlencode($msg) ?>" target="_blank" class="btn-sm btn-wa">
                         💬 إرسال واتساب
                     </a>
+                    <a href="?download=1&hid=<?= urlencode($hidInput) ?>&code=<?= urlencode($generatedKey) ?>&expiry=<?= urlencode($expiryVal) ?>" class="btn-sm btn-copy" style="background:#10b981; color:#fff; text-decoration:none;">
+                        💾 تحميل ملف license.dat جاهز
+                    </a>
+                    <button type="button" class="btn-sm btn-copy" style="background:#0ea5e9; color:#fff;" onclick="saveDirectly('<?= htmlspecialchars($hidInput) ?>', '<?= htmlspecialchars($generatedKey) ?>', '<?= htmlspecialchars($expiryVal) ?>')">
+                        📁 حفظ license.dat في البرنامج مباشرة
+                    </button>
                 </div>
                 <textarea id="fullMsg" style="display:none;"><?= htmlspecialchars($msg) ?></textarea>
             </div>
@@ -505,6 +557,27 @@ function copyMsg() {
 function copyStr(s) {
     navigator.clipboard.writeText(s).then(function() {
         alert('تم النسخ: ' + s);
+    });
+}
+
+function saveDirectly(hid, code, expiry) {
+    if (!confirm('هل تريد تفعيل هذا الجهاز وحفظ ملف license.dat في مجلد البرنامج مباشرة؟')) return;
+    var fd = new FormData();
+    fd.append('save_direct', '1');
+    fd.append('hid', hid);
+    fd.append('code', code);
+    fd.append('expiry', expiry);
+    fetch('keygen.php', { method: 'POST', body: fd })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.success) {
+            alert('✅ تم حفظ ملف license.dat وتفعيل البرنامج بنجاح!\nالمسار: ' + data.path);
+        } else {
+            alert('❌ فشل حفظ الملف، يرجى التأكد من صلاحيات المجلد.');
+        }
+    })
+    .catch(function(e) {
+        alert('حدث خطأ في الاتصال: ' + e);
     });
 }
 </script>
