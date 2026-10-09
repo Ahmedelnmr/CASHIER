@@ -6,10 +6,11 @@ echo     مولّد تراخيص برنامج تاجر (Hardware Lock)
 echo ===================================================
 echo.
 
-:: البحث عن محرك PHP المدمج مع البرنامج أو في النظام
+cd /d "%~dp0"
+
 set "PHP_EXE="
-if exist "%~dp0..\php\php.exe" set "PHP_EXE=%~dp0..\php\php.exe"
-if not defined PHP_EXE if exist "%~dp0php\php.exe" set "PHP_EXE=%~dp0php\php.exe"
+if exist "..\php\php.exe" set "PHP_EXE=..\php\php.exe"
+if not defined PHP_EXE if exist "php\php.exe" set "PHP_EXE=php\php.exe"
 if not defined PHP_EXE if exist "C:\xampp\php\php.exe" set "PHP_EXE=C:\xampp\php\php.exe"
 if not defined PHP_EXE where php >nul 2>nul && set "PHP_EXE=php"
 
@@ -33,6 +34,6 @@ if "%OPT%"=="2" set LIC_TYPE=365
 if "%OPT%"=="3" set LIC_TYPE=30
 if not defined LIC_TYPE set LIC_TYPE=lifetime
 
-"%PHP_EXE%" -r "require_once '%~dp0keygen_cli.php'; KeygenCLI::run('%HID%', '%LIC_TYPE%');"
+"%PHP_EXE%" -r "require_once 'keygen_cli.php'; KeygenCLI::run('%HID%', '%LIC_TYPE%');"
 echo.
 pause
