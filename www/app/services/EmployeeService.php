@@ -61,8 +61,9 @@ class EmployeeService {
 
     public function getAllWithBalance() {
         $employees = $this->employeeRepo->getAllActive();
+        $balances  = $this->employeeRepo->getAllBalances(); // single bulk query
         foreach ($employees as &$emp) {
-            $emp['ledger_balance'] = $this->getBalance($emp['id']);
+            $emp['ledger_balance'] = $balances[$emp['id']] ?? 0.0;
         }
         return $employees;
     }

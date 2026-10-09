@@ -25,12 +25,16 @@ class SafeController {
         $month = $_GET['month'] ?? date('Y-m');
         $type = $_GET['type'] ?? '';
         
+        // Build date range from month string (e.g. "2026-09" → "2026-09-01" … "2026-09-30")
+        $dateFrom = $month . '-01';
+        $dateTo   = date('Y-m-t', strtotime($dateFrom)); // last day of month
+        
         $sql = "SELECT t.*, e.name as employee_name 
                 FROM safe_transactions t 
                 LEFT JOIN employees e ON t.employee_id = e.id 
-                WHERE strftime('%Y-%m', t.date) = :month ";
+                WHERE date(t.date) BETWEEN :date_from AND :date_to ";
                 
-        $params = [':month' => $month];
+        $params = [':date_from' => $dateFrom, ':date_to' => $dateTo];
         
         if (!empty($type)) {
             $sql .= " AND t.type = :type";
@@ -42,6 +46,7 @@ class SafeController {
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
         $transactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         
         // Calculate Balance (Total)
         $balance = $this->calculateCurrentBalance();

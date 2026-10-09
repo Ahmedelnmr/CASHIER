@@ -69,6 +69,47 @@ class EmployeeRepository {
         return $stmt->fetchColumn() ?: 0;
     }
 
+    /**
+     * Get ledger balances for ALL active employees in one query.
+     * Returns [ employee_id => balance, ... ]
+     * balance > 0 → company owes employee; balance < 0 → employee owes company.
+     */
+    public function getAllBalances() {
+        $sql = "
+            SELECT
+                e.id AS employee_id,
+                COALESCE(acc.total_accruals, 0)
+                  - COALESCE(st.total_salary, 0)
+                  - COALESCE(st.total_advances, 0)
+                  + COALESCE(st.total_settlements, 0) AS balance
+            FROM employees e
+            LEFT JOIN (
+                SELECT employee_id, SUM(amount) AS total_accruals
+                FROM employee_accruals
+                GROUP BY employee_id
+            ) acc ON acc.employee_id = e.id
+            LEFT JOIN (
+                SELECT
+                    employee_id,
+                    SUM(CASE WHEN type IN ('salary','salary_payment') THEN amount ELSE 0 END) AS total_salary,
+                    SUM(CASE WHEN type = 'advance' THEN amount ELSE 0 END)                    AS total_advances,
+                    SUM(CASE WHEN type = 'debt_settlement' THEN amount ELSE 0 END)            AS total_settlements
+                FROM safe_transactions
+                WHERE status != 'reversed' AND transaction_type != 'reversal'
+                  AND type IN ('salary','salary_payment','advance','debt_settlement')
+                GROUP BY employee_id
+            ) st ON st.employee_id = e.id
+            WHERE e.is_active = 1
+        ";
+        $stmt = $this->db->query($sql);
+        $rows  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $map   = [];
+        foreach ($rows as $row) {
+            $map[$row['employee_id']] = floatval($row['balance']);
+        }
+        return $map;
+    }
+
     public function getOutstandingDebt($employeeId) {
         $advances = $this->getTotalAdvances($employeeId);
         $settlements = $this->getTotalDebtSettlements($employeeId);

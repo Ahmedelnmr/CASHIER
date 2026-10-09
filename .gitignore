@@ -3,6 +3,12 @@ www/data/*.db
 www/data/*.db-wal
 www/data/*.db-shm
 www/data/backups/
+*.db
+
+# License
+license.dat
+*.lnk
+
 
 # Logs
 www/error.log

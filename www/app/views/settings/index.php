@@ -68,3 +68,34 @@
         <button type="submit" class="btn btn-primary btn-lg">حفظ الإعدادات</button>
     </div>
 </form>
+
+<!-- License Info Card -->
+<div class="card" style="margin-top: 24px; border: 1px solid <?= !empty($licenseInfo['valid']) ? '#86efac' : '#fca5a5' ?>;">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0; display: flex; align-items: center; gap: 8px;">
+            🔐 ترخيص النظام (Hardware ID Locking)
+        </h3>
+        <span class="badge" style="background: <?= !empty($licenseInfo['valid']) ? '#10b981' : '#ef4444' ?>; color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">
+            <?= !empty($licenseInfo['valid']) ? 'مفعّل ✅' : 'غير مفعّل ❌' ?>
+        </span>
+    </div>
+    <div style="padding: 16px 20px;">
+        <div class="form-row">
+            <div class="form-group">
+                <label>كود هذا الجهاز (Hardware ID):</label>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <input type="text" class="form-control" style="font-family: monospace; font-weight: bold; letter-spacing: 1px;" readonly value="<?= htmlspecialchars($licenseInfo['hardware_id'] ?? '') ?>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>نوع وصلاحية الترخيص:</label>
+                <input type="text" class="form-control" readonly value="<?= !empty($licenseInfo['valid']) ? htmlspecialchars($licenseInfo['expiry_label'] ?? 'مفعّل') : 'غير مفعّل' ?>">
+            </div>
+        </div>
+        <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+            <a href="?page=license" class="btn btn-secondary" style="text-decoration: none;">
+                ⚙️ إدارة وتجديد الترخيص
+            </a>
+        </div>
+    </div>
+</div>

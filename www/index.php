@@ -34,19 +34,27 @@ require_once APP_PATH . '/config/database.php';
 require_once APP_PATH . '/helpers/Response.php';
 require_once APP_PATH . '/helpers/Validator.php';
 require_once APP_PATH . '/services/AuthService.php';
+require_once APP_PATH . '/services/LicenseService.php';
 
-// Initialize database & run migrations
+// Initialize database & run migrations (once per session)
 $db = Database::getInstance();
-$db->migrate();
+if (empty($_SESSION['_db_migrated'])) {
+    $db->migrate();
+    $_SESSION['_db_migrated'] = true;
+}
 
-// Auto-accrue employee salaries for current month (runs once per month)
-try {
-    require_once APP_PATH . '/repositories/EmployeeRepository.php';
-    require_once APP_PATH . '/services/EmployeeService.php';
-    $empService = new EmployeeService();
-    $empService->runMonthlyAccrual();
-} catch (Exception $e) {
-    // Silent — don't block app if accrual fails
+// Auto-accrue employee salaries for current month (runs once per calendar month)
+$currentMonth = date('Y-m');
+if (empty($_SESSION['_accrual_month']) || $_SESSION['_accrual_month'] !== $currentMonth) {
+    try {
+        require_once APP_PATH . '/repositories/EmployeeRepository.php';
+        require_once APP_PATH . '/services/EmployeeService.php';
+        $empService = new EmployeeService();
+        $empService->runMonthlyAccrual();
+        $_SESSION['_accrual_month'] = $currentMonth;
+    } catch (Exception $e) {
+        // Silent — don't block app if accrual fails
+    }
 }
 
 // Determine the requested page and action
@@ -61,9 +69,25 @@ if (is_numeric($page) && !empty($_SERVER['QUERY_STRING'])) {
 }
 
 // =====================================================
+// LICENSE CHECK — يجب التفعيل قبل أي شيء آخر
+// =====================================================
+$licensePublicPages = ['license'];
+if (!in_array($page, $licensePublicPages)) {
+    if (!LicenseService::isLicensed()) {
+        $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+                  strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+        if ($isAjax) {
+            Response::error('البرنامج غير مفعّل على هذا الجهاز — تواصل مع المطوّر', 403);
+        }
+        header('Location: ?page=license');
+        exit;
+    }
+}
+
+// =====================================================
 // AUTHENTICATION CHECK
 // =====================================================
-$publicPages = ['login'];
+$publicPages = ['login', 'license'];
 $isPublicPage = in_array($page, $publicPages);
 
 if (!$isPublicPage) {
@@ -83,6 +107,7 @@ if (!$isPublicPage) {
 // Route map
 $routes = [
     'login'      => 'LoginController',
+    'license'    => 'LicenseController',
     'dashboard'  => 'DashboardController',
     'pos'        => 'POSController',
     'products'   => 'ProductController',

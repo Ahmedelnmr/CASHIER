@@ -19,9 +19,9 @@ if (isset($_SESSION['pos_cart_restore'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نقطة البيع - POS</title>
-    <link rel="stylesheet" href="public/css/pos_simple.css?v=<?= time() ?>">
-    <link rel="stylesheet" href="public/css/pos_fixes.css?v=<?= time() ?>">
-    <link rel="stylesheet" href="public/css/main.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="public/css/pos_simple.css?v=1.0.5">
+    <link rel="stylesheet" href="public/css/pos_fixes.css?v=1.0.5">
+    <link rel="stylesheet" href="public/css/main.css?v=1.0.5">
 </head>
 <body>
 <div class="toast-container" id="toastContainer"></div>

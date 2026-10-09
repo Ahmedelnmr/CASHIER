@@ -212,50 +212,45 @@ class ReportService {
      * Dashboard summary
      */
     public function dashboardSummary() {
-        $today = date('Y-m-d');
-        [$start, $endExclusive] = self::dateBoundaries($today, $today);
-
-        // Today's sales — exclude voided and returns
-        $todayStmt = $this->db->prepare(
-            "SELECT COUNT(*) as sales_count, COALESCE(SUM(total), 0) as sales_total
-             FROM sales
-             WHERE datetime >= :start AND datetime < :end
-               AND status != 'voided'
-               AND type = 'sale'"
-        );
-        $todayStmt->execute([':start' => $start, ':end' => $endExclusive]);
-        $today = $todayStmt->fetch();
-
-        // Product count
-        $prodStmt = $this->db->prepare("SELECT COUNT(*) FROM products WHERE is_active = 1");
-        $prodStmt->execute();
-        $productCount = $prodStmt->fetchColumn();
-
-        // Low stock count
-        $lowStmt = $this->db->prepare(
-            "SELECT COUNT(*) FROM products WHERE is_active = 1 AND stock_quantity <= min_stock AND min_stock > 0"
-        );
-        $lowStmt->execute();
-        $lowStockCount = $lowStmt->fetchColumn();
-
-        // Monthly sales — exclude voided and returns
+        $today      = date('Y-m-d');
         $monthStart = date('Y-m-01');
-        $monthEndExclusive = date('Y-m-d', strtotime('+1 day')) . ' 00:00:00';
-        $monthStmt = $this->db->prepare(
-            "SELECT COALESCE(SUM(total), 0) as total FROM sales
-             WHERE datetime >= :start AND datetime < :end
-               AND status != 'voided'
-               AND type = 'sale'"
+        [$todayStart, $todayEnd]   = self::dateBoundaries($today, $today);
+        [$monthStartDt, $monthEnd] = self::dateBoundaries($monthStart, $today);
+
+        // Single query: today's sales + monthly total using conditional aggregation
+        $salesStmt = $this->db->prepare(
+            "SELECT
+                COALESCE(SUM(CASE WHEN datetime >= :ts AND datetime < :te THEN 1 ELSE 0 END), 0) as sales_count,
+                COALESCE(SUM(CASE WHEN datetime >= :ts2 AND datetime < :te2 THEN total ELSE 0 END), 0) as sales_total,
+                COALESCE(SUM(CASE WHEN datetime >= :ms AND datetime < :me THEN total ELSE 0 END), 0) as month_total
+             FROM sales
+             WHERE status != 'voided' AND type = 'sale'
+               AND datetime >= :ms2 AND datetime < :me2"
         );
-        $monthStmt->execute([':start' => $monthStart . ' 00:00:00', ':end' => $monthEndExclusive]);
-        $monthTotal = $monthStmt->fetchColumn();
+        $salesStmt->execute([
+            ':ts'  => $todayStart,  ':te'  => $todayEnd,
+            ':ts2' => $todayStart,  ':te2' => $todayEnd,
+            ':ms'  => $monthStartDt, ':me'  => $monthEnd,
+            ':ms2' => $monthStartDt, ':me2' => $monthEnd,
+        ]);
+        $salesRow = $salesStmt->fetch();
+
+        // Products: count active + low-stock in one query
+        $prodStmt = $this->db->prepare(
+            "SELECT
+                COUNT(*) as product_count,
+                SUM(CASE WHEN stock_quantity <= min_stock AND min_stock > 0 THEN 1 ELSE 0 END) as low_stock_count
+             FROM products WHERE is_active = 1"
+        );
+        $prodStmt->execute();
+        $prodRow = $prodStmt->fetch();
 
         return [
-            'today_sales_count' => $today['sales_count'],
-            'today_sales_total' => $today['sales_total'],
-            'product_count' => $productCount,
-            'low_stock_count' => $lowStockCount,
-            'month_total' => $monthTotal,
+            'today_sales_count' => intval($salesRow['sales_count']),
+            'today_sales_total' => floatval($salesRow['sales_total']),
+            'product_count'     => intval($prodRow['product_count']),
+            'low_stock_count'   => intval($prodRow['low_stock_count']),
+            'month_total'       => floatval($salesRow['month_total']),
         ];
     }
 

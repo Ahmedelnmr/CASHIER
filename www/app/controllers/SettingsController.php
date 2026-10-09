@@ -21,6 +21,7 @@ class SettingsController {
      */
     public function index() {
         $settings = $this->settingsService->getAll();
+        $licenseInfo = LicenseService::getLicenseInfo();
         $toastSuccess = $_SESSION['toast_success'] ?? '';
         $toastError = $_SESSION['toast_error'] ?? '';
         unset($_SESSION['toast_success'], $_SESSION['toast_error']);
